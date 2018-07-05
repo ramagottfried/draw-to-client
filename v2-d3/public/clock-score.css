@@ -1,0 +1,83 @@
+body {
+  background-color: lightblue;
+  font-family: courier;
+  font-size: 100%;
+}
+
+@font-face {
+    font-family: brav;
+    src: url(Bravura.otf);
+}
+
+.bravura_text {
+    font-family: "brav";
+}
+
+.title{
+    margin-left: 20px;
+}
+
+.links {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+.pdf {
+    height: 600px;
+}
+
+.canvas {
+    height: 100%;
+}
+
+.loc {
+  color: white;
+  font-size: 40%;
+}
+
+.min {
+  color: black;
+}
+
+.ms {
+  color: black;
+}
+
+.pageIndex {
+  color: black;
+  font-size: 40%;
+}
+
+.err {
+  color: red;
+}
+
+.button {
+  background-color: rgba(0, 0, 0, 0);
+  color: black;
+  border:  2px solid black;
+
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 40%;
+  margin: 4px 2px;
+  cursor: pointer;
+}

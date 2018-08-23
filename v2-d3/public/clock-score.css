@@ -1,5 +1,5 @@
 body {
-  background-color: lightblue;
+  background-color: ivory;
   font-family: courier;
   font-size: 100%;
 }
@@ -9,7 +9,16 @@ body {
     src: url(Bravura.otf);
 }
 
+.basestyle {
+    font-size: 10pt;
+    font-family: Arial;
+    font-weight: normal;
+	margin: 0em;
+	padding: 15px 15px;
+}
+
 .bravura_text {
+    font-size: 24pt;
     font-family: "brav";
 }
 

@@ -30,7 +30,7 @@ port.on("message", function (oscMessage) {
   // console.log("received "+ oscMessage.args + "\n");
 
 //  var addr = oscMessage.address;
-  switch (oscMessage.address){
+  switch (oscMessage.address.substr(0, oscMessage.address.lastIndexOf("/"))){
     case "/draw/path":
       if( oscMessage.args.length == 2 ) // [ id, pathstring ]
       {
@@ -41,11 +41,11 @@ port.on("message", function (oscMessage) {
         objectStack[objname] = drawing.append("path")
             .attr("d", oscMessage.args[1])
             .attr("fill", "none" )
-            .attr("stroke-width", 6 )
+            .attr("stroke-width", 1 )
             .attr("stroke", "black" );
       }
     break;
-    case "/draw/brav":
+    case "/draw/music":
       if( oscMessage.args.length == 4 ) // [ id, x, y, text ]
       {
         const objname = oscMessage.args[0];
@@ -57,6 +57,20 @@ port.on("message", function (oscMessage) {
             .attr("y", oscMessage.args[2] )
             .html( "&#x" + oscMessage.args[3] )
             .attr("class", "bravura_text" );
+      }
+    break;
+    case "/draw/text":
+      if( oscMessage.args.length == 4 ) // [ id, x, y, text ]
+      {
+        const objname = oscMessage.args[0];
+        if( typeof objectStack[objname] != "undefined" )
+          objectStack[objname].remove();	
+
+        objectStack[objname] = drawing.append("text")
+            .attr("x", oscMessage.args[1] )
+            .attr("y", oscMessage.args[2] )
+            .html( oscMessage.args[3] )
+            .attr("class", "basestyle" );
       }
     break;
     case "/position":

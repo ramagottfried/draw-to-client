@@ -30,69 +30,89 @@ port.on("message", function (oscMessage) {
   // console.log("received "+ oscMessage.args + "\n");
 
 //  var addr = oscMessage.address;
-  switch (oscMessage.address.substr(0, oscMessage.address.lastIndexOf("/"))){
-    case "/draw/path":
-      if( oscMessage.args.length == 2 ) // [ id, pathstring ]
-      {
-        const objname = oscMessage.args[0];
-        if( typeof objectStack[objname] != "undefined" )
-          objectStack[objname].remove();
+// "id" is the address prefix
+// the second address level is the drawing switch
 
-        objectStack[objname] = drawing.append("path")
-            .attr("d", oscMessage.args[1])
+  const id_cmd = oscMessage.address.split("/").filter( function(e){ return e } );
+  // the filter removes empty strings (which we get for the first '/' )
+
+  if( id_cmd.length != 2 )
+  {
+    console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
+    return;
+  }
+
+
+  const id = id_cmd[0];
+  const cmd = id_cmd[1];
+
+  switch (cmd) {
+    case "draw_path":
+    if( oscMessage.args.length == 1 ) // pathstring
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("path")
+            .attr("d", oscMessage.args[0])
             .attr("fill", "none" )
             .attr("stroke-width", 1 )
             .attr("stroke", "black" );
       }
     break;
-    case "/draw/music":
-      if( oscMessage.args.length == 4 ) // [ id, x, y, text ]
+    case "draw_stave":
+      if( oscMessage.args.length == 3 ) // [ x, y, text ]
       {
-        const objname = oscMessage.args[0];
-        if( typeof objectStack[objname] != "undefined" )
-          objectStack[objname].remove();
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
 
-        objectStack[objname] = drawing.append("text")
-            .attr("x", oscMessage.args[1] )
-            .attr("y", oscMessage.args[2] )
-            .html( "&#x" + oscMessage.args[3] )
+        objectStack[id] = drawing.append("text")
+            .attr("x", oscMessage.args[0] )
+            .attr("y", oscMessage.args[1] )
+            .html( "&#x" + oscMessage.args[2] )
+            .attr("class", "bravura_text" );
+      }
+    case "draw_music":
+      if( oscMessage.args.length == 3 ) // [ x, y, text ]
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("text")
+            .attr("x", oscMessage.args[0] )
+            .attr("y", oscMessage.args[1] )
+            .html( "&#x" + oscMessage.args[2] )
             .attr("class", "bravura_text" );
       }
     break;
-    case "/draw/text":
-      if( oscMessage.args.length == 4 ) // [ id, x, y, text ]
+    case "draw_text":
+      if( oscMessage.args.length == 3 ) // [ x, y, text ]
       {
-        const objname = oscMessage.args[0];
-        if( typeof objectStack[objname] != "undefined" )
-          objectStack[objname].remove();	
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
 
-        objectStack[objname] = drawing.append("text")
-            .attr("x", oscMessage.args[1] )
-            .attr("y", oscMessage.args[2] )
-            .html( oscMessage.args[3] )
+        objectStack[id] = drawing.append("text")
+            .attr("x", oscMessage.args[0] )
+            .attr("y", oscMessage.args[1] )
+            .html( oscMessage.args[2] )
             .attr("class", "basestyle" );
       }
     break;
-    case "/position":
-      if( oscMessage.args.length == 3 ) // [ id, x, y ]
+    case "position":
+      if( oscMessage.args.length == 2 ) // [ x, y ]
       {
-          const objname = oscMessage.args[0];
-          if( typeof objectStack[objname] != "undefined" )
+          if( typeof objectStack[id] != "undefined" )
           {
-            objectStack[objname].attr("x", oscMessage.args[1])
-              .attr("y", oscMessage.args[2] );
+            objectStack[id].attr("x", oscMessage.args[0])
+              .attr("y", oscMessage.args[1] );
           }
-
-
       }
     break;
-    case "/remove":
-      if( oscMessage.args.length == 1 ) // [ id ]
-      {
-        objectStack[oscMessage.args[0]].remove();
-        delete objectStack[oscMessage.args[0]];
-      }
+    case "remove":
+      objectStack[id].remove();
+      delete objectStack[id];
     break;
+    /*
     case "/hr":
       $("#hr").text(pad(oscMessage.args));
     break;
@@ -101,6 +121,9 @@ port.on("message", function (oscMessage) {
     break;
     case "/ms":
       $("#ms").text( Math.round(oscMessage.args*100)/100 );
+    break;*/
+    default:
+      console.log("received unknown command: "+cmd+ "\n" );
     break;
   }
 });

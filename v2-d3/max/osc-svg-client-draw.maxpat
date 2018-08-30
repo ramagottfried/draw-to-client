@@ -9,9 +9,8 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 254.0, 79.0, 1372.0, 787.0 ],
-		"bgcolor" : [ 0.898039, 0.898039, 0.898039, 1 ],
-		"editing_bgcolor" : [ 0.898039, 0.898039, 0.898039, 1 ],
+		"classnamespace" : "box",
+		"rect" : [ 534.0, 79.0, 1372.0, 787.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +38,94 @@
 		"style" : "",
 		"subpatcher_template" : "Default Max 7",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-24",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 497.0, 554.5, 171.0, 47.0 ],
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 497.0, 554.5, 171.0, 47.0 ],
+					"text" : "and/or when an object is drawn, it should remove the transform attr"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-21",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 497.0, 500.0, 171.0, 33.0 ],
+					"presentation_linecount" : 2,
+					"presentation_rect" : [ 497.0, 500.0, 171.0, 33.0 ],
+					"text" : "maybe all objects should use translate instead of x/y"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-18",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 329.0, 650.0, 280.0, 24.0 ],
+					"presentation_rect" : [ 329.0, 650.0, 280.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 112, 111, 115, 105, 116, 105, 111, 110, 0, 44, 105, 105, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+					"saved_bundle_length" : 56,
+					"text" : "/svgdraw/1/foo/position : [0, 0]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-16",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 329.0, 689.0, 280.0, 24.0 ],
+					"presentation_rect" : [ 329.0, 689.0, 280.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 112, 111, 115, 105, 116, 105, 111, 110, 0, 44, 105, 105, 0, 0, 0, 0, 100, 0, 0, 0, 100 ],
+					"saved_bundle_length" : 56,
+					"text" : "/svgdraw/1/foo/position : [100, 100]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"linecount" : 6,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 512.0, 411.0, 171.0, 87.0 ],
+					"presentation_rect" : [ 512.0, 411.0, 171.0, 87.0 ],
+					"text" : "problem, the order is important for the server state saving .. also there are similar information between position and draw, since the draw has position also"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 307.0, 657.0, 24.0, 24.0 ],
+					"presentation_rect" : [ 307.0, 657.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-9",
 					"maxclass" : "comment",
@@ -84,6 +171,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 702.0, 171.0, 150.0, 47.0 ],
+					"presentation_linecount" : 2,
 					"presentation_rect" : [ 702.0, 171.0, 150.0, 47.0 ],
 					"text" : "print: tempoqtrequals 20. 21. 0.5 Measure 0.\r"
 				}
@@ -118,9 +206,8 @@
 							"modernui" : 1
 						}
 ,
+						"classnamespace" : "box",
 						"rect" : [ 59.0, 104.0, 937.0, 754.0 ],
-						"bgcolor" : [ 0.898039, 0.898039, 0.898039, 1 ],
-						"editing_bgcolor" : [ 0.898039, 0.898039, 0.898039, 1 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -909,9 +996,9 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 27.0, 573.0, 377.0, 24.0 ],
 					"presentation_rect" : [ 27.0, 573.0, 377.0, 24.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 49, 47, 100, 114, 97, 119, 95, 116, 101, 120, 116, 0, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 20, 97, 114, 115, 0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 49, 47, 100, 114, 97, 119, 47, 116, 101, 120, 116, 0, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 20, 97, 114, 115, 0 ],
 					"saved_bundle_length" : 64,
-					"text" : "/svgdraw/1/1/draw_text : [80, 20, \"ars\"]"
+					"text" : "/svgdraw/1/1/draw/text : [80, 20, \"ars\"]"
 				}
 
 			}
@@ -1025,6 +1112,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 950.5, 243.0, 356.0, 36.0 ],
+					"presentation_linecount" : 2,
 					"presentation_rect" : [ 950.5, 243.0, 356.0, 36.0 ],
 					"text" : "click into bpatcher to activate key strokes, necessary if several bcanvas are present in the same patcher window."
 				}
@@ -1198,9 +1286,9 @@
 					"patching_rect" : [ 27.0, 528.0, 381.0, 38.0 ],
 					"presentation_linecount" : 2,
 					"presentation_rect" : [ 27.0, 528.0, 381.0, 38.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 49, 47, 100, 114, 97, 119, 95, 109, 117, 115, 105, 99, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 20, 101, 48, 53, 48, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 50, 47, 100, 114, 97, 119, 95, 109, 117, 115, 105, 99, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 20, 101, 48, 53, 49, 0, 0, 0, 0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 49, 47, 100, 114, 97, 119, 47, 109, 117, 115, 105, 99, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 20, 101, 48, 53, 48, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 50, 47, 100, 114, 97, 119, 47, 109, 117, 115, 105, 99, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 20, 101, 48, 53, 49, 0, 0, 0, 0 ],
 					"saved_bundle_length" : 120,
-					"text" : "/svgdraw/1/1/draw_music : [80, 20, \"e050\"],\n/svgdraw/1/2/draw_music : [100, 20, \"e051\"]"
+					"text" : "/svgdraw/1/1/draw/music : [80, 20, \"e050\"],\n/svgdraw/1/2/draw/music : [100, 20, \"e051\"]"
 				}
 
 			}
@@ -1215,9 +1303,9 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 180.5, 444.0, 287.0, 24.0 ],
 					"presentation_rect" : [ 180.5, 444.0, 287.0, 24.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 116, 101, 120, 116, 47, 112, 111, 115, 105, 116, 105, 111, 110, 0, 0, 0, 0, 44, 105, 105, 0, 0, 0, 0, 100, 0, 0, 0, 100 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 50, 47, 116, 101, 120, 116, 47, 112, 111, 115, 105, 116, 105, 111, 110, 0, 0, 0, 0, 44, 105, 105, 0, 0, 0, 0, 100, 0, 0, 0, 100 ],
 					"saved_bundle_length" : 60,
-					"text" : "/svgdraw/1/text/position : [100, 100]"
+					"text" : "/svgdraw/2/text/position : [100, 100]"
 				}
 
 			}
@@ -1249,9 +1337,9 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 162.5, 411.0, 345.0, 24.0 ],
 					"presentation_rect" : [ 162.5, 411.0, 345.0, 24.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 116, 101, 120, 116, 47, 100, 114, 97, 119, 95, 109, 117, 115, 105, 99, 0, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 20, 69, 48, 53, 48, 0, 0, 0, 0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 47, 115, 118, 103, 100, 114, 97, 119, 47, 50, 47, 116, 101, 120, 116, 47, 100, 114, 97, 119, 95, 109, 117, 115, 105, 99, 0, 0, 44, 105, 105, 115, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 20, 69, 48, 53, 48, 0, 0, 0, 0 ],
 					"saved_bundle_length" : 72,
-					"text" : "/svgdraw/1/text/draw_music : [20, 20, \"E050\"]"
+					"text" : "/svgdraw/2/text/draw_music : [20, 20, \"E050\"]"
 				}
 
 			}
@@ -1339,9 +1427,9 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 27.0, 721.20001220703125, 582.0, 24.0 ],
 					"presentation_rect" : [ 27.0, 721.20001220703125, 582.0, 24.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 100, 114, 97, 119, 95, 112, 97, 116, 104, 0, 0, 0, 0, 44, 115, 0, 0, 77, 51, 53, 44, 54, 53, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 45, 54, 48, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 44, 54, 48, 0, 0, 0, 0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 100, 114, 97, 119, 47, 112, 97, 116, 104, 0, 0, 0, 0, 44, 115, 0, 0, 77, 51, 53, 44, 54, 53, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 45, 54, 48, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 44, 54, 48, 0, 0, 0, 0 ],
 					"saved_bundle_length" : 96,
-					"text" : "/svgdraw/1/foo/draw_path : \"M35,65a30,30,0,0,0,0-60a30,30,0,0,0,0,60\""
+					"text" : "/svgdraw/1/foo/draw/path : \"M35,65a30,30,0,0,0,0-60a30,30,0,0,0,0,60\""
 				}
 
 			}
@@ -1360,6 +1448,13 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-11", 0 ]
 				}
@@ -1374,8 +1469,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-16", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-22", 0 ],
 					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-18", 0 ]
 				}
 
 			}

@@ -14,6 +14,95 @@ const url = require('url');
 
 const app = express();
 
+// storage for current clientOSC bundles
+/*
+  OSCstate["/prefix"]["/address"] = args;
+*/
+class OSCstate
+{
+  constructor() {
+      this.state = [];
+      this.update = this.update.bind(this);
+      this.remove = this.remove.bind(this);
+  }
+
+  update(prefix, oscBundle) {
+    if( typeof this.state[prefix] == "undefined" ) {
+
+      this.state[prefix] = oscBundle;
+
+    } else {
+
+      for( var update_m of oscBundle.packets ) {
+
+        // parse address to handle state storage
+        const id_cmd = update_m.address.split("/").filter( function(e){ return e } );
+        // the filter removes empty strings (which we get for the first '/' )
+
+        if( id_cmd.length < 2 )
+        {
+          console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
+          return;
+        }
+
+        const id = id_cmd[0];
+        var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
+        var drawType = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
+
+        if( cmd == "remove" )
+        {
+          this.state[prefix].packets = this.state[prefix].packets.filter( function(m) { return !m.address.startsWith("/"+id) });
+          return;
+        }
+        else if( cmd == "draw")
+        {
+          if( drawType != "none")
+          {
+            cmd += "/" + drawType;
+          }
+          else
+          {
+            console.log("must specifiy drawtype after /draw");
+            return;
+          }
+        }
+
+        var found = false;
+        for( var state_m of this.state[prefix].packets ) {
+            if( state_m.address == update_m.address ) {
+              if( update_m.args )
+                state_m.args = update_m.args;
+
+              found = true;
+              break;
+            }
+        }
+
+        if( found == false ) {
+          this.state[prefix].packets.push(update_m);
+        }
+/*
+        for( var state_m of this.state[prefix].packets ) {
+          console.log(state_m.address, state_m.args);
+        }
+*/
+      }
+    }
+  }
+
+  get(prefix)
+  {
+    if( typeof this.state[prefix] == "undefined" )
+      return false;
+    else
+      return this.state[prefix];
+  }
+
+  remove( prefix ) {
+      delete this.state[prefix];
+  }
+}
+
 // client storage
 class Clients {
     constructor() {
@@ -32,6 +121,7 @@ class Clients {
 
 const clients = new Clients();
 
+const osc_state = new OSCstate();
 
 // setup UDP listener from Max
 
@@ -79,6 +169,12 @@ wss.on("connection", function (socket, req) {
 
     clients.saveClient( socketPort, req.headers['sec-websocket-key'], req.url );
 
+    const bundleState = osc_state.get(req.url);
+    if( bundleState != false ){
+      socketPort.send(bundleState);
+    }
+
+
 });
 
 
@@ -121,11 +217,12 @@ udp.on("bundle", function (oscBundle, timeTag, info)
                     });
                 }
             }
-//            console.log("sending " + routedMsgs );
-            oscport.send({
+            var sendBundle =  {
                 packets : routedMsgs,
                 timeTag : osc.timeTag()
-            });
+            };
+            oscport.send(sendBundle);
+            osc_state.update(prefix, sendBundle);
         }
         else if ( oscport.socket.readyState > 1 )
         {

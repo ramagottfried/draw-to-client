@@ -252,7 +252,7 @@ port.on("message", function (oscMessage) {
         if( typeof objectStack[id] != "undefined" )
           objectStack[id].remove();
 
-          $('<img />', {
+          objectStack[id] = $('<img />', {
               src: oscMessage.args[0]
           }).appendTo($('#images').empty());
           /*
@@ -289,6 +289,9 @@ port.on("message", function (oscMessage) {
   {
     if( typeof objectTransform[id] != "undefined" )
       objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
+
+      // note the transform attr doesn't work with img tags, need to use pure CSS for that.
+      // maybe look at using CSS for SVG too? or handle tranforms differently as needed.
 
     if( typeof objectStyle[id] != "undefined" )
       objectStack[id].attr("style", getStyleString(objectStyle[id]) );

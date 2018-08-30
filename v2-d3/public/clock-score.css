@@ -1,3 +1,17 @@
+#drawing {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 10;
+}
+
+#images {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 0;
+}
+
 body {
   background-color: ivory;
   font-family: courier;
@@ -10,9 +24,9 @@ body {
 }
 
 .basestyle {
-    font-size: 10pt;
-    font-family: Arial;
-    font-weight: normal;
+  font-size: 10pt;
+  font-family: Arial;
+  font-weight: normal;
 	margin: 0em;
 	padding: 15px 15px;
 }
@@ -53,6 +67,7 @@ a:active {
 
 .canvas {
     height: 100%;
+    z-index: 10;
 }
 
 .loc {

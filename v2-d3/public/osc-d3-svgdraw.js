@@ -1,6 +1,3 @@
-
-
-
 var oscprefix = document.getElementById("OSC").getAttribute("OSCprefix");
 //var oscprefix = location.pathname.slice(0, -5);
 
@@ -24,7 +21,34 @@ var drawing = d3.select("#drawing");
 
 //console.log(drawing);
 
+// low-level object reference array
 var objectStack = [];
+
+// css array
+var objectStyle = [];
+
+// transform array
+var objectTransform = [];
+
+function getTransformString(transform)
+{
+  var str = "";
+  for( var key in transform )
+  {
+    str += key + "(" + transform[key] + ") ";
+  }
+  return str;
+}
+
+function getStyleString(style)
+{
+  var str = "";
+  for( var key in style )
+  {
+    str += key + ":" + style[key] + "; ";
+  }
+  return str;
+}
 
 port.on("message", function (oscMessage) {
    console.log("received "+ oscMessage.address + " " + oscMessage.args + "\n");
@@ -43,14 +67,20 @@ port.on("message", function (oscMessage) {
   }
 
   const id = id_cmd[0];
-  var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
-  var drawType = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
 
-  if( cmd == "draw")
+  if( id == "clear")
   {
-    if( drawType != "none")
+      ; // clear everything and return
+  }
+
+  var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
+  var cmdtype = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
+
+  if( cmd == "draw" )
+  {
+    if( cmdtype != "none")
     {
-      cmd += "/" + drawType;
+      cmd += "/" + cmdtype;
     }
     else
     {
@@ -59,20 +89,115 @@ port.on("message", function (oscMessage) {
     }
   }
 
-  switch (cmd) {
+
+  switch (cmd)
+  {
+    case "style" :
+      if( typeof objectStyle[id] == "undefined" )
+        objectStyle[id] = {};
+
+      objectStyle[id][cmdtype] = oscMessage.args;
+
+      if( typeof objectStack[id] != "undefined" )
+      {
+        objectStack[id].attr("style", getStyleString(objectStyle[id]) );
+      }
+
+    break;
+
+    case "transform" :
+      if( typeof objectTransform[id] == "undefined" )
+        objectTransform[id] = {};
+
+      objectTransform[id][cmdtype] = oscMessage.args;
+
+      if( typeof objectStack[id] != "undefined" )
+      {
+        objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
+      }
+
+
+    break;
+
     case "draw/path":
-    if( oscMessage.args.length == 1 ) // pathstring
+      if( oscMessage.args.length == 1 ) // pathstring
       {
         if( typeof objectStack[id] != "undefined" )
           objectStack[id].remove();
 
-        objectStack[id] = drawing.append("path")
-            .attr("d", oscMessage.args[0])
-            .attr("fill", "none" )
-            .attr("stroke-width", 1 )
-            .attr("stroke", "black" );
+        objectStack[id] = drawing.append("path").attr("d", oscMessage.args[0]);
       }
     break;
+    case "draw/ellipse":
+      if( oscMessage.args.length == 4 ) // cx="200" cy="80" rx="100" ry="50"
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("ellipse")
+          .attr("cx", oscMessage.args[0])
+          .attr("cy", oscMessage.args[1])
+          .attr("rx", oscMessage.args[2])
+          .attr("ry", oscMessage.args[3]);
+      }
+    break;
+    case "draw/rect":
+      if( oscMessage.args.length == 4 ) // x="50" y="20" width="150" height="150"
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("rect")
+          .attr("x", oscMessage.args[0])
+          .attr("y", oscMessage.args[1])
+          .attr("width", oscMessage.args[2])
+          .attr("height", oscMessage.args[3]);
+      }
+    break;
+    case "draw/circle":
+      if( oscMessage.args.length == 3 ) // cx="50" cy="50" r="40"
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("circle")
+          .attr("cx", oscMessage.args[0])
+          .attr("cy", oscMessage.args[1])
+          .attr("r", oscMessage.args[2]);
+      }
+    break;
+    case "draw/line":
+      if( oscMessage.args.length == 4 ) // x1="0" y1="0" x2="200" y2="200"
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("line")
+          .attr("x1", oscMessage.args[0])
+          .attr("y1", oscMessage.args[1])
+          .attr("x2", oscMessage.args[2])
+          .attr("y2", oscMessage.args[3]);
+      }
+    break;
+    case "draw/polygon":
+      if( oscMessage.args.length == 1 ) // points="220,10 300,210 170,250 123,234"
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("polygon").attr("points", oscMessage.args[0]);
+      }
+    break;
+    case "draw/polyline":
+      if( oscMessage.args.length == 1 ) // points="220,10 300,210 170,250 123,234"
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = drawing.append("polyline").attr("points", oscMessage.args[0]);
+      }
+    break;
+
     case "draw/stave":
       if( oscMessage.args.length == 3 ) // [ x, y, text ]
       {
@@ -120,6 +245,27 @@ port.on("message", function (oscMessage) {
           }
       }
     break;
+
+    case "draw/img":
+      if( oscMessage.args.length == 1 ) // url
+      {
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+          $('<img />', {
+              src: oscMessage.args[0]
+          }).appendTo($('#images').empty());
+          /*
+          objectStack[id] = drawing.append("svg:image")
+           .attr('x', 0)
+           .attr('y', 0)
+           .attr('width', 800)
+           .attr('height', 600)
+           .attr("xlink:href", oscMessage.args[0])
+           */
+      }
+    break;
+
     case "remove":
       objectStack[id].remove();
       delete objectStack[id];
@@ -138,6 +284,16 @@ port.on("message", function (oscMessage) {
       console.log("received unknown command: "+cmd+ "\n" );
     break;
   }
+
+  if( objectStack[id] != "undefined" )
+  {
+    if( typeof objectTransform[id] != "undefined" )
+      objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
+
+    if( typeof objectStyle[id] != "undefined" )
+      objectStack[id].attr("style", getStyleString(objectStyle[id]) );
+  }
+
 });
 
 port.on('error', function(error){

@@ -19,14 +19,10 @@ function pad(num, size) {
 
 var drawing = d3.select("#drawing");
 
-//console.log(drawing);
-
 // low-level object reference array
 var objectStack = [];
-
 // css array
 var objectStyle = [];
-
 // transform array
 var objectTransform = [];
 
@@ -64,11 +60,17 @@ port.on("message", function (oscMessage) {
 
   if( id == "clear")
   {
-
     for( var key in objectStack)
     {
+      if( objectStack[key].context == "canvas" )
+      {
+        console.log("clearing canvas");
+        pdfcontext.clearRect(0, 0, pdfcanvas.width, pdfcanvas.height);
+      }
+
       objectStack[key].remove();
       delete objectStack[key];
+
     }
 
     objectStack = []; // clear everything and return
@@ -79,8 +81,6 @@ port.on("message", function (oscMessage) {
     console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
     return;
   }
-
-
 
   var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
   var cmdtype = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
@@ -97,7 +97,6 @@ port.on("message", function (oscMessage) {
       return;
     }
   }
-
 
   switch (cmd)
   {
@@ -119,7 +118,11 @@ port.on("message", function (oscMessage) {
       if( typeof objectTransform[id] == "undefined" )
         objectTransform[id] = {};
 
-      objectTransform[id][cmdtype] = oscMessage.args;
+      if( objectStack[id].context == "canvas" && cmdtype == "translate" && oscMessage.args.length == 2 )
+        objectTransform[id][cmdtype] = [oscMessage.args[0]+"px", oscMessage.args[1]+"px"];
+      else
+        objectTransform[id][cmdtype] = oscMessage.args;
+
 
       /*
       if( cmdtype == transform && typeof objectStack[id] != "undefined" && objectStack[id].objecttype == "img" )
@@ -253,15 +256,6 @@ port.on("message", function (oscMessage) {
             .attr("class", "basestyle" );
       }
     break;
-    case "position": // this needs to be used as transform, since paths don't have x/y attributes
-      if( oscMessage.args.length == 2 ) // [ x, y ]
-      {
-          if( typeof objectStack[id] != "undefined" )
-          {
-            objectStack[id].attr("transform", "translate("+ oscMessage.args[0]+","+ oscMessage.args[1] + ")" );
-          }
-      }
-    break;
 
     case "draw/img":
       if( oscMessage.args.length == 1 ) // url
@@ -276,6 +270,9 @@ port.on("message", function (oscMessage) {
           objectStack[id].objecttype = "img";
 
            */
+
+           // add image to svg now so that drawing order is correct,
+           // then update the width and height after the images has loaded and we can query the image object
            objectStack[id] = drawing.append("svg:image")
             .attr('x', 0)
             .attr('y', 0)
@@ -287,14 +284,19 @@ port.on("message", function (oscMessage) {
             objectStack[id].attr('width', this.naturalWidth)
              .attr('height', this.naturalHeight);
            });
-
            image.src = oscMessage.args[0];
 
       }
     break;
-    case "pdf/load":
+    case "pdf":
       if( oscMessage.args.length == 1 ) // url
       {
+
+        if( typeof objectStack[id] != "undefined" )
+          objectStack[id].remove();
+
+        objectStack[id] = { context: "canvas" };
+
         setPDFref(oscMessage.args[0]);
 
       }
@@ -303,6 +305,10 @@ port.on("message", function (oscMessage) {
     case "remove":
       objectStack[id].remove();
       delete objectStack[id];
+
+      if( objectStack[key].context == "canvas" )
+        pdfcontext.clearRect(0, 0, canvas.width, canvas.height);
+
     break;
     /*
     case "/hr":
@@ -321,12 +327,37 @@ port.on("message", function (oscMessage) {
 
   if( typeof objectStack[id] != "undefined" )
   {
+    if( objectStack[id].context == "canvas" )
+    {
+      var style;
+      if( typeof objectStyle[id] != "undefined" )
+        style = objectStyle[id];
 
-    if( typeof objectTransform[id] != "undefined" )
-        objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
+      if( typeof objectTransform[id] != "undefined" )
+      {
+        if( typeof style == "undefined")
+        {
+          pdfcanvas.setAttribute("style", "transform:"+getTransformString(objectTransform[id]) );
+        }
+        else
+        {
+          style.transform = getTransformString(objectTransform[id]);
+          pdfcanvas.setAttribute("style", getStyleString(style) );
+        }
+      }
 
-    if( typeof objectStyle[id] != "undefined" )
-      objectStack[id].attr("style", getStyleString(objectStyle[id]) );
+
+    }
+    else
+    {
+      if( typeof objectStyle[id] != "undefined" )
+        objectStack[id].attr("style", getStyleString(objectStyle[id]) );
+
+      if( typeof objectTransform[id] != "undefined" )
+          objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
+    }
+
+
   }
 
 });

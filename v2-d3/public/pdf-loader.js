@@ -15,8 +15,8 @@ var pdfDoc = null,
     pageNum = 1,
     pageRendering = false,
     pageNumPending = null,
-    canvas = document.getElementById('pdfcanvas'),
-    ctx = canvas.getContext('2d');
+    pdfcanvas = document.getElementById('pdfcanvas'),
+    pdfcontext = pdfcanvas.getContext('2d');
 
 /**
  * Get page info from document, resize canvas accordingly, and render page.
@@ -26,13 +26,15 @@ function renderPage(num) {
   pageRendering = true;
   // Using promise to fetch the page
   pdfDoc.getPage(num).then( function(page) {
+
     var viewport = page.getViewport(scale);
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
+
+    pdfcanvas.height = viewport.height;
+    pdfcanvas.width = viewport.width;
 
     // Render PDF page into canvas context
     var renderContext = {
-      canvasContext: ctx,
+      canvasContext: pdfcontext,
       viewport: viewport
     };
     var renderTask = page.render(renderContext);

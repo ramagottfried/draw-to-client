@@ -2,7 +2,7 @@
 // file muse be specified in the HTML file like:
 // <script src="pdf-loader.js" id="pdf-loader" PDFfile="./piano-flint.pdf"></script>
 
-var url = document.getElementById("pdf-loader").getAttribute("PDFfile");
+//var url = document.getElementById("pdf-loader").getAttribute("PDFfile");
 
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 var pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -12,10 +12,10 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'scripts/pdfjs-dist/build/pdf.worker.js
 
 var pdfDoc = null,
     scale = 2,
-    pageNum = 3,
+    pageNum = 1,
     pageRendering = false,
     pageNumPending = null,
-    canvas = document.getElementById('the-canvas'),
+    canvas = document.getElementById('pdfcanvas'),
     ctx = canvas.getContext('2d');
 
 /**
@@ -25,7 +25,7 @@ var pdfDoc = null,
 function renderPage(num) {
   pageRendering = true;
   // Using promise to fetch the page
-  pdfDoc.getPage(num).then(function(page) {
+  pdfDoc.getPage(num).then( function(page) {
     var viewport = page.getViewport(scale);
     canvas.height = viewport.height;
     canvas.width = viewport.width;
@@ -48,11 +48,9 @@ function renderPage(num) {
     });
   });
 
-  // Update page counters
-  document.getElementById('page_num').textContent = num;
+  // Update page counters (not in use now)
+  // document.getElementById('page_num').textContent = num;
 }
-
-
 
 /**
  * If another page rendering in progress, waits until the rendering is
@@ -88,7 +86,7 @@ function onPrevPage() {
   pageNum--;
   queueRenderPage(pageNum);
 }
-document.getElementById('prev').addEventListener('click', onPrevPage);
+// document.getElementById('prev').addEventListener('click', onPrevPage);
 
 /**
  * Displays next page.
@@ -100,7 +98,7 @@ function onNextPage() {
   pageNum++;
   queueRenderPage(pageNum);
 }
-document.getElementById('next').addEventListener('click', onNextPage);
+// document.getElementById('next').addEventListener('click', onNextPage);
 
 /**
  * Asynchronously downloads PDF.
@@ -109,13 +107,13 @@ function setPDFref( filename )
 {
   url = filename;
   console.log( "loading " + url );
-  pdfjsLib.getDocument(url).then(function(pdfDoc_) {
+  pdfjsLib.getDocument(url).then( function(pdfDoc_) {
     pdfDoc = pdfDoc_;
-    document.getElementById('page_count').textContent = pdfDoc.numPages;
+    // document.getElementById('page_count').textContent = pdfDoc.numPages;
 
     // Initial/first page rendering
     renderPage(pageNum);
   });
 }
 
-setPDFref( url );
+// setPDFref( url );

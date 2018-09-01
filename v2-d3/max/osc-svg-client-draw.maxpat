@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 478.0, 53.0, 1372.0, 813.0 ],
+		"rect" : [ 427.0, 79.0, 1372.0, 787.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -41,6 +41,59 @@
 				"box" : 				{
 					"fontface" : 0,
 					"fontsize" : 12.0,
+					"id" : "obj-31",
+					"linecount" : 2,
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 5.5, 384.0, 345.0, 38.0 ],
+					"presentation_linecount" : 2,
+					"presentation_rect" : [ 5.5, 384.0, 345.0, 38.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 56, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 115, 99, 111, 114, 101, 47, 112, 100, 102, 0, 0, 0, 0, 44, 115, 0, 0, 46, 47, 112, 105, 97, 110, 111, 45, 102, 108, 105, 110, 116, 95, 114, 101, 100, 117, 99, 101, 100, 46, 112, 100, 102, 0, 0, 0 ],
+					"saved_bundle_length" : 76,
+					"text" : "/svgdraw/1/score/pdf : \"./piano-flint_reduced.pdf\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-13",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 10.5, 429.0, 345.0, 24.0 ],
+					"presentation_rect" : [ 10.5, 429.0, 345.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 99, 108, 101, 97, 114, 0, 0, 0, 0, 44, 0, 0, 0 ],
+					"saved_bundle_length" : 44,
+					"text" : "/svgdraw/1/clear"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-7",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 139.5, 500.0, 359.0, 24.0 ],
+					"presentation_rect" : [ 139.5, 500.0, 359.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 116, 114, 97, 110, 115, 108, 97, 116, 101, 0, 0, 44, 105, 105, 0, 0, 0, 0, 0, 0, 0, 0, 100 ],
+					"saved_bundle_length" : 68,
+					"text" : "/svgdraw/1/foo/transform/translate : [0, 100]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
 					"id" : "obj-28",
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
@@ -59,17 +112,17 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-27",
-					"linecount" : 2,
+					"linecount" : 3,
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 267.5, 604.20001220703125, 280.0, 38.0 ],
-					"presentation_linecount" : 2,
-					"presentation_rect" : [ 267.5, 604.20001220703125, 280.0, 38.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 115, 116, 121, 108, 101, 47, 115, 116, 114, 111, 107, 101, 0, 44, 115, 0, 0, 114, 101, 100, 0, 0, 0, 0, 36, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 115, 116, 121, 108, 101, 47, 102, 105, 108, 108, 0, 0, 0, 44, 115, 0, 0, 114, 101, 100, 0 ],
-					"saved_bundle_length" : 96,
-					"text" : "/svgdraw/1/foo/style/stroke : \"red\",\n/svgdraw/1/foo/style/fill : \"red\""
+					"patching_rect" : [ 267.5, 604.20001220703125, 280.0, 51.0 ],
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 267.5, 604.20001220703125, 280.0, 51.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 115, 116, 121, 108, 101, 47, 115, 116, 114, 111, 107, 101, 0, 44, 115, 0, 0, 98, 108, 97, 99, 107, 0, 0, 0, 0, 0, 0, 36, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 115, 116, 121, 108, 101, 47, 102, 105, 108, 108, 0, 0, 0, 44, 115, 0, 0, 114, 101, 100, 0 ],
+					"saved_bundle_length" : 100,
+					"text" : "/svgdraw/1/foo/style/stroke : \"black\",\n/svgdraw/1/foo/style/fill : \"red\""
 				}
 
 			}
@@ -1499,6 +1552,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-34", 0 ],
 					"source" : [ "obj-15", 0 ]
 				}
@@ -1597,6 +1657,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-31", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-34", 0 ],
 					"source" : [ "obj-33", 0 ]
 				}
@@ -1686,6 +1753,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-62", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-7", 0 ]
 				}
 
 			}

@@ -5,18 +5,12 @@
   z-index: 10;
 }
 
-#images {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: 0;
-}
-
-.canvas {
+.pdf {
     position: absolute;
     left: 0px;
     top: 0px;
-    z-index: 1;
+    height: 100%;
+    z-index: 0;
 }
 
 body {
@@ -67,12 +61,6 @@ a:hover {
 a:active {
     text-decoration: underline;
 }
-
-.pdf {
-    height: 600px;
-}
-
-
 
 .loc {
   color: white;

@@ -292,6 +292,13 @@ port.on("message", function (oscMessage) {
 
       }
     break;
+    case "pdf/load":
+      if( oscMessage.args.length == 1 ) // url
+      {
+        setPDFref(oscMessage.args[0]);
+
+      }
+    break;
 
     case "remove":
       objectStack[id].remove();

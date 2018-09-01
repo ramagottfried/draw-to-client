@@ -60,18 +60,27 @@ port.on("message", function (oscMessage) {
   const id_cmd = oscMessage.address.split("/").filter( function(e){ return e } );
   // the filter removes empty strings (which we get for the first '/' )
 
-  if( id_cmd.length < 2 )
+  const id = id_cmd[0];
+
+  if( id == "clear")
+  {
+
+    for( var key in objectStack)
+    {
+      objectStack[key].remove();
+      delete objectStack[key];
+    }
+
+    objectStack = []; // clear everything and return
+    return;
+  }
+  else if( id_cmd.length < 2 )
   {
     console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
     return;
   }
 
-  const id = id_cmd[0];
 
-  if( id == "clear")
-  {
-      ; // clear everything and return
-  }
 
   var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
   var cmdtype = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
@@ -267,23 +276,16 @@ port.on("message", function (oscMessage) {
           objectStack[id].objecttype = "img";
 
            */
+           objectStack[id] = drawing.append("svg:image")
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr("xlink:href", oscMessage.args[0]);
 
            var image = new Image();
 
            image.addEventListener('load', function() {
-            objectStack[id] = drawing.append("svg:image")
-             .attr('x', 0)
-             .attr('y', 0)
-             .attr('width', this.naturalWidth)
-             .attr('height', this.naturalHeight)
-             .attr("xlink:href", oscMessage.args[0]);
-
-             if( typeof objectTransform[id] != "undefined" )
-                 objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
-
-             if( typeof objectStyle[id] != "undefined" )
-               objectStack[id].attr("style", getStyleString(objectStyle[id]) );
-
+            objectStack[id].attr('width', this.naturalWidth)
+             .attr('height', this.naturalHeight);
            });
 
            image.src = oscMessage.args[0];

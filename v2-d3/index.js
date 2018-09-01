@@ -39,13 +39,20 @@ class OSCstate
         const id_cmd = update_m.address.split("/").filter( function(e){ return e } );
         // the filter removes empty strings (which we get for the first '/' )
 
-        if( id_cmd.length < 2 )
+
+        const id = id_cmd[0];
+
+        if( id == "clear")
+        {
+          this.state = this.state.filter( function(k) { return k != prefix; });
+          return;
+        }
+        else if( id_cmd.length < 2 )
         {
           console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
           return;
         }
 
-        const id = id_cmd[0];
         var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
         var drawType = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
 

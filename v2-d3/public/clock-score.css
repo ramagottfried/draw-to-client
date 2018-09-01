@@ -12,6 +12,13 @@
   z-index: 0;
 }
 
+.canvas {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+}
+
 body {
   background-color: ivory;
   font-family: courier;
@@ -65,10 +72,7 @@ a:active {
     height: 600px;
 }
 
-.canvas {
-    height: 100%;
-    z-index: 10;
-}
+
 
 .loc {
   color: white;

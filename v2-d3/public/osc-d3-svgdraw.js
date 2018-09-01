@@ -98,11 +98,12 @@ port.on("message", function (oscMessage) {
 
       objectStyle[id][cmdtype] = oscMessage.args;
 
+      /*
       if( typeof objectStack[id] != "undefined" )
       {
         objectStack[id].attr("style", getStyleString(objectStyle[id]) );
       }
-
+*/
     break;
 
     case "transform" :
@@ -111,11 +112,12 @@ port.on("message", function (oscMessage) {
 
       objectTransform[id][cmdtype] = oscMessage.args;
 
-      if( typeof objectStack[id] != "undefined" )
+      /*
+      if( cmdtype == transform && typeof objectStack[id] != "undefined" && objectStack[id].objecttype == "img" )
       {
         objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
       }
-
+      */
 
     break;
 
@@ -126,6 +128,7 @@ port.on("message", function (oscMessage) {
           objectStack[id].remove();
 
         objectStack[id] = drawing.append("path").attr("d", oscMessage.args[0]);
+
       }
     break;
     case "draw/ellipse":
@@ -139,6 +142,8 @@ port.on("message", function (oscMessage) {
           .attr("cy", oscMessage.args[1])
           .attr("rx", oscMessage.args[2])
           .attr("ry", oscMessage.args[3]);
+
+
       }
     break;
     case "draw/rect":
@@ -152,6 +157,7 @@ port.on("message", function (oscMessage) {
           .attr("y", oscMessage.args[1])
           .attr("width", oscMessage.args[2])
           .attr("height", oscMessage.args[3]);
+
       }
     break;
     case "draw/circle":
@@ -164,6 +170,7 @@ port.on("message", function (oscMessage) {
           .attr("cx", oscMessage.args[0])
           .attr("cy", oscMessage.args[1])
           .attr("r", oscMessage.args[2]);
+
       }
     break;
     case "draw/line":
@@ -177,6 +184,7 @@ port.on("message", function (oscMessage) {
           .attr("y1", oscMessage.args[1])
           .attr("x2", oscMessage.args[2])
           .attr("y2", oscMessage.args[3]);
+
       }
     break;
     case "draw/polygon":
@@ -251,18 +259,35 @@ port.on("message", function (oscMessage) {
       {
         if( typeof objectStack[id] != "undefined" )
           objectStack[id].remove();
-
+/*
           objectStack[id] = $('<img />', {
               src: oscMessage.args[0]
           }).appendTo($('#images').empty());
-          /*
-          objectStack[id] = drawing.append("svg:image")
-           .attr('x', 0)
-           .attr('y', 0)
-           .attr('width', 800)
-           .attr('height', 600)
-           .attr("xlink:href", oscMessage.args[0])
+
+          objectStack[id].objecttype = "img";
+
            */
+
+           var image = new Image();
+
+           image.addEventListener('load', function() {
+            objectStack[id] = drawing.append("svg:image")
+             .attr('x', 0)
+             .attr('y', 0)
+             .attr('width', this.naturalWidth)
+             .attr('height', this.naturalHeight)
+             .attr("xlink:href", oscMessage.args[0]);
+
+             if( typeof objectTransform[id] != "undefined" )
+                 objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
+
+             if( typeof objectStyle[id] != "undefined" )
+               objectStack[id].attr("style", getStyleString(objectStyle[id]) );
+
+           });
+
+           image.src = oscMessage.args[0];
+
       }
     break;
 
@@ -285,13 +310,11 @@ port.on("message", function (oscMessage) {
     break;
   }
 
-  if( objectStack[id] != "undefined" )
+  if( typeof objectStack[id] != "undefined" )
   {
-    if( typeof objectTransform[id] != "undefined" )
-      objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
 
-      // note the transform attr doesn't work with img tags, need to use pure CSS for that.
-      // maybe look at using CSS for SVG too? or handle tranforms differently as needed.
+    if( typeof objectTransform[id] != "undefined" )
+        objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
 
     if( typeof objectStyle[id] != "undefined" )
       objectStack[id].attr("style", getStyleString(objectStyle[id]) );

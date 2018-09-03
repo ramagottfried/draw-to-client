@@ -30,6 +30,9 @@ body.addEventListener("mousemove", function(event)
         address: "/"+event.target.id+"/mouseXY",
         args: [ event.clientX, event.clientY ]
     });
+
+    //posterror(event.clientX + " " + event.clientY);
+
 });
 
 // low-level object reference array
@@ -297,9 +300,10 @@ port.on("message", function (oscMessage) {
            // add image to svg now so that drawing order is correct,
            // then update the width and height after the images has loaded and we can query the image object
            objectStack[id] = drawing.append("svg:image")
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr("xlink:href", oscMessage.args[0]);
+              .attr("id", id)
+              .attr('x', 0)
+              .attr('y', 0)
+              .attr("xlink:href", oscMessage.args[0]);
 
            var image = new Image();
 
@@ -385,8 +389,13 @@ port.on("message", function (oscMessage) {
 
 });
 
+function posterror(str)
+{
+  $("#error").text(str);
+}
+
 port.on('error', function(error){
-  $("#error").text(error);
+  posterror(error);
 });
 
 // this doesn't work yet

@@ -27,17 +27,8 @@ var body = document.getElementsByTagName("body")[0];
 body.addEventListener("mousemove", function(event)
 {
   port.send({
-        address: "/"+event.target+"/mouseXY",
-        args: [
-            {
-                type: "f",
-                value: event.clientX
-            },
-            {
-                type: "i",
-                value: event.clientY
-            }
-        ]
+        address: "/"+event.target.id+"/mouseXY",
+        args: [ event.clientX, event.clientY ]
     });
 });
 
@@ -164,7 +155,9 @@ port.on("message", function (oscMessage) {
         if( typeof objectStack[id] != "undefined" )
           objectStack[id].remove();
 
-        objectStack[id] = drawing.append("path").attr("d", oscMessage.args[0]);
+        objectStack[id] = drawing.append("path")
+          .attr("id", id)
+          .attr("d", oscMessage.args[0]);
 
       }
     break;
@@ -175,6 +168,7 @@ port.on("message", function (oscMessage) {
           objectStack[id].remove();
 
         objectStack[id] = drawing.append("ellipse")
+          .attr("id", id)
           .attr("cx", oscMessage.args[0])
           .attr("cy", oscMessage.args[1])
           .attr("rx", oscMessage.args[2])
@@ -190,6 +184,7 @@ port.on("message", function (oscMessage) {
           objectStack[id].remove();
 
         objectStack[id] = drawing.append("rect")
+          .attr("id", id)
           .attr("x", oscMessage.args[0])
           .attr("y", oscMessage.args[1])
           .attr("width", oscMessage.args[2])
@@ -204,6 +199,7 @@ port.on("message", function (oscMessage) {
           objectStack[id].remove();
 
         objectStack[id] = drawing.append("circle")
+          .attr("id", id)
           .attr("cx", oscMessage.args[0])
           .attr("cy", oscMessage.args[1])
           .attr("r", oscMessage.args[2]);
@@ -218,6 +214,7 @@ port.on("message", function (oscMessage) {
           objectStack[id].remove();
 
         objectStack[id] = drawing.append("line")
+          .attr("id", id)
           .attr("x1", oscMessage.args[0])
           .attr("y1", oscMessage.args[1])
           .attr("x2", oscMessage.args[2])

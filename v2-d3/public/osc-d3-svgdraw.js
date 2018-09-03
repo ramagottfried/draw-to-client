@@ -94,6 +94,7 @@ port.on("message", function (oscMessage) {
   }
   else if( id_cmd.length < 2 )
   {
+    senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
     console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
     return;
   }
@@ -110,6 +111,8 @@ port.on("message", function (oscMessage) {
     else
     {
       console.log("must specifiy drawtype after /draw");
+      senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
+
       return;
     }
   }
@@ -394,8 +397,17 @@ function posterror(str)
   $("#error").text(str);
 }
 
-port.on('error', function(error){
+function senderror(err)
+{
+  port.send({
+        address: oscprefix+"/error",
+        args: err
+    });
+}
+
+port.on('error', function(error) {
   posterror(error);
+  senderror(error);
 });
 
 // this doesn't work yet

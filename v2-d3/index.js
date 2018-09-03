@@ -3,6 +3,8 @@
 // settings
 const http_port = 3001;
 const udp_port = 4001;
+const udp_port_out = 4002;
+
 const websocket_port = 5001;
 
 // load libaries
@@ -136,14 +138,16 @@ var udp = new osc.UDPPort({
     localAddress: "127.0.0.1",
     localPort: udp_port,
     remoteAddress: "127.0.0.1",
-    remotePort: 7500
+    remotePort: udp_port_out
 });
 
 udp.setMaxListeners(100);
 
 udp.on("ready", function () {
     console.log('\x1b[33m%s\x1b[0m:', "Listening for OSC over UDP at", udp.options.localAddress );
-    console.log('\x1b[33m%s\x1b[0m:', "Port", udp.options.localPort );
+    console.log('\x1b[33m%s\x1b[0m:', "In Port", udp.options.localPort );
+    console.log('\x1b[33m%s\x1b[0m:', "Out Port", udp.options.remotePort );
+
 });
 
 udp.open();
@@ -174,6 +178,10 @@ wss.on("connection", function (socket, req) {
         socket: socket
     });
 
+    // setup relay back to Max
+    socketPort.on("message", function (oscMessage) { udp.send(oscMessage); });
+    socketPort.on("bundle", function (oscBundle) { udp.send(oscBundle); });
+
     clients.saveClient( socketPort, req.headers['sec-websocket-key'], req.url );
 
     const bundleState = osc_state.get(req.url);
@@ -183,7 +191,6 @@ wss.on("connection", function (socket, req) {
 
 
 });
-
 
 // Listen for incoming OSC bundles. ... should sort here to send to the right places
 udp.on("bundle", function (oscBundle, timeTag, info)

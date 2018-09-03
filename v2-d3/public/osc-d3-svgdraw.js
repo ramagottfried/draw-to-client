@@ -1,3 +1,7 @@
+// to do: option to add user messages back to server
+// for d3.js we can use:
+//          .on("click", function(){ console.log("hello!"); } );
+
 var oscprefix = document.getElementById("OSC").getAttribute("OSCprefix");
 //var oscprefix = location.pathname.slice(0, -5);
 
@@ -18,6 +22,24 @@ function pad(num, size) {
 }
 
 var drawing = d3.select("#drawing");
+
+var body = document.getElementsByTagName("body")[0];
+body.addEventListener("mousemove", function(event)
+{
+  port.send({
+        address: "/"+event.target+"/mouseXY",
+        args: [
+            {
+                type: "f",
+                value: event.clientX
+            },
+            {
+                type: "i",
+                value: event.clientY
+            }
+        ]
+    });
+});
 
 // low-level object reference array
 var objectStack = [];
@@ -123,6 +145,9 @@ port.on("message", function (oscMessage) {
       else
         objectTransform[id][cmdtype] = oscMessage.args;
 
+        // NOTE: SVG rotates from the top left corner
+        //  if we want to rotate from the center we'll need the object bounds, and use rotate(deg, cx, cy)
+
 
       /*
       if( cmdtype == transform && typeof objectStack[id] != "undefined" && objectStack[id].objecttype == "img" )
@@ -182,6 +207,7 @@ port.on("message", function (oscMessage) {
           .attr("cx", oscMessage.args[0])
           .attr("cy", oscMessage.args[1])
           .attr("r", oscMessage.args[2]);
+
 
       }
     break;

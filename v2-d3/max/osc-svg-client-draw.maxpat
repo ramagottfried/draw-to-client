@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ -460.0, 79.0, 1372.0, 787.0 ],
+		"rect" : [ 100.0, 79.0, 1372.0, 787.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -41,30 +41,37 @@
 				"box" : 				{
 					"fontface" : 0,
 					"fontsize" : 12.0,
-					"id" : "obj-43",
+					"id" : "obj-44",
+					"linecount" : 2,
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 916.5, 625.0, 201.0, 24.0 ],
-					"presentation_rect" : [ 916.5, 625.0, 201.0, 24.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 47, 99, 97, 114, 114, 105, 101, 114, 47, 102, 114, 101, 113, 117, 101, 110, 99, 121, 0, 0, 44, 102, 0, 0, 67, -36, 0, 0 ],
-					"saved_bundle_length" : 48,
-					"text" : "/carrier/frequency : 440."
+					"patching_rect" : [ 30.5, 58.0, 345.0, 38.0 ],
+					"presentation_linecount" : 2,
+					"presentation_rect" : [ 30.5, 58.0, 345.0, 38.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 100, 114, 97, 119, 0, 44, 115, 0, 0, 112, 105, 97, 110, 111, 45, 102, 108, 105, 110, 116, 95, 114, 101, 100, 117, 99, 101, 100, 46, 112, 100, 102, 0 ],
+					"saved_bundle_length" : 68,
+					"text" : "/svgdraw/1/foo/draw : \"piano-flint_reduced.pdf\""
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-42",
-					"linecount" : 5,
-					"maxclass" : "message",
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-43",
+					"linecount" : 3,
+					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1137.0, 573.0, 50.0, 76.0 ],
-					"presentation_rect" : [ 1137.0, 573.0, 50.0, 76.0 ],
-					"text" : "FullPacket 28 106102878863296"
+					"patching_rect" : [ 710.5, 611.20001220703125, 589.0, 51.0 ],
+					"presentation_linecount" : 4,
+					"presentation_rect" : [ 710.5, 611.20001220703125, 589.0, 51.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 108, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 101, 114, 114, 111, 114, 0, 0, 0, 0, 44, 115, 0, 0, 119, 114, 111, 110, 103, 32, 97, 100, 100, 114, 101, 115, 115, 32, 102, 111, 114, 109, 97, 116, 44, 32, 115, 104, 111, 117, 108, 100, 32, 98, 101, 58, 32, 47, 117, 110, 105, 113, 117, 101, 95, 105, 100, 47, 100, 114, 97, 119, 105, 110, 103, 95, 99, 111, 109, 109, 97, 110, 100, 10, 9, 32, 103, 111, 116, 58, 32, 102, 111, 111, 44, 100, 114, 97, 119, 32, 115, 105, 122, 101, 32, 50, 10, 0 ],
+					"saved_bundle_length" : 128,
+					"text" : "/svgdraw/1/error : \"wrong address format, should be: /unique_id/drawing_command\n\t got: foo,draw size 2\n\""
 				}
 
 			}
@@ -1784,17 +1791,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-42", 1 ],
-					"order" : 0,
+					"destination" : [ "obj-43", 1 ],
 					"source" : [ "obj-40", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-43", 1 ],
-					"order" : 1,
-					"source" : [ "obj-40", 0 ]
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-44", 0 ]
 				}
 
 			}

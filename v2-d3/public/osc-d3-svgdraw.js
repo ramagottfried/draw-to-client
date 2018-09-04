@@ -23,8 +23,7 @@ function pad(num, size) {
 
 var drawing = d3.select("#drawing");
 
-var body = document.getElementsByTagName("body")[0];
-body.addEventListener("mousemove", function(event)
+document.body.addEventListener("mousemove", function(event)
 {
   port.send({
         address: "/"+event.target.id+"/mouseXY",
@@ -394,7 +393,7 @@ port.on("message", function (oscMessage) {
 
 function posterror(str)
 {
-  $("#error").text(str);
+  $("#log").text(str);
 }
 
 function senderror(err)

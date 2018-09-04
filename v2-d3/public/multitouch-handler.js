@@ -1,20 +1,27 @@
 
+// for some reason this script only grabs the fingers from the OS if you touch in the top corner,
+// otherwise the OS uses the finger points for window gestures
+
 var ongoingTouches = new Array;
-var el = document.body;//getElementsByTagName("canvas")[0];
 
 function startup() {
-//  var el = document.body;
-  el.addEventListener("touchstart", handleStart, false);
-  el.addEventListener("touchend", handleEnd, false);
-  el.addEventListener("touchcancel", handleCancel, false);
-  el.addEventListener("touchleave", handleEnd, false);
-  el.addEventListener("touchmove", handleMove, false);
-  log("initialized.");
+  document.body.addEventListener("touchstart", handleStart, false);
+  document.body.addEventListener("touchend", handleEnd, false);
+  document.body.addEventListener("touchcancel", handleCancel, false);
+  document.body.addEventListener("touchleave", handleEnd, false);
+  document.body.addEventListener("touchmove", handleMove, false);
+
+  var el = document.getElementById("pdfcanvas");
+  el.width = el.clientWidth;
+  el.height = el.clientHeight;
+  log("initialized at dim "+el.width+"x"+el.height);
+
 }
 
 function handleStart(evt) {
-  log("touchstart.");
-  //var el = document.getElementsByTagName("canvas")[0];
+  var el = document.getElementById("pdfcanvas");
+  log("touchstart:"+el.width+" "+el.height);
+
   var ctx = el.getContext("2d");
   var touches = evt.changedTouches;
   var offset = findPos(el);
@@ -39,7 +46,7 @@ function handleStart(evt) {
 }
 
 function handleMove(evt) {
-  //var el = document.getElementsByTagName("canvas")[0];
+  var el = document.getElementById("pdfcanvas");
   var ctx = el.getContext("2d");
   var touches = evt.changedTouches;
   var offset = findPos(el);
@@ -74,7 +81,7 @@ function handleMove(evt) {
 function handleEnd(evt) {
 
 //  log("touchend/touchleave.");
-  //var el = document.getElementsByTagName("canvas")[0];
+  var el = document.getElementsByTagName("canvas")[0];
   var ctx = el.getContext("2d");
   var touches = evt.changedTouches;
   var offset = findPos(el);
@@ -141,7 +148,7 @@ function ongoingTouchIndexById(idToFind) {
 
 function log(msg) {
   var p = document.getElementById('log');
-  p.innerHTML = msg + "\n" + p.innerHTML;
+  p.innerHTML = msg;
 }
 
 function findPos (obj) {
@@ -158,4 +165,7 @@ function findPos (obj) {
     }
 }
 
-window.onload = startup();
+window.onload = function() {
+  el = document.getElementsByTagName("canvas")[0];
+  startup();
+}

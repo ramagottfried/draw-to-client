@@ -23,17 +23,6 @@ function pad(num, size) {
 
 var drawing = d3.select("#drawing");
 
-document.body.addEventListener("mousemove", function(event)
-{
-  port.send({
-        address: "/"+event.target.id+"/mouseXY",
-        args: [ event.clientX, event.clientY ]
-    });
-
-    //posterror(event.clientX + " " + event.clientY);
-
-});
-
 // low-level object reference array
 var objectStack = [];
 // css array
@@ -409,10 +398,149 @@ port.on('error', function(error) {
   senderror(error);
 });
 
+port.open();
+
+
+
+/**
+*   mouse handling
+*/
+
+
+var ongoingTouches = new Array;
+
+function emptybundle(){
+  return {
+    timeTag : osc.timeTag(),
+    packets : []
+  }
+};
+
+function initMultitouch() {
+  document.body.addEventListener("touchstart", handleStart, false);
+  document.body.addEventListener("touchend", handleEnd, false);
+  document.body.addEventListener("touchcancel", handleCancel, false);
+  document.body.addEventListener("touchleave", handleEnd, false);
+  document.body.addEventListener("touchmove", handleMove, false);
+
+  var el = document.getElementById("pdfcanvas");
+  el.width = el.clientWidth;
+  el.height = el.clientHeight;
+  log("initialized at dim "+el.width+"x"+el.height);
+
+}
+
+function handleStart(evt) {
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  var bndl = emptybundle();
+  for (var i = 0; i < touches.length; i++) {
+    ongoingTouches.push(copyTouch(touches[i]));
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+    bndl.packets.push({
+      address: "/finger/"+idx+"/start/xy",
+      args: [touches[i].clientX, touches[i].clientY]
+    });
+  }
+  port.send(bndl);
+}
+
+
+function handleMove(evt) {
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  var bndl = emptybundle();
+  for (var i = 0; i < touches.length; i++) {
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+    ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
+    bndl.packets.push({
+      address: "/finger/"+idx+"/move/xy",
+      args: [touches[i].clientX, touches[i].clientY]
+    });
+  }
+  port.send(bndl);
+}
+
+function handleEnd(evt) {
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  var bndl = emptybundle();
+  for (var i = 0; i < touches.length; i++) {
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+    ongoingTouches.splice(i, 1); // remove it; we're done
+    bndl.packets.push({
+      address: "/finger/"+idx+"/end/xy",
+      args: [touches[i].clientX, touches[i].clientY]
+    });
+  }
+  port.send(bndl);
+}
+
+function handleCancel(evt) {
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  for (var i = 0; i < touches.length; i++) {
+    ongoingTouches.splice(i, 1);
+  }
+}
+function copyTouch(touch) {
+  return { identifier: touch.identifier, clientX: touch.clientX, clientY: touch.clientY };
+}
+
+function ongoingTouchIndexById(idToFind) {
+  for (var i = 0; i < ongoingTouches.length; i++) {
+    var id = ongoingTouches[i].identifier;
+
+    if (id == idToFind) {
+      return i;
+    }
+  }
+  return -1; // not found
+}
+
+function log(msg) {
+  var p = document.getElementById('log');
+  p.innerHTML = msg;
+}
+
+function findPos (obj) {
+    var curleft = 0,
+        curtop = 0;
+
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+
+        return { x: curleft-document.body.scrollLeft, y: curtop-document.body.scrollTop };
+    }
+}
+
+
+document.body.addEventListener("mousemove", function(event)
+{
+  port.send({
+        address: "/"+event.target.id+"/mouseXY",
+        args: [ event.clientX, event.clientY ]
+    });
+
+    //posterror(event.clientX + " " + event.clientY);
+});
+
+
+/**
+* Main window setup
+*
+*/
+
+window.onload = function() {
+  log("loade");
+  initMultitouch();
+}
+
 // this doesn't work yet
 window.onbeforeunload = function() {
     port.onclose = function () {}; // disable onclose handler first
     port.close()
 };
-
-port.open();

@@ -179,7 +179,9 @@ wss.on("connection", function (socket, req) {
     });
 
     // setup relay back to Max
-    socketPort.on("osc", function (osc) { udp.send(osc); });
+    socketPort.on("osc", function (osc) {
+      udp.send(osc);
+    });
 
     clients.saveClient( socketPort, req.headers['sec-websocket-key'], req.url );
 

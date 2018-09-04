@@ -1,6 +1,7 @@
 
-// for some reason this script only grabs the fingers from the OS if you touch in the top corner,
-// otherwise the OS uses the finger points for window gestures
+// ok, preventDefault now working
+// next: remove referneces to canvas, since actually that's just being used to draw
+// and merge into main js file, to stream touch positions to Max
 
 var ongoingTouches = new Array;
 
@@ -19,6 +20,8 @@ function startup() {
 }
 
 function handleStart(evt) {
+  evt.preventDefault();
+
   var el = document.getElementById("pdfcanvas");
   log("touchstart:"+el.width+" "+el.height);
 
@@ -32,7 +35,6 @@ function handleStart(evt) {
         touches[i].clientY-offset.y >0 &&
         touches[i].clientY-offset.y < parseFloat(el.height) )
     {
-      evt.preventDefault();
       log("touchstart:" + i + "...");
       ongoingTouches.push(copyTouch(touches[i]));
       var color = colorForTouch(touches[i]);
@@ -50,11 +52,11 @@ function handleMove(evt) {
   var ctx = el.getContext("2d");
   var touches = evt.changedTouches;
   var offset = findPos(el);
+  evt.preventDefault();
 
   for (var i = 0; i < touches.length; i++) {
     if(touches[i].clientX-offset.x >0 && touches[i].clientX-offset.x < parseFloat(el.width) && touches[i].clientY-offset.y >0 && touches[i].clientY-offset.y < parseFloat(el.height))
     {
-      evt.preventDefault();
       var color = colorForTouch(touches[i]);
       var idx = ongoingTouchIndexById(touches[i].identifier);
 
@@ -86,11 +88,12 @@ function handleEnd(evt) {
   var touches = evt.changedTouches;
   var offset = findPos(el);
 
+  evt.preventDefault();
+
   for (var i = 0; i < touches.length; i++)
   {
     if(touches[i].clientX-offset.x >0 && touches[i].clientX-offset.x < parseFloat(el.width) && touches[i].clientY-offset.y >0 && touches[i].clientY-offset.y < parseFloat(el.height))
     {
-      evt.preventDefault();
       var color = colorForTouch(touches[i]);
       var idx = ongoingTouchIndexById(touches[i].identifier);
 
@@ -166,6 +169,6 @@ function findPos (obj) {
 }
 
 window.onload = function() {
-  el = document.getElementsByTagName("canvas")[0];
+  el = document.getElementsByTagName("pdfcanvas")[0];
   startup();
 }

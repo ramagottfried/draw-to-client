@@ -438,7 +438,7 @@ function handleStart(evt) {
     ongoingTouches.push(copyTouch(touches[i]));
     var idx = ongoingTouchIndexById(touches[i].identifier);
     bndl.packets.push({
-      address: "/finger/"+idx+"/start/xy",
+      address: oscprefix+"/finger/"+idx+"/start/xy",
       args: [touches[i].clientX, touches[i].clientY]
     });
   }
@@ -454,7 +454,7 @@ function handleMove(evt) {
     var idx = ongoingTouchIndexById(touches[i].identifier);
     ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
     bndl.packets.push({
-      address: "/finger/"+idx+"/move/xy",
+      address: oscprefix+"/finger/"+idx+"/move/xy",
       args: [touches[i].clientX, touches[i].clientY]
     });
   }
@@ -469,7 +469,7 @@ function handleEnd(evt) {
     var idx = ongoingTouchIndexById(touches[i].identifier);
     ongoingTouches.splice(i, 1); // remove it; we're done
     bndl.packets.push({
-      address: "/finger/"+idx+"/end/xy",
+      address: oscprefix+"/finger/"+idx+"/end/xy",
       args: [touches[i].clientX, touches[i].clientY]
     });
   }
@@ -521,7 +521,7 @@ function findPos (obj) {
 document.body.addEventListener("mousemove", function(event)
 {
   port.send({
-        address: "/"+event.target.id+"/mouseXY",
+        address: oscprefix+"/"+event.target.id+"/mouseXY",
         args: [ event.clientX, event.clientY ]
     });
 

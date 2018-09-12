@@ -458,7 +458,7 @@ function handleStart(evt) {
     ongoingTouches.push(copyTouch(touches[i]));
     var idx = ongoingTouchIndexById(touches[i].identifier);
     bndl.packets.push({
-      address: oscprefix+"/finger/"+idx+"/start/xy",
+      address: oscprefix+"/"+evt.target.id+"/finger/"+idx+"/start/xy",
       args: [touches[i].clientX, touches[i].clientY]
     });
   }
@@ -473,7 +473,7 @@ function handleMove(evt) {
     var idx = ongoingTouchIndexById(touches[i].identifier);
     ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
     bndl.packets.push({
-      address: oscprefix+"/finger/"+idx+"/move/xy",
+      address: oscprefix+"/"+evt.target.id+"/finger/"+idx+"/move/xy",
       args: [touches[i].clientX, touches[i].clientY]
     });
   }
@@ -488,7 +488,7 @@ function handleEnd(evt) {
     var idx = ongoingTouchIndexById(touches[i].identifier);
     ongoingTouches.splice(i, 1); // remove it; we're done
     bndl.packets.push({
-      address: oscprefix+"/finger/"+idx+"/end/xy",
+      address: oscprefix+"/"+evt.target.id+"/finger/"+idx+"/end/xy",
       args: [touches[i].clientX, touches[i].clientY]
     });
   }
@@ -498,10 +498,18 @@ function handleEnd(evt) {
 function handleCancel(evt) {
   evt.preventDefault();
   var touches = evt.changedTouches;
+  var bndl = emptybundle();
   for (var i = 0; i < touches.length; i++) {
-    ongoingTouches.splice(i, 1);
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+    ongoingTouches.splice(i, 1); // remove it; we're done
+    bndl.packets.push({
+      address: oscprefix+"/"+evt.target.id+"/finger/"+idx+"/cancel/xy",
+      args: [touches[i].clientX, touches[i].clientY]
+    });
   }
+  port.send(bndl);
 }
+
 function copyTouch(touch) {
   return { identifier: touch.identifier, clientX: touch.clientX, clientY: touch.clientY };
 }

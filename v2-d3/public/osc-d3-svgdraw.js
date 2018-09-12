@@ -30,6 +30,8 @@ var objectStyle = [];
 // transform array
 var objectTransform = [];
 
+var ongoingTouches = [];
+
 function getTransformString(transform)
 {
   var str = "";
@@ -74,11 +76,26 @@ port.on("message", function (oscMessage) {
 
       objectStack[key].remove();
       delete objectStack[key];
-
     }
 
     objectStack = []; // clear everything and return
+
+    ongoingTouches = [];
+
     return;
+  }
+  else if( id == "multitouch" && oscMessage.args.length == 1 )
+  {
+    ongoingTouches = [];
+
+    log(oscMessage.args[0]);
+    if( oscMessage.args[0] > 0 )
+      enableMultitouch();
+    else
+      disableMultitouch();
+
+    return;
+
   }
   else if( id_cmd.length < 2 )
   {
@@ -328,6 +345,7 @@ port.on("message", function (oscMessage) {
         pdfcontext.clearRect(0, 0, canvas.width, canvas.height);
 
     break;
+
     /*
     case "/hr":
       $("#hr").text(pad(oscMessage.args));
@@ -406,9 +424,6 @@ port.open();
 *   mouse handling
 */
 
-
-var ongoingTouches = new Array;
-
 function emptybundle(){
   return {
     timeTag : osc.timeTag(),
@@ -416,17 +431,22 @@ function emptybundle(){
   }
 };
 
-function initMultitouch() {
+function enableMultitouch() {
   document.body.addEventListener("touchstart", handleStart, false);
   document.body.addEventListener("touchend", handleEnd, false);
   document.body.addEventListener("touchcancel", handleCancel, false);
   document.body.addEventListener("touchleave", handleEnd, false);
   document.body.addEventListener("touchmove", handleMove, false);
+  log("initialized multitouch");
+}
 
-  var el = document.getElementById("pdfcanvas");
-  el.width = el.clientWidth;
-  el.height = el.clientHeight;
-  log("initialized at dim "+el.width+"x"+el.height);
+function disableMultitouch() {
+  document.body.removeEventListener("touchstart", handleStart);
+  document.body.removeEventListener("touchend", handleEnd);
+  document.body.removeEventListener("touchcancel", handleCancel);
+  document.body.removeEventListener("touchleave", handleEnd);
+  document.body.removeEventListener("touchmove", handleMove);
+  log("disabled multitouch");
 
 }
 
@@ -444,7 +464,6 @@ function handleStart(evt) {
   }
   port.send(bndl);
 }
-
 
 function handleMove(evt) {
   evt.preventDefault();
@@ -521,14 +540,32 @@ function findPos (obj) {
 document.body.addEventListener("mousemove", function(event)
 {
   port.send({
-        address: oscprefix+"/"+event.target.id+"/mouseXY",
+        address: oscprefix+"/"+event.target.id+"/mouse/xy",
         args: [ event.clientX, event.clientY ]
     });
 
     //posterror(event.clientX + " " + event.clientY);
 });
 
+document.body.addEventListener("mousedown", function(event)
+{
+  port.send({
+        address: oscprefix+"/"+event.target.id+"/mouse/state",
+        args: 1
+    });
 
+    //posterror(event.clientX + " " + event.clientY);
+});
+
+document.body.addEventListener("mouseup", function(event)
+{
+  port.send({
+        address: oscprefix+"/"+event.target.id+"/mouse/state",
+        args: 0
+    });
+
+    //posterror(event.clientX + " " + event.clientY);
+});
 /**
 * Main window setup
 *
@@ -536,7 +573,7 @@ document.body.addEventListener("mousemove", function(event)
 
 window.onload = function() {
   log("loade");
-  initMultitouch();
+  enableMultitouch();
 }
 
 // this doesn't work yet

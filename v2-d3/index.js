@@ -172,13 +172,13 @@ wss.setMaxListeners(144);
 // create OSC websockets from vanilla websockts, and add to clients list
 wss.on("connection", function (socket, req) {
 
-    console.log("A Web Socket connection has been established! " + req.url );
-
     var socketPort = new osc.WebSocketPort({
         socket: socket
     });
 
     var uniqueid = req.headers['sec-websocket-key'];
+
+    console.log("A Web Socket connection has been established! " + req.url + "("+uniqueid+")" );
 
     // setup relay back to Max
     socketPort.on("osc", function (osc) {
@@ -188,6 +188,11 @@ wss.on("connection", function (socket, req) {
     socketPort.on("close", function (event) {
       clients.removeClient( uniqueid );
       console.log("closed socket : "+ uniqueid+ " @ " +req.url);
+    });
+
+    socketPort.on("error", function (event) {
+      clients.removeClient( uniqueid );
+      console.log("error on socket : "+ uniqueid+ " @ " +req.url);
     });
 
     clients.saveClient( socketPort, uniqueid, req.url );

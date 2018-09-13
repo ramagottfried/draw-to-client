@@ -178,12 +178,19 @@ wss.on("connection", function (socket, req) {
         socket: socket
     });
 
+    var uniqueid = req.headers['sec-websocket-key'];
+
     // setup relay back to Max
     socketPort.on("osc", function (osc) {
       udp.send(osc);
     });
 
-    clients.saveClient( socketPort, req.headers['sec-websocket-key'], req.url );
+    socketPort.on("close", function (event) {
+      clients.removeClient( uniqueid );
+      console.log("closed socket : "+ uniqueid+ " @ " +req.url);
+    });
+
+    clients.saveClient( socketPort, uniqueid, req.url );
 
     const bundleState = osc_state.get(req.url);
     if( bundleState != false ){

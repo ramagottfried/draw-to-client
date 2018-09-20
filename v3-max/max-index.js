@@ -1,7 +1,7 @@
 /*jslint es6:true*/
 
 // settings
-const http_port = 3001;
+const http_port = 3002;
 const udp_port = 4001;
 const udp_port_out = 4002;
 
@@ -10,11 +10,13 @@ const websocket_port = 5001;
 // load libaries
 const express = require('express');
 const http = require('http');
-const osc = require('osc');
+//const osc = require('osc');
 const WebSocket = require('ws');
 const url = require('url');
-
 const app = express();
+
+const Max = require('max-api');
+Max.post("started up");
 
 // storage for current clientOSC bundles
 /*
@@ -120,7 +122,7 @@ class Clients {
     }
 
     saveClient(client, uniqueid, prefix) {
-        this.clientList[uniqueid] = { port : client, oscprefix : prefix };
+        this.clientList[uniqueid] = { socket : client, oscprefix : prefix };
     }
 
     removeClient( uniqueid ) {
@@ -133,24 +135,6 @@ const clients = new Clients();
 const osc_state = new OSCstate();
 
 // setup UDP listener from Max
-
-var udp = new osc.UDPPort({
-    localAddress: "127.0.0.1",
-    localPort: udp_port,
-    remoteAddress: "127.0.0.1",
-    remotePort: udp_port_out
-});
-
-udp.setMaxListeners(100);
-
-udp.on("ready", function () {
-    console.log('\x1b[33m%s\x1b[0m:', "Listening for OSC over UDP at", udp.options.localAddress );
-    console.log('\x1b[33m%s\x1b[0m:', "In Port", udp.options.localPort );
-    console.log('\x1b[33m%s\x1b[0m:', "Out Port", udp.options.remotePort );
-
-});
-
-udp.open();
 
 // setup http server
 app.use( express.static('public') );
@@ -172,94 +156,81 @@ wss.setMaxListeners(144);
 // create OSC websockets from vanilla websockts, and add to clients list
 wss.on("connection", function (socket, req) {
 
-    var socketPort = new osc.WebSocketPort({
-        socket: socket
-    });
-
     var uniqueid = req.headers['sec-websocket-key'];
 
-    console.log("A Web Socket connection has been established! " + req.url + "("+uniqueid+")" );
+    console.log("A Web Socket connection has been established! " + req.url + " ("+uniqueid+")" );
 
     // setup relay back to Max
-    socketPort.on("osc", function (osc) {
-      udp.send(osc);
+    socket.on("message", function (msg) {
+      Max.outlet( JSON.parse(msg) );
     });
 
-    socketPort.on("close", function (event) {
+    socket.on("close", function (event) {
       clients.removeClient( uniqueid );
       console.log("closed socket : "+ uniqueid+ " @ " +req.url);
     });
 
-    socketPort.on("error", function (event) {
+    socket.on("error", function (event) {
       clients.removeClient( uniqueid );
       console.log("error on socket : "+ uniqueid+ " @ " +req.url);
     });
 
-    clients.saveClient( socketPort, uniqueid, req.url );
+    clients.saveClient( socket, uniqueid, req.url );
 
     const bundleState = osc_state.get(req.url);
     if( bundleState != false ){
-      socketPort.send(bundleState);
+      socket.send(bundleState);
     }
 
 
 });
 
-// Listen for incoming OSC bundles. ... should sort here to send to the right places
-udp.on("bundle", function (oscBundle, timeTag, info)
-{
-    if( !osc.isValidBundle(oscBundle) )
-    {
-        console.log( "not sure what this is " + oscBundle );
-        return;
-    }
 
-    for( var id in clients.clientList )
-    {
-        var oscport = clients.clientList[id].port;
-        var prefix = clients.clientList[id].oscprefix;
-        //console.log(prefix + " -- " + id ); // uniqueid
-        //console.log("OSC Bundle msg count " + oscBundle.packets.length );
+// Use the 'outlet' function to send messages out of node.script's outlet
+Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
 
-        if( oscport.socket.readyState === WebSocket.OPEN )
-        {   // collects messages for this osc client based on the first /prefix of address
-            var routedMsgs = [];
+  for( var id in clients.clientList )
+  {
+      var socket = clients.clientList[id].socket;
+      var url_id = clients.clientList[id].oscprefix;
+      var prefix = url_id.slice(1);
 
-            for( const packet of oscBundle.packets )
-            {
-                //console.log( "checking " + packet.address );
-                if( packet.address.startsWith(prefix+"/") )
-                {
-                    // note: had to make the new object here to avoid slicing the original data! tricky
-                    routedMsgs.push({
-                        address : packet.address.slice(prefix.length),
-                        args : packet.args
-                    });
-                }
-                else if( packet.address.startsWith("/*/") )
-                {
-                    routedMsgs.push({
-                        address : packet.address.slice(2),
-                        args : packet.args
-                    });
-                }
-            }
-            var sendBundle =  {
-                packets : routedMsgs,
-                timeTag : osc.timeTag()
-            };
-            oscport.send(sendBundle);
-            osc_state.update(prefix, sendBundle);
-        }
-        else if ( oscport.socket.readyState > 1 )
-        {
-            oscport.close();
-            clients.removeClient( id );
-        }
+      // Max.post(prefix + " -- " + id ); // uniqueid
+      //console.log("OSC Bundle msg count " + oscBundle.packets.length );
 
-    }
+      if( socket.readyState === WebSocket.OPEN )
+      {   // collects messages for this osc client based on the first /prefix of address
+          var sendObj = {};
+
+          for( const key in dict )
+          {
+              const value = dict[key];
+          //    Max.post( "checking " + key+ " for " + prefix+"/" );
+              if( key.startsWith(prefix+"/") )
+              {
+                  sendObj[key.slice(prefix.length)] = value;
+              }
+              else if( key.startsWith("/*/") )
+              {
+                sendObj[key.slice(2)] = value;
+
+              }
+          }
+
+          socket.send(JSON.stringify(sendObj));
+          osc_state.update(prefix, sendObj);
+
+      }
+      else if ( socket.readyState > 1 )
+      {
+          //oscport.close();
+          clients.removeClient( id );
+      }
+
+  }
 
 });
+
 
 // helper func
 var getIPAddresses = function () {
@@ -285,6 +256,6 @@ var getIPAddresses = function () {
 
 // start server
 server.listen(http_port, () => {
-  console.log('\x1b[36m%s\x1b[0m', 'load webpage at', 'http://localhost:' + http_port);
-  console.log('\x1b[36m%s\x1b[0m', 'or', 'http://'+getIPAddresses()+':'+http_port);
+  Max.post('load webpage at', 'http://localhost:' + http_port);
+  Max.post('or', 'http://'+getIPAddresses()+':'+http_port);
 });

@@ -1,0 +1,22 @@
+{
+  "name": "draw_to_clients",
+  "version": "1.0.0",
+  "description": "syncronized score display",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bson": "^3.0.2",
+    "d3": "^5.5.0",
+    "express": "^4.14.1",
+    "http": "0.0.0",
+    "jquery": "^3.1.1",
+    "osc": "^2.2.3",
+    "pdfjs-dist": "^2.0.480",
+    "ws": "^3.3.3"
+  }
+}

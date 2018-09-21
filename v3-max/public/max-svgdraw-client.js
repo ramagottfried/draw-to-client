@@ -152,7 +152,7 @@ port.onmessage = function (event) {
       if( typeof objectTransform[id] == "undefined" )
         objectTransform[id] = {};
 
-      if( objectStack[id].context == "canvas" && cmdtype == "translate" && argv == 2 )
+      if( (objectStack[id].context == "main" || objectStack[id].context == "canvas") && cmdtype == "translate" && argv == 2 )
         objectTransform[id][cmdtype] = [objValue[0]+"px", objValue[1]+"px"];
       else
         objectTransform[id][cmdtype] = objValue;
@@ -373,7 +373,7 @@ port.onmessage = function (event) {
 
   if( typeof objectStack[id] != "undefined" )
   {
-    if( objectStack[id].context == "canvas" )
+    if( objectStack[id].context == "canvas" ||  objectStack[id].context == "main")
     {
       var style;
       if( typeof objectStyle[id] != "undefined" )
@@ -383,12 +383,12 @@ port.onmessage = function (event) {
       {
         if( typeof style == "undefined")
         {
-          pdfcanvas.setAttribute("style", "transform:"+getTransformString(objectTransform[id]) );
+          objectStack[id].setAttribute("style", "transform:"+getTransformString(objectTransform[id]) );
         }
         else
         {
           style.transform = getTransformString(objectTransform[id]);
-          pdfcanvas.setAttribute("style", getStyleString(style) );
+          objectStack[id].setAttribute("style", getStyleString(style) );
         }
       }
 
@@ -574,7 +574,13 @@ document.body.addEventListener("mouseup", function(event)
 */
 
 window.onload = function() {
-  log("loade");
+  log("loaded");
+  objectStack['main'] = document.getElementById("main");
+  objectStack['main'].context = 'main';
+
+  objectStack['canvas'] = document.getElementById('pdfcanvas');
+  objectStack['canvas'].context = 'canvas';
+
   enableMultitouch();
 }
 

@@ -32,14 +32,13 @@ class OSCstate
   }
 
   update(prefix, obj) {
-    Max.post("saving " + prefix + " keys: " + Object.keys(obj));
     if( typeof this.state[prefix] == "undefined" ) {
 
       this.state[prefix] = obj;
 
     } else {
 
-      for( var key in dict ) {
+      for( var key in obj ) {
 
         // parse address to handle state storage
         const id_cmd = key.split("/").filter( function(e){ return e } );
@@ -194,7 +193,7 @@ wss.on("connection", function (socket, req) {
 
 
 Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
-  Max.post("parsing :" + Object.keys(dict))
+  // Max.post("parsing :" + Object.keys(dict))
 
   for( var id in clients.clientList )
   {
@@ -202,7 +201,7 @@ Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
       var prefix = clients.clientList[id].oscprefix;
 //      var prefix = url_id.slice(0);
 
-       Max.post(prefix + " -- " + id ); // uniqueid
+       // Max.post(prefix + " -- " + id ); // uniqueid
       //console.log("OSC Bundle msg count " + oscBundle.packets.length );
 
       if( socket.readyState === WebSocket.OPEN )
@@ -213,7 +212,7 @@ Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
           {
             const addr = "/"+key; //annoying that o.dict strips leading / !
             const value = dict[key];
-            Max.post( "checking " + addr+ " for " + prefix+"/" );
+        //    Max.post( "checking " + addr+ " for " + prefix+"/" );
             if( addr.startsWith(prefix+"/") )
             {
                 sendObj[addr.slice(prefix.length)] = value;

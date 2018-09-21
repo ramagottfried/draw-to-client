@@ -1,7 +1,5 @@
 #drawing {
-  position: absolute;
-  left: 0px;
-  top: 0px;
+  float: left;
   z-index: 10;
 }
 

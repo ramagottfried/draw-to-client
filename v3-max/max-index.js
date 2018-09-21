@@ -18,6 +18,7 @@ const app = express();
 const Max = require('max-api');
 Max.post("started up");
 
+
 // storage for current clientOSC bundles
 /*
   OSCstate["/prefix"]["/address"] = args;
@@ -25,30 +26,30 @@ Max.post("started up");
 class OSCstate
 {
   constructor() {
-      this.state = [];
+      this.state = {};
       this.update = this.update.bind(this);
       this.remove = this.remove.bind(this);
   }
 
-  update(prefix, oscBundle) {
+  update(prefix, obj) {
+    Max.post("saving " + prefix + " keys: " + Object.keys(obj));
     if( typeof this.state[prefix] == "undefined" ) {
 
-      this.state[prefix] = oscBundle;
+      this.state[prefix] = obj;
 
     } else {
 
-      for( var update_m of oscBundle.packets ) {
+      for( var key in dict ) {
 
         // parse address to handle state storage
-        const id_cmd = update_m.address.split("/").filter( function(e){ return e } );
+        const id_cmd = key.split("/").filter( function(e){ return e } );
         // the filter removes empty strings (which we get for the first '/' )
-
 
         const id = id_cmd[0];
 
         if( id == "clear")
         {
-          this.state = this.state.filter( function(k) { return k != prefix; });
+          this.state[prefix] = {};
           return;
         }
         else if( id_cmd.length < 2 )
@@ -62,7 +63,12 @@ class OSCstate
 
         if( cmd == "remove" )
         {
-          this.state[prefix].packets = this.state[prefix].packets.filter( function(m) { return !m.address.startsWith("/"+id) });
+          for( var k in this.state[prefix] )
+          {
+            if( k.startsWith("/"+id) )
+              delete this.state[prefix][k];
+          }
+          //this.state[prefix].packets = this.state[prefix].packets.filter( function(m) { return !m.address.startsWith("/"+id) });
           return;
         }
         else if( cmd == "draw")
@@ -79,10 +85,10 @@ class OSCstate
         }
 
         var found = false;
-        for( var state_m of this.state[prefix].packets ) {
-            if( state_m.address == update_m.address ) {
-              if( update_m.args )
-                state_m.args = update_m.args;
+        for( var addr in this.state[prefix] ) {
+            if( addr == key ) {
+              if( typeof obj[key] != "undefined" )
+                this.state[prefix] = obj[key];
 
               found = true;
               break;
@@ -90,7 +96,7 @@ class OSCstate
         }
 
         if( found == false ) {
-          this.state[prefix].packets.push(update_m);
+          this.state[prefix][key] = obj[key];
         }
 /*
         for( var state_m of this.state[prefix].packets ) {
@@ -158,7 +164,7 @@ wss.on("connection", function (socket, req) {
 
     var uniqueid = req.headers['sec-websocket-key'];
 
-    console.log("A Web Socket connection has been established! " + req.url + " ("+uniqueid+")" );
+    Max.post("A Web Socket connection has been established! " + req.url + " ("+uniqueid+")" );
 
     // setup relay back to Max
     socket.on("message", function (msg) {
@@ -167,35 +173,36 @@ wss.on("connection", function (socket, req) {
 
     socket.on("close", function (event) {
       clients.removeClient( uniqueid );
-      console.log("closed socket : "+ uniqueid+ " @ " +req.url);
+      Max.post("closed socket : "+ uniqueid+ " @ " +req.url);
     });
 
     socket.on("error", function (event) {
       clients.removeClient( uniqueid );
-      console.log("error on socket : "+ uniqueid+ " @ " +req.url);
+      Max.post("error on socket : "+ uniqueid+ " @ " +req.url);
     });
 
     clients.saveClient( socket, uniqueid, req.url );
 
     const bundleState = osc_state.get(req.url);
     if( bundleState != false ){
-      socket.send(bundleState);
+      socket.send( JSON.stringify(bundleState) );
     }
 
 
 });
 
 
-// Use the 'outlet' function to send messages out of node.script's outlet
+
 Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
+  Max.post("parsing :" + Object.keys(dict))
 
   for( var id in clients.clientList )
   {
       var socket = clients.clientList[id].socket;
-      var url_id = clients.clientList[id].oscprefix;
-      var prefix = url_id.slice(1);
+      var prefix = clients.clientList[id].oscprefix;
+//      var prefix = url_id.slice(0);
 
-      // Max.post(prefix + " -- " + id ); // uniqueid
+       Max.post(prefix + " -- " + id ); // uniqueid
       //console.log("OSC Bundle msg count " + oscBundle.packets.length );
 
       if( socket.readyState === WebSocket.OPEN )
@@ -204,20 +211,21 @@ Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
 
           for( const key in dict )
           {
-              const value = dict[key];
-          //    Max.post( "checking " + key+ " for " + prefix+"/" );
-              if( key.startsWith(prefix+"/") )
-              {
-                  sendObj[key.slice(prefix.length)] = value;
-              }
-              else if( key.startsWith("/*/") )
-              {
-                sendObj[key.slice(2)] = value;
+            const addr = "/"+key; //annoying that o.dict strips leading / !
+            const value = dict[key];
+            Max.post( "checking " + addr+ " for " + prefix+"/" );
+            if( addr.startsWith(prefix+"/") )
+            {
+                sendObj[addr.slice(prefix.length)] = value;
+            }
+            else if(addr.startsWith("/*/") )
+            {
+              sendObj[addr.slice(2)] = value;
 
-              }
+            }
           }
 
-          socket.send(JSON.stringify(sendObj));
+          socket.send( JSON.stringify(sendObj) );
           osc_state.update(prefix, sendObj);
 
       }

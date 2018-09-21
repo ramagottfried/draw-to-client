@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 591.0, 79.0, 803.0, 561.0 ],
+		"rect" : [ 45.0, 199.0, 803.0, 561.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -42,14 +42,16 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-14",
+					"linecount" : 3,
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 79.0, 447.0, 150.0, 24.0 ],
-					"presentation_rect" : [ 79.0, 447.0, 150.0, 24.0 ],
-					"saved_bundle_data" : [  ],
-					"saved_bundle_length" : 0
+					"patching_rect" : [ 151.0, 313.0, 150.0, 51.0 ],
+					"presentation_rect" : [ 151.0, 313.0, 150.0, 51.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 100, 114, 97, 119, 105, 110, 103, 47, 109, 111, 117, 115, 101, 47, 120, 121, 0, 44, 105, 105, 0, 0, 0, 0, 25, 0, 0, 0, 90 ],
+					"saved_bundle_length" : 60,
+					"text" : "/svgdraw/1/drawing/mouse/xy : [25, 90]"
 				}
 
 			}
@@ -237,8 +239,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"offset" : [ 0.0, 0.0 ],
-					"patching_rect" : [ 307.0, 242.0, 400.0, 220.0 ],
-					"presentation_rect" : [ 307.0, 242.0, 400.0, 220.0 ],
+					"patching_rect" : [ 309.0, 252.0, 400.0, 220.0 ],
+					"presentation_rect" : [ 309.0, 252.0, 400.0, 220.0 ],
 					"viewvisibility" : 1
 				}
 
@@ -382,7 +384,6 @@
 		"lines" : [ 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 1 ],
-					"order" : 0,
 					"source" : [ "obj-1", 0 ]
 				}
 
@@ -391,14 +392,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-15", 0 ],
 					"source" : [ "obj-1", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-28", 0 ],
-					"order" : 1,
-					"source" : [ "obj-1", 0 ]
 				}
 
 			}

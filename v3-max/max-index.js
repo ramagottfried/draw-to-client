@@ -95,7 +95,7 @@ class OSCstate
         }
 
         if( found == false ) {
-          this.state[prefix][key] = obj[key];
+    //      this.state[prefix][key] = obj[key];
         }
 /*
         for( var state_m of this.state[prefix].packets ) {
@@ -123,15 +123,27 @@ class OSCstate
 class Clients {
     constructor() {
         this.clientList = {};
+        this.prefixList = [];
         this.saveClient = this.saveClient.bind(this);
+        this.removeClient = this.removeClient.bind(this);
+
     }
 
     saveClient(client, uniqueid, prefix) {
         this.clientList[uniqueid] = { socket : client, oscprefix : prefix };
+
+        if( !this.prefixList.includes(prefix) )
+        {
+          this.prefixList.push(prefix);
+        }
+
     }
 
     removeClient( uniqueid ) {
-        delete this.clientList[uniqueid];
+      var prefix = this.clientList[uniqueid].oscprefix;
+      this.prefixList = this.prefixList.filter(function(item) { return item !==  prefix});
+      delete this.clientList[uniqueid];
+
     }
 }
 
@@ -156,7 +168,7 @@ const wss = new WebSocket.Server({
   server : server
 });
 
-wss.setMaxListeners(144);
+wss.setMaxListeners(200);
 
 // create OSC websockets from vanilla websockts, and add to clients list
 wss.on("connection", function (socket, req) {
@@ -195,6 +207,53 @@ wss.on("connection", function (socket, req) {
 Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
   // Max.post("parsing :" + Object.keys(dict))
 
+  var broadcast;
+  var target = {};
+
+  for( const key in dict )
+  {
+    const addr = "/"+key; //annoying that o.dict strips leading / !
+    const value = dict[key];
+//    Max.post( "checking " + addr);
+
+    if(addr.startsWith("/*/") )
+    {
+//      Max.post( "broadcast " + addr);
+
+      if( typeof broadcast == "undefined" )
+        broadcast = {};
+
+      broadcast[addr.slice(2)] = value;
+    }
+    else
+    {
+
+      for( const pref of clients.prefixList )
+      {
+//        Max.post("testing "+pref);
+
+        if( addr.startsWith(pref+"/") )
+        {
+          if( typeof target[pref] == "undefined" )
+            target[pref] = {};
+
+          target[pref][addr.slice(pref.length)] = value;
+        }
+      }
+
+    }
+  }
+
+  var sendObj = {};
+  sendObj["*"] = JSON.stringify(broadcast);
+//  Max.post("sendObj[\"*\"] " + sendObj["*"] );
+
+  for( var t in target )
+  {
+    osc_state.update(t, target[t]);
+    sendObj[t] = JSON.stringify(target[t]);
+  }
+
   for( var id in clients.clientList )
   {
       var socket = clients.clientList[id].socket;
@@ -205,27 +264,20 @@ Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
       //console.log("OSC Bundle msg count " + oscBundle.packets.length );
 
       if( socket.readyState === WebSocket.OPEN )
-      {   // collects messages for this osc client based on the first /prefix of address
-          var sendObj = {};
+      {
 
-          for( const key in dict )
-          {
-            const addr = "/"+key; //annoying that o.dict strips leading / !
-            const value = dict[key];
-        //    Max.post( "checking " + addr+ " for " + prefix+"/" );
-            if( addr.startsWith(prefix+"/") )
-            {
-                sendObj[addr.slice(prefix.length)] = value;
-            }
-            else if(addr.startsWith("/*/") )
-            {
-              sendObj[addr.slice(2)] = value;
+        if( typeof sendObj["*"] != "undefined" )
+        {
+          socket.send( sendObj["*"] );
 
-            }
-          }
+        }
 
-          socket.send( JSON.stringify(sendObj) );
-          osc_state.update(prefix, sendObj);
+
+        if( typeof sendObj[prefix] != "undefined" ){
+//          Max.post("sending "+sendObj[prefix]);
+          socket.send( sendObj[prefix] );
+        }
+
 
       }
       else if ( socket.readyState > 1 )

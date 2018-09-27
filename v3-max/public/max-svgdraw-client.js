@@ -379,7 +379,6 @@ function processCmdObj(obj)
     {
       if( objectStack[id].context == "canvas" ||  objectStack[id].context == "main")
       {
-        console.log("setting style for canvas or main");
         var style;
         if( typeof objectStyle[id] != "undefined" )
           style = objectStyle[id];
@@ -388,15 +387,20 @@ function processCmdObj(obj)
         {
           if( typeof style == "undefined")
           {
-            objectStack[id].setAttribute("style", "transform:"+getTransformString(objectTransform[id]) );
+            const transstr = getTransformString(objectTransform[id]);
+            console.log("transform:"+transstr+"; "+ "-webkit-transform:"+transstr);
+            objectStack[id].setAttribute("style", "transform:"+transstr );
+
           }
           else
           {
-            style.transform = getTransformString(objectTransform[id]);
+            style['transform'] = getTransformString(objectTransform[id]);
+    //        style['-webkit-transform'] = getTransformString(objectTransform[id]);
           }
         }
 
-        objectStack[id].setAttribute("style", getStyleString(style) );
+        if( typeof style != "undefined" )
+          objectStack[id].setAttribute("style", getStyleString(style) );
 
       }
       else

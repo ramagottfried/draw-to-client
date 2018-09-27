@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 519.0, 79.0, 1372.0, 787.0 ],
+		"rect" : [ 374.0, 79.0, 1372.0, 787.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -41,13 +41,29 @@
 				"box" : 				{
 					"fontface" : 0,
 					"fontsize" : 12.0,
+					"id" : "obj-17",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 540.0, 7.0, 316.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 115, 99, 97, 108, 101, 0, 0, 44, 105, 105, 0, 0, 0, 0, 10, 0, 0, 0, 10 ],
+					"saved_bundle_length" : 64,
+					"text" : "/svgdraw/1/foo/transform/scale : [10, 10]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
 					"id" : "obj-31",
 					"linecount" : 2,
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 22.5, 35.0, 345.0, 38.0 ],
+					"patching_rect" : [ 491.0, 623.0, 345.0, 38.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 115, 99, 111, 114, 101, 47, 112, 100, 102, 0, 0, 0, 0, 44, 115, 0, 0, 112, 105, 97, 110, 111, 45, 102, 108, 105, 110, 116, 95, 114, 101, 100, 117, 99, 101, 100, 46, 112, 100, 102, 0 ],
 					"saved_bundle_length" : 72,
 					"text" : "/svgdraw/1/score/pdf : \"piano-flint_reduced.pdf\""
@@ -63,7 +79,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 27.5, 80.0, 345.0, 24.0 ],
+					"patching_rect" : [ 496.0, 668.0, 345.0, 24.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 99, 108, 101, 97, 114, 0, 0, 0, 0, 44, 0, 0, 0 ],
 					"saved_bundle_length" : 44,
 					"text" : "/svgdraw/1/clear"
@@ -79,7 +95,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 34.5, 111.0, 345.0, 24.0 ],
+					"patching_rect" : [ 503.0, 699.0, 345.0, 24.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 100, 114, 97, 119, 47, 105, 109, 103, 0, 44, 115, 0, 0, 102, 101, 114, 110, 46, 106, 112, 103, 0, 0, 0, 0 ],
 					"saved_bundle_length" : 60,
 					"text" : "/svgdraw/1/foo/draw/img : \"fern.jpg\""
@@ -108,13 +124,13 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-47",
-					"linecount" : 10,
+					"linecount" : 6,
 					"maxclass" : "o.display",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 401.0, 467.0, 697.0, 156.0 ],
-					"text" : "/start/success : {\n\t/filename : \"max-index.js\",\n\t/id : \"u345799172\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u345799172_ctrl.sock\"\n\t},\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/watch : 1,\n\t/time : 2018-09-27T06:31:30.157765Z\n}"
+					"patching_rect" : [ 401.0, 467.0, 697.0, 102.0 ],
+					"text" : "/restarting/success : {\n\t/restartCount : 1,\n\t/id : \"u698581840\",\n\t/reason : \"error\",\n\t/time : 2018-09-27T07:48:09.323326Z\n}"
 				}
 
 			}
@@ -397,11 +413,13 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-39",
+					"linecount" : 6,
 					"maxclass" : "o.display",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 401.0, 333.0, 697.0, 34.0 ]
+					"patching_rect" : [ 401.0, 333.0, 697.0, 102.0 ],
+					"text" : "/restarted/success : {\n\t/restartCount : 1,\n\t/id : \"u698581840\",\n\t/reason : \"error\",\n\t/time : 2018-09-27T07:48:09.413138Z\n}"
 				}
 
 			}
@@ -430,7 +448,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 536.0, 73.0, 301.0, 24.0 ],
+					"patching_rect" : [ 540.0, 36.0, 301.0, 24.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 115, 99, 97, 108, 101, 0, 0, 44, 105, 105, 0, 0, 0, 0, 1, 0, 0, 0, 1 ],
 					"saved_bundle_length" : 64,
 					"text" : "/svgdraw/1/foo/transform/scale : [1, 1]"
@@ -585,9 +603,9 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 16.0, 302.0, 309.0, 24.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 112, 100, 102, 99, 97, 110, 118, 97, 115, 47, 109, 111, 117, 115, 101, 47, 120, 121, 0, 0, 0, 44, 105, 105, 0, 0, 0, 2, -114, 0, 0, 0, 1 ],
-					"saved_bundle_length" : 64,
-					"text" : "/svgdraw/1/pdfcanvas/mouse/xy : [654, 1]"
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 100, 114, 97, 119, 105, 110, 103, 47, 109, 111, 117, 115, 101, 47, 120, 121, 0, 44, 105, 105, 0, 0, 0, 1, -98, 0, 0, 0, -71 ],
+					"saved_bundle_length" : 60,
+					"text" : "/svgdraw/1/drawing/mouse/xy : [414, 185]"
 				}
 
 			}
@@ -601,7 +619,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 183.0, 16.0, 582.0, 51.0 ],
+					"patching_rect" : [ 12.0, 9.0, 525.0, 51.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 100, 114, 97, 119, 47, 112, 97, 116, 104, 0, 0, 0, 0, 44, 115, 0, 0, 77, 51, 53, 44, 54, 53, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 45, 54, 48, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 44, 54, 48, 0, 0, 0, 0, 0, 0, 0, 56, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 115, 116, 121, 108, 101, 47, 116, 114, 97, 110, 115, 105, 116, 105, 111, 110, 0, 44, 115, 0, 0, 116, 114, 97, 110, 115, 102, 111, 114, 109, 32, 49, 115, 32, 108, 105, 110, 101, 97, 114, 0, 0, 0, 0, 44, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 115, 99, 97, 108, 101, 0, 0, 44, 105, 105, 0, 0, 0, 0, 20, 0, 0, 0, 20 ],
 					"saved_bundle_length" : 204,
 					"text" : "/svgdraw/1/foo/draw/path : \"M35,65a30,30,0,0,0,0-60a30,30,0,0,0,0,60\",\n/svgdraw/1/foo/style/transition : \"transform 1s linear\",\n/svgdraw/1/foo/transform/scale : [20, 20]"
@@ -729,6 +747,13 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-21", 0 ]
 				}
 
@@ -751,6 +776,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-31", 0 ]
 				}
 
 			}

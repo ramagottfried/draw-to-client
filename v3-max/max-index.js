@@ -212,7 +212,8 @@ Max.addHandler(Max.MESSAGE_TYPES.DICT, (dict) => {
 
   for( const key in dict )
   {
-    const addr = "/"+key; //annoying that o.dict strips leading / !
+
+    const addr = key;// [0] != "/" ? "/" + key : key; //annoying that o.dict strips leading / !
     const value = dict[key];
 //    Max.post( "checking " + addr);
 

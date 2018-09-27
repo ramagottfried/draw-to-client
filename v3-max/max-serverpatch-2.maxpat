@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 49.0, 120.0, 1551.0, 735.0 ],
+		"rect" : [ 57.0, 79.0, 1551.0, 735.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -741,7 +741,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 652.0, 75.0, 309.0, 22.0 ],
-					"text" : "cursor 0 @begin 0 0 @end 0 1 @runs 2 @timestretch 3."
+					"text" : "cursor 0 @begin 0 0 @end 1 1 @runs 2 @timestretch 3."
 				}
 
 			}
@@ -763,7 +763,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 59.0, 104.0, 471.0, 529.0 ],
+						"rect" : [ 654.0, 79.0, 471.0, 529.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -3412,8 +3412,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 667.0, 119.5, 311.0, 22.0 ],
-					"text" : "cursor 0 @begin 0 1 @end 0 1 @runs 2 @timestretch 3."
+					"patching_rect" : [ 667.0, 119.5, 309.0, 22.0 ],
+					"text" : "cursor 0 @begin 0 0 @end 1 1 @runs 2 @timestretch 3."
 				}
 
 			}
@@ -3529,7 +3529,7 @@
 					"numoutlets" : 2,
 					"offset" : [ 0.0, 0.0 ],
 					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 1044.0, 291.0, 320.0, 220.0 ],
+					"patching_rect" : [ 1044.0, 291.0, 400.0, 430.0 ],
 					"prototypename" : "bcanvas",
 					"varname" : "bcanvas",
 					"viewvisibility" : 1

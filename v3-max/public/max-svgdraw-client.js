@@ -151,6 +151,14 @@ function processCmdObj(obj)
         }
   */
       break;
+      case "attr" :
+
+        if( typeof objectStack[id] != "undefined" )
+        {
+          objectStack[id].attr(cmdtype, objValue);
+        }
+
+      break;
 
       case "transform" :
         if( typeof objectTransform[id] == "undefined" )

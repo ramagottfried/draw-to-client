@@ -262,7 +262,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("polyline").attr("points", objValue[0]);
+          objectStack[id] = drawing.append("polyline").attr("points", objValue);
         }
       break;
 

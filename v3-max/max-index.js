@@ -18,7 +18,6 @@ const app = express();
 const Max = require('max-api');
 Max.post("started up");
 
-
 // storage for current clientOSC bundles
 /*
   OSCstate["/prefix"]["/address"] = args;
@@ -184,6 +183,7 @@ wss.on("connection", function (socket, req) {
 
     socket.on("close", function (event) {
       clients.removeClient( uniqueid );
+      socket.terminate();
       Max.post("closed socket : "+ uniqueid+ " @ " +req.url);
     });
 
@@ -311,7 +311,6 @@ var getIPAddresses = function () {
 
     return ipAddresses;
 };
-
 
 // start server
 server.listen(http_port, () => {

@@ -93,7 +93,7 @@ function processCmdObj(obj)
 
       ongoingTouches = [];
 
-      return;
+      continue;
     }
     else if( id == "multitouch" && argc == 1 )
     {
@@ -105,14 +105,14 @@ function processCmdObj(obj)
       else
         disableMultitouch();
 
-      return;
+      continue;
 
     }
     else if( id_cmd.length < 2 )
     {
       senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
       console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
-      return;
+      continue;
     }
 
     var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
@@ -129,7 +129,7 @@ function processCmdObj(obj)
         console.log("must specifiy drawtype after /draw");
         senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
 
-        return;
+        continue;
       }
     }
     console.log(id, cmd);

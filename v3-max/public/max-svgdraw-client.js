@@ -19,6 +19,7 @@ function pad(num, size) {
   return ('0' + num).substr(-size);
 }
 
+var main = d3.select("#main");
 var drawing = d3.select("#drawing");
 
 // low-level object reference array
@@ -349,12 +350,17 @@ function processCmdObj(obj)
         if( argc == 1 ) // url
         {
 
-          if( typeof objectStack[id] != "undefined" && !(objectStack[id].context == "main" || objectStack[id].context == "canvas") )
+          if( typeof objectStack[id] != "undefined" && !(objectStack[id].context == "main" ) )
             objectStack[id].remove();
 
-          objectStack[id] = { context: "canvas" };
+          objectStack[id] = main.append("canvas")
+            .attr("id", id)
+            .attr("class", "pdfcanvas")
+            .attr("context", "canvas");
 
-          setPDFref(objValue);
+          objectStack[id].pdf = new PDFdoc(objectStack[id]);
+
+          objectStack[id].pdf.setPDFref(objValue);
 
         }
       break;
@@ -362,7 +368,8 @@ function processCmdObj(obj)
 
         if( argc == 1 ) // page num
         {
-          queueRenderPage(objValue);
+          console.log(objectStack[id]);
+          objectStack[id].pdf.queueRenderPage(objValue);
         }
       break;
 
@@ -609,10 +616,10 @@ window.onload = function() {
   log("loaded");
   objectStack['main'] = document.getElementById("main");
   objectStack['main'].context = 'main';
-
+/*
   objectStack['canvas'] = document.getElementById('pdfcanvas');
   objectStack['canvas'].context = 'canvas';
-
+*/
   enableMultitouch();
 }
 

@@ -7,85 +7,119 @@ var pdfjsLib = window['pdfjs-dist/build/pdf'];
 // The workerSrc property
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'scripts/pdfjs-dist/build/pdf.worker.js';
 
-function PDFdoc(id)
+class PDFdoc
 {
-  this.pdfcanvas = document.createElement("canvas");
-  this.pdfcanvas.id = id;
-  this.pdfcanvas.class = "pdfcanvas";
 
-  document.getElementById("main").appendChild(this.pdfcanvas);
-  this.pdfcontext = pdfcanvas.getContext('2d');
+  constructor(canvas_element)
+  {
 
-  this.pdfDoc = null;
-  this.scale = 2;
-  this.pageNum = 1;
-  this.pageRendering = false;
-  this.pageNumPending = null;
+    this.pdfcanvas = canvas_element;
+    this.pdfcontext = this.pdfcanvas.node().getContext('2d');
 
+    this.pdfDoc = null;
+    this.scale = 2;
+    this.pageNum = 1;
+    this.pageRendering = false;
+    this.pageNumPending = null;
+
+
+    this.setPDFref = this.setPDFref.bind(this);
+    this.loadCallback = this.loadCallback.bind(this);
+    this.renderCallbackQueueCheck = this.renderCallbackQueueCheck.bind(this);
+    this.renderCallback = this.renderCallback.bind(this);
+    this.renderPage = this.renderPage.bind(this);
+    this.queueRenderPage = this.queueRenderPage.bind(this);
+
+    this.prevPage = this.prevPage.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+  }
   /**
    * Asynchronously downloads PDF.
    */
-  this.setPDFref = function( filename ) {
-    console.log( "loading " + filename );
-    pdfjsLib.getDocument(filename).then( function(pdfDoc_) {
-      this.pdfDoc = pdfDoc_;
-      // document.getElementById('page_count').textContent = pdfDoc.numPages;
+  setPDFref ( filename ) {
+    pdfjsLib.getDocument(filename).then( this.loadCallback );
+  }
 
-      // Initial/first page rendering
-      this.renderPage(this.pageNum);
-    });
+  loadCallback (pdfDoc_) {
+    this.pdfDoc = pdfDoc_;
+    // Initial/first page rendering
+    this.renderPage(this.pageNum);
+  }
+
+  renderCallbackQueueCheck() {
+    this.pageRendering = false;
+    if (this.pageNumPending !== null) {
+      // New page rendering is pending
+      this.renderPage(this.pageNumPending);
+      this.pageNumPending = null;
+    }
+  }
+
+  renderCallback(_page) {
+
+    // size of pdf
+    var viewport = _page.getViewport(this.scale);
+
+    var mainDiv_bbox = main.node().getBoundingClientRect();
+
+    // scale to fit
+
+//    this.pdfcanvas.height = viewport.height;
+    //this.pdfcanvas.width = viewport.width;
+    console.log(mainDiv_bbox.width, viewport.width);
+
+    var adj_viewport = _page.getViewport(this.scale * mainDiv_bbox.height /  viewport.height );
+//            canvas.height = viewport.height;
+
+    this.pdfcanvas.attr("height", adj_viewport.height)
+      .attr("width", adj_viewport.width );
+
+
+//    console.log(this.pdfcanvas.height, this.pdfcanvas.width);
+
+    // Render PDF page into canvas context
+    var renderContext = {
+      canvasContext: this.pdfcontext,
+      viewport: adj_viewport
+    };
+
+    var renderTask = _page.render(renderContext);
+
+    // Wait for rendering to finish
+    renderTask.promise.then( this.renderCallbackQueueCheck );
   }
 
   /**
    * Get page info from document, resize canvas accordingly, and render page.
    * @param num Page number.
    */
-  this.renderPage = function (num) {
+   renderPage (num) {
       this.pageRendering = true;
-    // Using promise to fetch the page
-      this.getPage(num).then( function(_page) {
-
-      var viewport = _page.getViewport(this.scale);
-
-      this.pdfcanvas.height = viewport.height;
-      this.pdfcanvas.width = viewport.width;
-
-      // Render PDF page into canvas context
-      var renderContext = {
-        canvasContext: pdfcontext,
-        viewport: viewport
-      };
-
-      var renderTask = _page.render(renderContext);
-
-      // Wait for rendering to finish
-      renderTask.promise.then( function() {
-        this.pageRendering = false;
-        if (this.pageNumPending !== null) {
-          // New page rendering is pending
-          this.renderPage(this.pageNumPending);
-          this.pageNumPending = null;
-        }
-      });
-    });
+      this.pdfDoc.getPage(num).then( this.renderCallback );
   }
+
+
 
   /**
    * If another page rendering in progress, waits until the rendering is
    * finised. Otherwise, executes rendering immediately.
    */
-  this.queueRenderPage = function(num) {
-    if (this.pageRendering) {
-      this.pageNumPending = num;
-    } else {
-      this.renderPage(num);
+  queueRenderPage (num) {
+    if( num > 0 && num < this.pdfDoc.numPages )
+    {
+      if (this.pageRendering) {
+        this.pageNumPending = num;
+      } else {
+        this.renderPage(num);
+      }
     }
+
   }
 
   /**
    * Displays previous page.
    */
-  this.prevPage = function() {
+  prevPage () {
     if (this.pageNum <= 1 ) {
       return;
     }
@@ -97,7 +131,7 @@ function PDFdoc(id)
   /**
    * Displays next page.
    */
-  this.nextPage = function() {
+  nextPage () {
     if (this.pageNum >= this.pdfDoc.numPages) {
       return;
     }

@@ -118,7 +118,7 @@ function processCmdObj(obj)
     var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
     var cmdtype = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
 
-    if( cmd == "draw" )
+    if( cmd == "draw" || cmd == "pdf" )
     {
       if( cmdtype != "none")
       {
@@ -345,17 +345,24 @@ function processCmdObj(obj)
 
         }
       break;
-      case "pdf":
+      case "pdf/load":
         if( argc == 1 ) // url
         {
 
-          if( typeof objectStack[id] != "undefined" )
+          if( typeof objectStack[id] != "undefined" && !(objectStack[id].context == "main" || objectStack[id].context == "canvas") )
             objectStack[id].remove();
 
           objectStack[id] = { context: "canvas" };
 
           setPDFref(objValue);
 
+        }
+      break;
+      case "pdf/page":
+
+        if( argc == 1 ) // page num
+        {
+          queueRenderPage(objValue);
         }
       break;
 

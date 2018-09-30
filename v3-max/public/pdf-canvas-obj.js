@@ -68,7 +68,7 @@ class PDFdoc
     //this.pdfcanvas.width = viewport.width;
     console.log(mainDiv_bbox.width, viewport.width);
 
-    var adj_viewport = _page.getViewport(this.scale * mainDiv_bbox.height /  viewport.height );
+    var adj_viewport = viewport;// _page.getViewport(this.scale * mainDiv_bbox.height /  viewport.height );
 //            canvas.height = viewport.height;
 
     this.pdfcanvas.attr("height", adj_viewport.height)
@@ -105,7 +105,7 @@ class PDFdoc
    * finised. Otherwise, executes rendering immediately.
    */
   queueRenderPage (num) {
-    if( num > 0 && num < this.pdfDoc.numPages )
+    if( num >= 1 && num <= this.pdfDoc.numPages )
     {
       if (this.pageRendering) {
         this.pageNumPending = num;

@@ -51,6 +51,14 @@ function getStyleString(style)
   return str;
 }
 
+function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+
+    var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+
+    return { width: srcWidth*ratio, height: srcHeight*ratio };
+ }
+
+
 function processCmdObj(obj)
 {
   for( var key in obj )
@@ -399,7 +407,7 @@ function processCmdObj(obj)
 
     if( typeof objectStack[id] != "undefined" )
     {
-      if( objectStack[id].context == "canvas" ||  objectStack[id].context == "main")
+      if( objectStack[id].context == "main")
       {
         var style;
         if( typeof objectStyle[id] != "undefined" )
@@ -565,8 +573,11 @@ function ongoingTouchIndexById(idToFind) {
 }
 
 function log(msg) {
+  console.log(msg);
+  /*
   var p = document.getElementById('log');
   p.innerHTML = msg;
+  */
 }
 
 function findPos (obj) {

@@ -4,16 +4,16 @@
 
 var oscprefix = document.getElementById("OSC").getAttribute("OSCprefix");
 //var oscprefix = location.pathname.slice(0, -5);
-
+/*
 if (window.WebSocket){
      $("#error").text("");
 }
+*/
 
-var port = new WebSocket(`ws://${location.host}${oscprefix}`);
+var port; // = new WebSocket(`ws://${location.host}${oscprefix}`);
 
-console.log(`ws://${location.host}${oscprefix}`);
+//console.log(`ws://${location.host}${oscprefix}`);
 
-$("#location").text('connected to '+ location.host);
 
 function pad(num, size) {
   return ('0' + num).substr(-size);
@@ -119,7 +119,7 @@ function processCmdObj(obj)
     }
     else if( id_cmd.length < 2 )
     {
-      senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
+    //  _port.senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
       console.log("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n" );
       continue;
     }
@@ -136,7 +136,7 @@ function processCmdObj(obj)
       else
       {
         console.log("must specifiy drawtype after /draw");
-        senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
+  //      _port.senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
 
         continue;
       }
@@ -447,6 +447,8 @@ function processCmdObj(obj)
   }
 }
 
+
+/*+
 port.onmessage = function (event) {
   const msg = event.data;
   console.log(msg);
@@ -456,6 +458,17 @@ port.onmessage = function (event) {
 
 }
 
+port.onclose = function(){
+
+}
+
+function sendObj(obj) {
+  if(port.readyState === port.OPEN)
+  {
+    port.sendObj(obj);
+  }
+}
+
 function posterror(str)
 {
   $("#log").text(str);
@@ -463,9 +476,9 @@ function posterror(str)
 
 function senderror(err)
 {
-  port.send({
-        address: oscprefix+"/error",
-        args: err
+  var erroraddr = oscprefix+"/error";
+  sendObj({
+        erroraddr : err
     });
 }
 
@@ -477,6 +490,7 @@ port.onerror = function(error) {
 //port.open();
 
 
+*/
 
 /**
 *   mouse handling
@@ -517,7 +531,7 @@ function handleStart(evt) {
     var idx = ongoingTouchIndexById(touches[i].identifier);
     bndl[oscprefix+"/"+evt.target.id+"/finger/"+idx+"/start/xy"] = [touches[i].clientX, touches[i].clientY];
   }
-  port.send(JSON.stringify(bndl));
+  port.sendObj(bndl);
 }
 
 function handleMove(evt) {
@@ -529,7 +543,7 @@ function handleMove(evt) {
     ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
     bndl[oscprefix+"/"+evt.target.id+"/finger/"+idx+"/move/xy"] = [touches[i].clientX, touches[i].clientY];
   }
-  port.send(JSON.stringify(bndl));
+  port.sendObj(bndl);
 
 }
 
@@ -542,7 +556,7 @@ function handleEnd(evt) {
     ongoingTouches.splice(i, 1); // remove it; we're done
     bndl[oscprefix+"/"+evt.target.id+"/finger/"+idx+"/end/xy"] = [touches[i].clientX, touches[i].clientY];
   }
-  port.send(JSON.stringify(bndl));
+  port.sendObj(bndl);
 }
 
 function handleCancel(evt) {
@@ -554,7 +568,7 @@ function handleCancel(evt) {
     ongoingTouches.splice(i, 1); // remove it; we're done
     bndl[oscprefix+"/"+evt.target.id+"/finger/"+idx+"/cancel/xy"] = [touches[i].clientX, touches[i].clientY];
   }
-  port.send(JSON.stringify(bndl));
+  port.sendObj(bndl);
 }
 
 function copyTouch(touch) {
@@ -574,10 +588,10 @@ function ongoingTouchIndexById(idToFind) {
 
 function log(msg) {
   console.log(msg);
-  /*
+
   var p = document.getElementById('log');
   p.innerHTML = msg;
-  */
+
 }
 
 function findPos (obj) {
@@ -599,7 +613,7 @@ document.body.addEventListener("mousemove", function(event)
 {
   const obj = {};
   obj[oscprefix+"/"+event.target.id+"/mouse/xy"] = [ event.clientX, event.clientY ];
-  port.send(JSON.stringify(obj));
+  port.sendObj(obj);
 
     //posterror(event.clientX + " " + event.clientY);
 });
@@ -608,34 +622,116 @@ document.body.addEventListener("mousedown", function(event)
 {
   const obj = {};
   obj[oscprefix+"/"+event.target.id+"/mouse/state"] = 1;
-  port.send(JSON.stringify(obj));
+  port.sendObj(obj);
 });
 
 document.body.addEventListener("mouseup", function(event)
 {
   const obj = {};
   obj[oscprefix+"/"+event.target.id+"/mouse/state"] = 0;
-  port.send(JSON.stringify(obj));
+  port.sendObj(obj);
     //posterror(event.clientX + " " + event.clientY);
 });
+
+
+
+function _SocketPort_()
+{
+  this.port = new WebSocket(`ws://${location.host}${oscprefix}`);
+
+  this.close = this.port.close;
+
+  this.port.onmessage = function (event) {
+    const msg = event.data;
+    console.log(msg);
+    const obj = JSON.parse(msg);
+    processCmdObj(obj);
+
+  }
+
+  this.port.onopen = function() {
+    log("opened port");
+
+    port.sendObj({ "/connectedTo" : oscprefix });
+  }
+
+  this.port.onclose = function(){
+    log("closing");
+  }
+
+  this.sendObj = function (obj) {
+    if(this.port.readyState === this.port.OPEN)
+    {
+      this.port.send( JSON.stringify(obj) );
+    }
+  }
+
+  this.senderror = function (err)
+  {
+    var erroraddr = oscprefix+"/error";
+    this.sendObj({
+          erroraddr : err
+      });
+  }
+
+  this.port.onerror = function(error) {
+    this.senderror(error);
+  };
+
+}
+
 /**
 * Main window setup
 *
 */
-
 window.onload = function() {
   log("loaded");
+
+  port = new _SocketPort_();
+
   objectStack['main'] = document.getElementById("main");
   objectStack['main'].context = 'main';
+
 /*
   objectStack['canvas'] = document.getElementById('pdfcanvas');
   objectStack['canvas'].context = 'canvas';
 */
   enableMultitouch();
+
+
+  // onfocus called when the user leaves and comes back to the page
+  window.onfocus = function(){
+    log("port status "+ JSON.stringify(port));
+    if( port.readyState != port.OPEN )
+    {
+      port = new _SocketPort_();
+      log('new socket');
+    }
+    else {
+      port.sendObj({ "/helloAgain" : "skinny" });
+
+    }
+  }
+
+  window.onblur = function(){
+
+    if( port.readyState === port.OPEN  )
+    {
+      port.sendObj({ "/bye" : "skinny" });
+      port.close();
+    }
+
+  }
 }
+
 
 // this doesn't work yet
 window.onbeforeunload = function() {
-    port.onclose = function () {}; // disable onclose handler first
-    port.close()
+
+    // port.onclose = function () {}; // disable onclose handler first
+    if( port.readyState === port.OPEN  )
+    {
+      port.close();
+    }
+
 };

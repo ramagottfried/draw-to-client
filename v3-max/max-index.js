@@ -129,16 +129,19 @@ class Clients {
     }
 
     saveClient(client, uniqueid, prefix) {
-        this.clientList[uniqueid] = { socket : client, oscprefix : prefix };
+      this.clientList[uniqueid] = { socket : client, oscprefix : prefix };
 
-        if( !this.prefixList.includes(prefix) )
-        {
-          this.prefixList.push(prefix);
-        }
+      if( !this.prefixList.includes(prefix) )
+      {
+        this.prefixList.push(prefix);
+      }
 
     }
 
     removeClient( uniqueid ) {
+      if(typeof this.clientList[uniqueid] === "undefined" )
+        return;
+
       var prefix = this.clientList[uniqueid].oscprefix;
       this.prefixList = this.prefixList.filter(function(item) { return item !==  prefix});
       delete this.clientList[uniqueid];
@@ -178,18 +181,25 @@ wss.on("connection", function (socket, req) {
 
     // setup relay back to Max
     socket.on("message", function (msg) {
-      Max.outlet( JSON.parse(msg) );
+
+      try {
+        Max.outlet( JSON.parse(msg) );
+      } catch(e){
+        Max.post("json failed to parse " + e);
+      }
+
     });
 
     socket.on("close", function (event) {
+      Max.post("closed socket : "+ uniqueid+ " @ " +req.url);
       clients.removeClient( uniqueid );
       socket.terminate();
-      Max.post("closed socket : "+ uniqueid+ " @ " +req.url);
     });
 
     socket.on("error", function (event) {
-      clients.removeClient( uniqueid );
       Max.post("error on socket : "+ uniqueid+ " @ " +req.url);
+      clients.removeClient( uniqueid );
+      Max.post( event );
     });
 
     clients.saveClient( socket, uniqueid, req.url );

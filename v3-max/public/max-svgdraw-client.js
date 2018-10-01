@@ -348,7 +348,7 @@ function processCmdObj(obj)
 
              image.addEventListener('load', function() {
               objectStack[id].attr('width', this.naturalWidth)
-               .attr('height', this.naturalHeight);
+                             .attr('height', this.naturalHeight);
              });
              image.src = objValue;
 
@@ -587,10 +587,11 @@ function ongoingTouchIndexById(idToFind) {
 }
 
 function log(msg) {
-  console.log(msg);
+  var time = new Date();
+  console.log( msg +" @"+time.toLocaleTimeString() );
 
   var p = document.getElementById('log');
-  p.innerHTML = msg;
+  p.innerHTML = msg +" @"+time.toLocaleTimeString();
 
 }
 
@@ -639,30 +640,32 @@ function _SocketPort_()
 {
   this.port = new WebSocket(`ws://${location.host}${oscprefix}`);
 
-  this.close = this.port.close;
+  this.close = function () {
+//    port.sendObj({ "/closeme" : "please" });
+    this.port.close();
+  }
 
   this.port.onmessage = function (event) {
     const msg = event.data;
     console.log(msg);
     const obj = JSON.parse(msg);
     processCmdObj(obj);
-
   }
 
   this.port.onopen = function() {
-    log("opened port");
-
+//    log("opened port");
     port.sendObj({ "/connectedTo" : oscprefix });
   }
 
-  this.port.onclose = function(){
-    log("closing");
-  }
+  this.port.onclose = function(){}
 
   this.sendObj = function (obj) {
     if(this.port.readyState === this.port.OPEN)
     {
       this.port.send( JSON.stringify(obj) );
+    }
+    else {
+      log("no open port!");
     }
   }
 
@@ -684,10 +687,42 @@ function _SocketPort_()
 * Main window setup
 *
 */
+var hidden, visibilityChange;
+if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+  hidden = "hidden";
+  visibilityChange = "visibilitychange";
+} else if (typeof document.msHidden !== "undefined") {
+  hidden = "msHidden";
+  visibilityChange = "msvisibilitychange";
+} else if (typeof document.webkitHidden !== "undefined") {
+  hidden = "webkitHidden";
+  visibilityChange = "webkitvisibilitychange";
+}
+
+function handleVisibilityChange() {
+//  log (document[hidden] + " " + (typeof port.readyState) );
+  if( document[hidden] )
+  {
+//    port.sendObj({ "/bye" : "skinny" });
+    port.close();
+  }
+  else if( typeof port.readyState === "undefined" || port.readyState !== port.OPEN )
+  {
+    port = new _SocketPort_();
+  }
+  else
+  {
+    // returning with open port ... shouldn't happen anymore
+    //port.sendObj({ "/helloAgain" : "skinny" });
+  }
+
+}
+
 window.onload = function() {
-  log("loaded");
+//  log("loaded");
 
   port = new _SocketPort_();
+//  port.sendObj({ "/loaded" : "skinny" });
 
   objectStack['main'] = document.getElementById("main");
   objectStack['main'].context = 'main';
@@ -698,30 +733,12 @@ window.onload = function() {
 */
   enableMultitouch();
 
-
-  // onfocus called when the user leaves and comes back to the page
-  window.onfocus = function(){
-    log("port status "+ JSON.stringify(port));
-    if( port.readyState != port.OPEN )
-    {
-      port = new _SocketPort_();
-      log('new socket');
-    }
-    else {
-      port.sendObj({ "/helloAgain" : "skinny" });
-
-    }
+  if (typeof document.addEventListener === "undefined" || hidden === undefined) {
+    console.log("Page Visibility API not found");
+  } else {
+    document.addEventListener(visibilityChange, handleVisibilityChange, false);
   }
 
-  window.onblur = function(){
-
-    if( port.readyState === port.OPEN  )
-    {
-      port.sendObj({ "/bye" : "skinny" });
-      port.close();
-    }
-
-  }
 }
 
 

@@ -31,6 +31,16 @@ var objectTransform = [];
 
 var ongoingTouches = [];
 
+
+function log(msg) {
+  var time = new Date();
+  console.log( msg +" @"+time.toLocaleTimeString() );
+
+  var p = document.getElementById('log');
+  p.innerHTML = msg +" @"+time.toLocaleTimeString();
+
+}
+
 function getTransformString(transform)
 {
   var str = "";
@@ -151,7 +161,13 @@ function processCmdObj(obj)
         if( typeof objectStyle[id] == "undefined" )
           objectStyle[id] = {};
 
-        objectStyle[id][cmdtype] = objValue;
+        if( cmdtype == "transition")
+        {
+          objectStyle[id]["transition"] = objValue;
+          objectStyle[id]["-webkit-transition"] = objValue;
+        }
+        else
+          objectStyle[id][cmdtype] = objValue;
 
         /*
         if( typeof objectStack[id] != "undefined" )
@@ -173,10 +189,11 @@ function processCmdObj(obj)
         if( typeof objectTransform[id] == "undefined" )
           objectTransform[id] = {};
 
-        if( (objectStack[id].context == "main" || objectStack[id].context == "canvas") && cmdtype == "translate" && argc == 2 )
+        if( cmdtype == "translate" && argc == 2 )
           objectTransform[id][cmdtype] = [objValue[0]+"px", objValue[1]+"px"];
         else
           objectTransform[id][cmdtype] = objValue;
+
 
           // NOTE: SVG rotates from the top left corner
           //  if we want to rotate from the center we'll need the object bounds, and use rotate(deg, cx, cy)
@@ -407,9 +424,9 @@ function processCmdObj(obj)
 
     if( typeof objectStack[id] != "undefined" )
     {
-      if( objectStack[id].context == "main")
-      {
-        var style;
+
+
+        var style = {};
         if( typeof objectStyle[id] != "undefined" )
           style = objectStyle[id];
 
@@ -417,80 +434,26 @@ function processCmdObj(obj)
         {
           if( typeof style == "undefined")
           {
-            const transstr = getTransformString(objectTransform[id]);
-            console.log("transform:"+transstr+"; "+ "-webkit-transform:"+transstr);
-            objectStack[id].setAttribute("style", "transform:"+transstr );
+          //  const transstr = getTransformString(objectTransform[id]);
+            //objectStack[id].attr("style", "transform:"+transstr );
 
           }
           else
           {
             style['transform'] = getTransformString(objectTransform[id]);
-    //        style['-webkit-transform'] = getTransformString(objectTransform[id]);
+            style['-webkit-transform'] = getTransformString(objectTransform[id]);
           }
         }
 
         if( typeof style != "undefined" )
-          objectStack[id].setAttribute("style", getStyleString(style) );
+          objectStack[id].attr("style", getStyleString(style) );
 
-      }
-      else
-      {
-        if( typeof objectStyle[id] != "undefined" )
-          objectStack[id].attr("style", getStyleString(objectStyle[id]) );
-
-        if( typeof objectTransform[id] != "undefined" )
-            objectStack[id].attr("transform", getTransformString(objectTransform[id]) );
-      }
 
 
     }
   }
 }
 
-
-/*+
-port.onmessage = function (event) {
-  const msg = event.data;
-  console.log(msg);
-  const obj = JSON.parse(msg);
-
-  processCmdObj(obj);
-
-}
-
-port.onclose = function(){
-
-}
-
-function sendObj(obj) {
-  if(port.readyState === port.OPEN)
-  {
-    port.sendObj(obj);
-  }
-}
-
-function posterror(str)
-{
-  $("#log").text(str);
-}
-
-function senderror(err)
-{
-  var erroraddr = oscprefix+"/error";
-  sendObj({
-        erroraddr : err
-    });
-}
-
-port.onerror = function(error) {
-  posterror(error);
-  senderror(error);
-};
-
-//port.open();
-
-
-*/
 
 /**
 *   mouse handling
@@ -586,15 +549,6 @@ function ongoingTouchIndexById(idToFind) {
   return -1; // not found
 }
 
-function log(msg) {
-  var time = new Date();
-  console.log( msg +" @"+time.toLocaleTimeString() );
-
-  var p = document.getElementById('log');
-  p.innerHTML = msg +" @"+time.toLocaleTimeString();
-
-}
-
 function findPos (obj) {
     var curleft = 0,
         curtop = 0;
@@ -647,7 +601,6 @@ function _SocketPort_()
 
   this.port.onmessage = function (event) {
     const msg = event.data;
-    console.log(msg);
     const obj = JSON.parse(msg);
     processCmdObj(obj);
   }
@@ -742,9 +695,7 @@ window.onload = function() {
 }
 
 
-// this doesn't work yet
 window.onbeforeunload = function() {
-
     // port.onclose = function () {}; // disable onclose handler first
     if( port.readyState === port.OPEN  )
     {

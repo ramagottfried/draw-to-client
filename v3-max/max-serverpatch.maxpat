@@ -41,6 +41,22 @@
 				"box" : 				{
 					"fontface" : 0,
 					"fontsize" : 12.0,
+					"id" : "obj-30",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 367.0, 692.0, 489.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 115, 99, 111, 114, 101, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 116, 114, 97, 110, 115, 108, 97, 116, 101, 0, 0, 0, 0, 44, 105, 105, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+					"saved_bundle_length" : 72,
+					"text" : "/svgdraw/1/score/transform/translate : [0, 0]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
 					"id" : "obj-36",
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
@@ -86,15 +102,15 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-24",
-					"linecount" : 2,
+					"linecount" : 3,
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 51.5, 310.0, 265.0, 38.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 47, 99, 111, 110, 110, 101, 99, 116, 101, 100, 84, 111, 0, 0, 0, 0, 44, 115, 0, 0, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 0, 0, 0, 0, 0, 20, 47, 110, 111, 119, 0, 0, 0, 0, 44, 116, 0, 0, -33, 92, -5, 1, -107, 79, -110, -65 ],
-					"saved_bundle_length" : 76,
-					"text" : "/connectedTo : \"/svgdraw/1\",\n/now : 2018-10-01T19:58:57.583245Z"
+					"patching_rect" : [ 51.5, 310.0, 265.0, 51.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 100, 114, 97, 119, 105, 110, 103, 47, 109, 111, 117, 115, 101, 47, 120, 121, 0, 44, 105, 105, 0, 0, 0, 4, -83, 0, 0, 0, -8, 0, 0, 0, 20, 47, 110, 111, 119, 0, 0, 0, 0, 44, 116, 0, 0, -33, 92, -4, -125, -55, 127, -108, -17 ],
+					"saved_bundle_length" : 84,
+					"text" : "/svgdraw/1/drawing/mouse/xy : [1197, 248],\n/now : 2018-10-01T20:05:23.787103Z"
 				}
 
 			}
@@ -133,7 +149,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 44.0, 51.0, 489.0, 24.0 ],
-					"presentation_linecount" : 2,
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 116, 114, 97, 110, 115, 108, 97, 116, 101, 0, 0, 44, 105, 105, 0, 0, 0, 0, 100, 0, 0, 0, 0 ],
 					"saved_bundle_length" : 68,
 					"text" : "/svgdraw/1/foo/transform/translate : [100, 0]"
@@ -334,7 +349,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 437.0, 357.0, 270.0, 211.0 ],
-					"text" : "/start/success : {\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u714801001_ctrl.sock\"\n\t},\n\t/filename : \"max-index.js\",\n\t/watch : 1,\n\t/id : \"u714801001\",\n\t/time : 2018-10-01T18:57:20.179305Z\n}"
+					"text" : "/start/success : {\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u714892591_ctrl.sock\"\n\t},\n\t/filename : \"max-index.js\",\n\t/watch : 1,\n\t/id : \"u714892591\",\n\t/time : 2018-10-01T20:05:09.338435Z\n}"
 				}
 
 			}
@@ -782,7 +797,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 12.0, 9.0, 525.0, 38.0 ],
-					"presentation_linecount" : 2,
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 100, 114, 97, 119, 47, 112, 97, 116, 104, 0, 0, 0, 0, 44, 115, 0, 0, 77, 51, 53, 44, 54, 53, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 45, 54, 48, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 44, 54, 48, 0, 0, 0, 0, 0, 0, 0, 56, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 102, 111, 111, 47, 115, 116, 121, 108, 101, 47, 116, 114, 97, 110, 115, 105, 116, 105, 111, 110, 0, 44, 115, 0, 0, 116, 114, 97, 110, 115, 102, 111, 114, 109, 32, 49, 115, 32, 108, 105, 110, 101, 97, 114, 0 ],
 					"saved_bundle_length" : 156,
 					"text" : "/svgdraw/1/foo/draw/path : \"M35,65a30,30,0,0,0,0-60a30,30,0,0,0,0,60\",\n/svgdraw/1/foo/style/transition : \"transform 1s linear\""
@@ -1002,6 +1016,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-30", 0 ]
 				}
 
 			}

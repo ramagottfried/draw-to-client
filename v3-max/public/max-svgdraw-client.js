@@ -426,26 +426,15 @@ function processCmdObj(obj)
     {
 
 
-        var style = {};
-        if( typeof objectStyle[id] != "undefined" )
-          style = objectStyle[id];
+        var style = ( typeof objectStyle[id] != "undefined" ) ? objectStyle[id] : {};
 
         if( typeof objectTransform[id] != "undefined" )
         {
-          if( typeof style == "undefined")
-          {
-          //  const transstr = getTransformString(objectTransform[id]);
-            //objectStack[id].attr("style", "transform:"+transstr );
-
-          }
-          else
-          {
             style['transform'] = getTransformString(objectTransform[id]);
             style['-webkit-transform'] = getTransformString(objectTransform[id]);
-          }
         }
 
-        if( typeof style != "undefined" )
+        if( Object.keys(style).length > 0 )
           objectStack[id].attr("style", getStyleString(style) );
 
 

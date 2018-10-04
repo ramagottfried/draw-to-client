@@ -27,8 +27,12 @@ var objectTransform = [];
 
 var ongoingTouches = [];
 
+var audioObj = [];
+
 var main = d3.select("#main");
 var drawing = d3.select("#drawing");
+
+const _click = ( (document.ontouchstart!==null) ? 'onclick' : 'ontouchstart' );
 
 var css = document.styleSheets[0];
 
@@ -81,6 +85,8 @@ function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
 
 function processCmdObj(obj)
 {
+  console.log(obj);
+
   for( var key in obj )
   {
     const objValue =  obj[key];
@@ -147,7 +153,7 @@ function processCmdObj(obj)
     var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
     var cmdtype = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
 
-    if( cmd == "draw" || cmd == "pdf" )
+    if( cmd == "draw" || cmd == "pdf" || cmd == "sample")
     {
       if( cmdtype != "none")
       {
@@ -202,6 +208,11 @@ function processCmdObj(obj)
 
         if( typeof objectStack[id] != "undefined" )
         {
+          if( cmdtype === "onclick")
+          {
+            cmdtype = _click;
+          }
+
           objectStack[id].attr(cmdtype, objValue);
         }
 
@@ -432,16 +443,34 @@ function processCmdObj(obj)
 
       break;
 
-      /*
-      case "/hr":
-        $("#hr").text(pad(objValue));
+      case "sample/load":
+        if( argc > 0 ) // audio file
+        {
+            if( typeof audioObj[id] == 'undefined' )
+            {
+
+              audioObj[id] = new Tone.Player({
+                  "url" : objValue,
+                  "loop" : ( argc > 1 ) ? argc[1] : false
+                }).toMaster();
+
+            }
+            else
+            {
+              audioObj[id].load( objValue );
+            }
+
+        }
       break;
-      case "/min":
-        $("#min").text(pad(objValue));
+      case "sample/play":
+        if( argc == 1 && typeof audioObj[id] != 'undefined') // play/stop
+        {
+          audioObj[id].restart();
+          port.sendObj({ "/msg" : "trying to start "+id });
+        }
       break;
-      case "/ms":
-        $("#ms").text( Math.round(objValue*100)/100 );
-      break;*/
+
+
       default:
         console.log("received unknown command: "+cmd+ "\n" );
       break;
@@ -686,6 +715,12 @@ function handleVisibilityChange() {
 }
 
 
+/*
+Tone.Buffer.on("load", function(){
+		console.log(this);
+});
+*/
+
 window.onload = function() {
 //  log("loaded");
 
@@ -695,7 +730,7 @@ window.onload = function() {
   objectStack['main'] = main;
 
   //for( var rule of css.cssRules )
-    console.log(getCSSRuleStyle("#main"));
+//    console.log(getCSSRuleStyle("#main"));
 
 //  console.log(css.cssRules);
 
@@ -705,7 +740,12 @@ window.onload = function() {
   objectStack['canvas'] = document.getElementById('pdfcanvas');
   objectStack['canvas'].context = 'canvas';
 */
-  enableMultitouch();
+
+  StartAudioContext(Tone.context).then( function() {
+  	log("Started Audio");
+    enableMultitouch();
+  });
+
 
   if (typeof document.addEventListener === "undefined" || hidden === undefined) {
     console.log("Page Visibility API not found");

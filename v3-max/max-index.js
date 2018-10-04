@@ -177,7 +177,7 @@ wss.on("connection", function (socket, req) {
 
     var uniqueid = req.headers['sec-websocket-key'];
 
-    Max.post("A Web Socket connection has been established! " + req.url + " ("+uniqueid+")" );
+    Max.post("A Web Socket connection has been established! " + req.url + " ("+uniqueid+") "+ req.connection.remoteAddress );
 
     // setup relay back to Max
     socket.on("message", function (msg) {

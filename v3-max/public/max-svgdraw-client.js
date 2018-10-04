@@ -14,13 +14,9 @@ var port; // = new WebSocket(`ws://${location.host}${oscprefix}`);
 
 //console.log(`ws://${location.host}${oscprefix}`);
 
-
 function pad(num, size) {
   return ('0' + num).substr(-size);
 }
-
-var main = d3.select("#main");
-var drawing = d3.select("#drawing");
 
 // low-level object reference array
 var objectStack = [];
@@ -31,6 +27,19 @@ var objectTransform = [];
 
 var ongoingTouches = [];
 
+var main = d3.select("#main");
+var drawing = d3.select("#drawing");
+
+var css = document.styleSheets[0];
+
+function getCSSRuleStyle(name)
+{
+  for( var i = 0; i < css.cssRules.length; i++ )
+    if( css.cssRules[i].selectorText == name )
+      return css.cssRules[i].style;
+
+  return;
+}
 
 function log(msg) {
   var time = new Date();
@@ -40,6 +49,7 @@ function log(msg) {
   p.innerHTML = msg +" @"+time.toLocaleTimeString();
 
 }
+
 
 function getTransformString(transform)
 {
@@ -90,16 +100,16 @@ function processCmdObj(obj)
 
     if( id == "clear")
     {
+      //console.log("clearing canvas");
+
       for( var key in objectStack)
       {
         if( objectStack[key].context == "canvas" )
         {
-          console.log("clearing canvas");
           pdfcontext.clearRect(0, 0, pdfcanvas.width, pdfcanvas.height);
         }
         else if( objectStack[key].context == "main" )
-        {
-        }
+        {}
         else
         {
           objectStack[key].remove();
@@ -157,7 +167,19 @@ function processCmdObj(obj)
     switch (cmd)
     {
       case "style" :
-        console.log("objValue " + objValue);
+/*
+        const selector = '#'+id;
+        var style = getCSSRuleStyle(selector);
+
+        if( typeof style == 'undefined' )
+        {
+          css.insertRule(selector + '{' + cmdtype + ' : ' + objValue + '}', css.cssRules.length);
+        }
+
+        console.log(css);
+        return ;
+*/
+        console.log("objValue " + cmdtype + " " + objValue);
         if( typeof objectStyle[id] == "undefined" )
           objectStyle[id] = {};
 
@@ -399,11 +421,14 @@ function processCmdObj(obj)
       break;
 
       case "remove":
-        objectStack[id].remove();
-        delete objectStack[id];
+        if( objectStack[id] != main )
+        {
+          objectStack[id].remove();
+          delete objectStack[id];
+        }
 
-        if( objectStack[key].context == "canvas" )
-          pdfcontext.clearRect(0, 0, canvas.width, canvas.height);
+//        if( objectStack[key].context == "canvas" )
+//          pdfcontext.clearRect(0, 0, canvas.width, canvas.height);
 
       break;
 
@@ -660,14 +685,21 @@ function handleVisibilityChange() {
 
 }
 
+
 window.onload = function() {
 //  log("loaded");
 
   port = new _SocketPort_();
 //  port.sendObj({ "/loaded" : "skinny" });
 
-  objectStack['main'] = document.getElementById("main");
-  objectStack['main'].context = 'main';
+  objectStack['main'] = main;
+
+  //for( var rule of css.cssRules )
+    console.log(getCSSRuleStyle("#main"));
+
+//  console.log(css.cssRules);
+
+//  objectStack['main'].context = 'main';
 
 /*
   objectStack['canvas'] = document.getElementById('pdfcanvas');

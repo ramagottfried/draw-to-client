@@ -509,12 +509,13 @@ function emptybundle(){
   }
 };
 
-function enableMultitouch() {
-  document.body.addEventListener("touchstart", handleStart, false);
-  document.body.addEventListener("touchend", handleEnd, false);
-  document.body.addEventListener("touchcancel", handleCancel, false);
-  document.body.addEventListener("touchleave", handleEnd, false);
-  document.body.addEventListener("touchmove", handleMove, false);
+function initMultitouch(name) {
+  var el = document.getElementById(name);
+  el.ontouchstart = handleStart;
+  el.ontouchmove =  handleMove;
+  el.ontouchend =  handleEnd;
+  el.ontouchcancel =  handleEnd;
+  //el.touchleave =  handleEnd;
   log("initialized multitouch");
 }
 
@@ -743,7 +744,9 @@ window.onload = function() {
 
   StartAudioContext(Tone.context).then( function() {
   	log("Started Audio");
-    enableMultitouch();
+    initMultitouch("drawing");
+    initMultitouch("main");
+    initMultitouch("touchdiv");
   });
 
 

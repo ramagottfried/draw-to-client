@@ -110,11 +110,7 @@ function processCmdObj(obj)
 
       for( var key in objectStack)
       {
-        if( objectStack[key].context == "canvas" )
-        {
-          pdfcontext.clearRect(0, 0, pdfcanvas.width, pdfcanvas.height);
-        }
-        else if( objectStack[key].context == "main" )
+        if( key == "main" )
         {}
         else
         {

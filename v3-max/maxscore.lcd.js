@@ -657,12 +657,12 @@ function paint() {
         }
     }
     mgraphics.translate(-7, -7);
-	post("matrix-current", mgraphics.get_matrix(), "\n");
+//	post("matrix-current", mgraphics.get_matrix(), "\n");
     mgraphics.image_surface_draw(willUseLater);
-    mgraphics.translate(14, 14);
+    mgraphics.translate(7, 7);
     if (playback) {
         with(mgraphics) {
-           	transform(zoom, 0, 0, zoom, -7.5, -7.5);
+           	transform(zoom, 0, 0, zoom, -0.8, -0.8);
  			set_source_rgba(1, 1, 0., 0.8);
             set_line_width(2.);
             move_to(playheadPosition[1], playheadPosition[2]);
@@ -700,6 +700,7 @@ function paint() {
             cursarr = cursors[j].split(" ");
             //draw cursor 
  			set_source_rgba(cursarr[5], cursarr[6], cursarr[7], cursarr[8]);
+           	transform(zoom, 0, 0, zoom, 0., 0.);
 			if (cursarr[9] == "line")
 			//
 			{
@@ -726,8 +727,8 @@ function paint() {
 			else
 			{
             save();
+           	transform(zoom, 0, 0, zoom, 0., 0.);
             select_font_face("Arial");
-			//post(cursarr[4], "\n");
             set_font_size(cursarr[4] * 1.42 + 20);
             move_to(cursarr[2] - 10, parseFloat(cursarr[3]) + parseFloat(cursarr[4]) + 10);
 			scale(20/cursarr[4], 1.);

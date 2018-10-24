@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 243.0, 79.0, 1372.0, 787.0 ],
+		"rect" : [ 311.0, 79.0, 983.0, 787.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -38,6 +38,48 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-43",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 113.0, 141.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-41",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 22.0, 84.0, 50.0, 22.0 ],
+					"text" : "read"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-39",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 4,
+					"outlettype" : [ "dictionary", "", "", "" ],
+					"patching_rect" : [ 22.0, 128.0, 50.5, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"fontface" : 0,
 					"fontsize" : 12.0,
@@ -377,7 +419,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 55.0, 135.0, 100.0, 22.0 ],
+					"patching_rect" : [ 19.0, 180.0, 100.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -454,15 +496,15 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-24",
-					"linecount" : 2,
+					"linecount" : 3,
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 12.0, 302.5, 273.0, 38.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 47, 99, 111, 110, 110, 101, 99, 116, 101, 100, 84, 111, 0, 0, 0, 0, 44, 115, 0, 0, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 0, 0, 0, 0, 0, 20, 47, 110, 111, 119, 0, 0, 0, 0, 44, 116, 0, 0, -33, 108, 83, -46, -120, 27, 1, 6 ],
-					"saved_bundle_length" : 76,
-					"text" : "/connectedTo : \"/svgdraw/1\",\n/now : 2018-10-13T11:21:54.531662Z"
+					"patching_rect" : [ 12.0, 302.5, 273.0, 51.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 116, 111, 117, 99, 104, 100, 105, 118, 47, 109, 111, 117, 115, 101, 47, 120, 121, 0, 0, 0, 0, 44, 105, 105, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 20, 47, 110, 111, 119, 0, 0, 0, 0, 44, 116, 0, 0, -33, 108, -73, 3, -99, -96, -88, 80 ],
+					"saved_bundle_length" : 88,
+					"text" : "/svgdraw/1/touchdiv/mouse/xy : [0, 15],\n/now : 2018-10-13T18:25:07.615733Z"
 				}
 
 			}
@@ -504,24 +546,6 @@
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 109, 97, 105, 110, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 116, 114, 97, 110, 115, 108, 97, 116, 101, 0, 44, 105, 105, 0, 0, 0, 1, 44, 0, 0, 0, 0 ],
 					"saved_bundle_length" : 68,
 					"text" : "/svgdraw/1/main/transform/translate : [300, 0]"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-58",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
-					"patching_rect" : [ 44.0, 171.0, 50.5, 22.0 ],
-					"saved_object_attributes" : 					{
-						"embed" : 0,
-						"parameter_enable" : 0,
-						"parameter_mappable" : 0
-					}
-,
-					"text" : "dict"
 				}
 
 			}
@@ -700,7 +724,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 437.0, 357.0, 270.0, 211.0 ],
-					"text" : "/start/success : {\n\t/id : \"u556898827\",\n\t/filename : \"max-index.js\",\n\t/watch : 1,\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u556898827_ctrl.sock\"\n\t},\n\t/time : 2018-10-13T08:01:59.975914Z\n}"
+					"text" : "/start/success : {\n\t/id : \"u556839288\",\n\t/filename : \"max-index.js\",\n\t/watch : 1,\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u556839288_ctrl.sock\"\n\t},\n\t/time : 2018-10-13T18:17:14.006988Z\n}"
 				}
 
 			}
@@ -1437,7 +1461,28 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-39", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-39", 0 ],
+					"source" : [ "obj-41", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-39", 0 ],
+					"source" : [ "obj-43", 0 ]
 				}
 
 			}
@@ -1472,15 +1517,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
-					"order" : 0,
-					"source" : [ "obj-6", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-58", 0 ],
-					"order" : 1,
 					"source" : [ "obj-6", 0 ]
 				}
 

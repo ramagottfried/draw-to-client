@@ -1,14 +1,15 @@
 inlets = 3;
 outlets = 3;
 
+include("xml2json");
+
 var output = new Dict();
 output.name = "output";
 var sg = {};
 var groups = ["score"];
 var groupcount = 0;
-var staffBoundingInfo = {}
-//var	scoreTopMarginOfFirstPage;
-//var	scoreTopMargin;
+var staffBoundingInfo = [];
+var staffBoundingFlag = 0;
 var scoreLayout = [];
 var spacing = [];
 var staffSpacing = {}; 
@@ -24,7 +25,7 @@ fontExtras.pull_from_coll("MaxScoreFontExtrasMap");
 var textFont = "Arial";
 var textFontSize = "12.";
 var mgraphics = new JitterObject("jit.mgraphics", 320, 240);
-var outmatrix = new JitterMatrix(4,"char",320,240);
+var outmatrix = new JitterMatrix(4, "char", 320, 240);
 var setStaffGroup = [];
 var flag = 0;
 var tempoflag = 0;
@@ -33,6 +34,17 @@ var notes = 0;
 var stems = {};
 var cursors = new Dict();
 cursors.name = "cursors";
+var cursorAttr = new Dict();
+cursorAttr.name = "cursorAttr";
+var dumpflag = 0;
+var dump = [];
+var json = {};
+var tempo = 60;
+var timesig = [4, 4];
+var svg = new Dict();
+svg.name = "svg";
+var imageTable = {};
+
 
 
 if (jsarguments.length >= 2 &&  jsarguments[1] == "@staffgroups") 
@@ -134,6 +146,8 @@ function getNumStaves(n)
 //	if (scoreLayout[1] == 0) outlet(1, "getScoreTopMarginOfFirstPage");
 //	else scoreTopMarginOfFirstPage = 0.;
 //	outlet(1, "getScoreTopMargin");	
+	staffBoundingInfoFlag = 0;
+	post("staffBoundingInfo3", staffBoundingFlag, "\n");
 	for (var b = 0; b < n; b++){
 		outlet(1, "getStaffSpacing", b);
 		outlet(1, "getStaffBoundingInfo", 0, b);
@@ -141,10 +155,11 @@ function getNumStaves(n)
 }
 
 /*
-function getScoreTopMarginOfFirstPage(margin)
+function getNumMeasures(n)
 {
-	scoreTopMarginOfFirstPage = margin;
+	for (var i = 0; i < n; i++) outlet(1, "getMeasureInfo", i);	
 }
+
 
 function getScoreTopMargin(margin)
 {
@@ -160,9 +175,15 @@ function getStaffSpacing(staffIndex, a, b)
 
 function getStaffBoundingInfo(measureIndex, staffIndex, x, y, width, height, marginX)
 {
+	post("staffBoundingInfo", staffBoundingFlag, measureIndex + "::" + staffIndex, x, y, width, height, marginX, "\n");
 	//this can be potentially iffy if number of stafflines changes from measure to measure.
+	if (staffBoundingFlag == 0){
 	boundingBox[staffIndex] = spacing[staffIndex] + height;
 	boundingBoxTop[staffIndex] = y;
+	}
+	else {
+		staffBoundingInfo = [x, y, width, height, marginX];
+	}
 }
 
 function remap(staffGroup, staffIndex, position)
@@ -249,7 +270,6 @@ function writeStem()
 
 function anything() {
     var msg = arrayfromargs(arguments);
-
     switch (messagename) {
         case "scoreLayout":
 			scoreLayout = msg;
@@ -499,12 +519,12 @@ function anything() {
 			{
 				if (typeof sg[s] == "number") 
 				{
-					post("staffspacing", boundingBoxTop[0], boundingBox[sg[s]], staffSpacing[sg[s]][1],  "\n");
 					var top = boundingBoxTop[0];
 					var bottom = boundingBoxTop[0] + boundingBox[sg[s]] - staffSpacing[sg[s]][1] - staffSpacing[sg[s]][0];
 				}
 				else 
 				{
+				post("staffspacing", boundingBoxTop[0], boundingBox[0], staffSpacing[0][1],  "\n");
 				var top = boundingBoxTop[0];
 				var destinationBoxes = 0;
 				for (j = 0; j < sg[s].length; j++) destinationBoxes += boundingBox[sg[s][j]];
@@ -639,7 +659,6 @@ function anything() {
 			//if (commands == "fill") ;
 			for (var s = 0; s < groupcount; s++) {
 			var dest = remap(sg[s], msg[2], RenderMessageOffset[1]);
-            post("dest", dest, dest.length, dest[0], sg[s], msg[2], RenderMessageOffset[1], "\n");
 			if (dest != -1)
 			{
 			for (var d = 0; d < dest.length; d++) {
@@ -726,6 +745,8 @@ function anything() {
 								mode = "C";
                                break;
                             case "raster":
+								//dims and path need to be written to object and retrieved when svg is written
+								imageTable[command[1].split('/')[command[1].split('/').length - 1]] = [command[1].substring(command[1].indexOf(":") + 1), info.get("a")[0], info.get("b")[1]];
 								output.set("/svgdraw/" + (s + 1) + "/" + c + "/draw/img", command[1].split('/')[command[1].split('/').length - 1]);
                                 break;
                             case "svg":
@@ -736,6 +757,8 @@ function anything() {
  						if (path != "") output.set("/svgdraw/" + (s + 1) + "/" + c + "/draw/path", path);
             			var origin = info.get("origin");
             			var transform = info.get("transform");
+						//transform[4] + origin[1] + dest[d]
+            			post("dest", dest, origin, msg[2], RenderMessageOffset[1], msg[5], msg[6], "\n");
 						output.set("/svgdraw/" + (s + 1) + "/" + c + "/transform/matrix", [transform[0], transform[1], transform[2], transform[3], transform[4] + origin[0] + RenderMessageOffset[0], transform[4] + origin[1] + dest[d]]);
                    }
 				}
@@ -762,13 +785,27 @@ function anything() {
             output.set("/svgdraw/" + (s + 1) + "/" + c + "/style/font-size", glyph[i*5+4]);
 			output.set("/svgdraw/" + (s + 1) + "/" + c + "/draw/music", glyph[i*5+1] + msg[0], glyph[i*5+2] + msg[1], glyph[i*5+0].charCodeAt(0).toString(16));
            	output.set("/svgdraw/" + (s + 1) + "/" + c + "/transform/matrix", [1., 0., 0., 1., 0., 0.]);
-			post("char", glyph[i*5+0], glyph[i*5+1] + msg[0], glyph[i*5+2] + msg[1], glyph[i*5+3], glyph[i*5+4],"\n");	
 			}
 			}
 			tempoflag = 1;
-            break;			
+            break;
+		case "startdump" :
+			dump = [];
+			json = {};
+			dumpflag = 1;
+			break;
+		case "enddump" :
+			json = xml2json(dump.join(" "));
+			tempo = json["measure"]["TEMPO"];
+			timesig = json["measure"]["TIMESIG"].split(" ");
+			//post("json", JSON.stringify(json), "\n");	
+			dumpflag = 0;
+			break;
         default:
-		//implement multiple characters such as doubleDot.
+		if (dumpflag == 1) {
+			dump.push(messagename);
+		}
+		else {
 		if (fontMap.contains(messagename)) var glyph = fontMap.get(messagename);
 		else if (fontExtras.contains(messagename)) var glyph = fontExtras.get(messagename); 
 		else return;
@@ -794,24 +831,189 @@ function anything() {
 			}
 			}
 			}
-		}
-    }
-
+		  }
+       }
+	}
 }
 
-function writePict()
+function writePNG()
 {
-	mgraphics.set_source_rgba(1., 1., 1., 1.);
+	outmatrix.dim = [scoreLayout[4], scoreLayout[5]];
+	mgraphics.dim = [scoreLayout[4], scoreLayout[5]];
+	post("dim", outmatrix.dim, "\n");
+	mgraphics.set_source_rgba(1., 1., 0.94, 1.);
 	mgraphics.paint();
-	mgraphics.set_source_rgba(0., 0., 0., 1.);
  	mgraphics.identity_matrix();
- 	mgraphics.move_to(0., 0.);
-	mgraphics.set_source_rgba(0., 1., 0., 1.);
-	mgraphics.rectangle(150, 150, 50, 50);
-	mgraphics.fill();
+	//var svg_string = "<svg><text x=\"97.6\" y=\"300.0\" font-family=\"Bravura\" font-style=\"normal\" font-weight=\"normal\" font-size=\"48.0\" fill=\"#000000\" fill-opacity=\"1.0\" transform=\"scale(0.552500,0.552500)\" xml:space=\"preserve\"></text></svg>";
+
+	//for every line with given count #: if second to last string != draw incremental write to object with key >= 1, 
+	//else write to object with key 0
+	//create svg string 
+	var j = 1;
+	var oldID = 1;
+	var keys = output.getkeys();
+	for (var i = 0; i < keys.length; i++) {
+	var oscAddress = keys[i].split('/');
+	var id = oscAddress[3];
+	if (!isNaN(parseInt(id))){
+	var svgElement = oscAddress[5];
+	var svgAttribute = output.get(keys[i]);
+	if (id == oldID) {
+	if (oscAddress[4] != "draw") {
+		svg.replace(j + "::" + svgElement, svgAttribute);
+		j++;
+		}
+	else svg.replace(0 + "::" + svgElement, svgAttribute);
+	}
+	else {
+		if (svg.get(0).getkeys() != "img") createSVG(j);
+		else {
+		mgraphics.transform(svg.get(1).get(svg.get(1).getkeys()));		
+		mgraphics.image_surface_draw(svg.get(0).get(svg.get(0).getkeys()));
+ 		mgraphics.identity_matrix();
+		}
+		j = 1;
+		svg.clear();	
+		if (oscAddress[4] != "draw") {
+		svg.replace(j + "::" + svgElement, svgAttribute);
+		j++;
+		}
+	else svg.replace(0 + "::" + svgElement, svgAttribute);
+	}
+	oldID = id;	 
+	}
+	}
+	createSVG(j);
 	mgraphics.matrixcalc(outmatrix, outmatrix);
 	outlet(2, "jit_matrix", outmatrix.name);
-	outlet(2, "exportimage", "Macintosh HD:/Users/Shared/Max 8/Library/MaxScore/test.png");
+	outlet(2, "exportimage", "Macintosh HD:/Users/Shared/Max 8/Library/MaxScore/node.js/draw-to-client/v3-max/public/test.png");
+}
+
+function createSVG(j) {
+		var svg_string = "";
+		for (var k = 0; k < j ; k++){
+		var elem = svg.get(k).getkeys();
+		var attr = svg.get(k).get(elem);
+		post("svg", elem, attr, "\n");
+		if (k == 0) {
+			switch (elem){
+			case "path" :
+				svg_string = "<svg><path " + "d=\"" + attr + "\" ";
+				break;
+			case "rect" :
+				svg_string = "<svg><rect x=\"" + attr[0] + "\" y=\"" + attr[1] + "\" width=\"" + attr[2] + "\" height=\"" + attr[3] + "\" ";
+				break;
+			case "ellipse" :
+				svg_string = "<svg><ellipse cx=\"" + attr[0] + "\" cy=\"" + attr[1] + "\" rx=\"" + attr[2] + "\" ry=\"" + attr[3] + "\" ";
+				break;
+			case "text" :
+				svg_string = "<svg><text x=\"" + attr[0] + "\" y=\"" + attr[1] + "\" ";
+				break;				
+			case "music" :
+				svg_string = "<svg><text x=\"" + attr[0] + "\" y=\"" + attr[1] + "\" ";
+				break;				
+			}
+		}
+		else {
+			if (elem == "matrix") svg_string +=  "transform=\"" + elem + "(" + attr + ")\" ";
+			else svg_string += elem + "=\"" + attr + "\" ";
+			}
+		}
+		if (svg.get(0).getkeys() == "music") svg_string += ">" + String.fromCharCode("0x" + svg.get(0).get(svg.get(0).getkeys())[2]) + "</text></svg>";
+		else if (svg.get(0).getkeys() == "text") svg_string += ">" + htmlEntities(svg.get(0).get(svg.get(0).getkeys())[2]) + "</text></svg>";
+		else svg_string += "/></svg>";
+		post("svg", svg_string, "\n");
+		mgraphics.svg_create("svg_string", svg_string);
+		mgraphics.svg_render("svg_string");
+}
+createSVG.local = 1;
+
+function writeSVG()
+{
+	f = new File("Macintosh HD:/Users/Shared/Max 8/Library/MaxScore/node.js/draw-to-client/v3-max/public/test.svg", "write");
+	f.open();
+	f.writeline("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+	f.writeline("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
+	f.writeline("<svg width=\"" + scoreLayout[4] + "px\" height=\"" + scoreLayout[5] + "px\" viewBox=\"0 0 " + scoreLayout[4] + " " + scoreLayout[5] + "\" style=\"background: ivory\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\">");
+	var j = 1;
+	var oldID = 1;
+	var keys = output.getkeys();
+	for (var i = 0; i < keys.length; i++) {
+	var oscAddress = keys[i].split('/');
+	var id = oscAddress[3];
+	if (!isNaN(parseInt(id))){
+	var svgElement = oscAddress[5];
+	var svgAttribute = output.get(keys[i]);
+	if (id == oldID) {
+	if (oscAddress[4] != "draw") {
+		svg.replace(j + "::" + svgElement, svgAttribute);
+		j++;
+		}
+	else svg.replace(0 + "::" + svgElement, svgAttribute);
+	}
+	else {
+	f.writeline(createSVG2(j));
+		j = 1;
+		svg.clear();	
+		if (oscAddress[4] != "draw") {
+		svg.replace(j + "::" + svgElement, svgAttribute);
+		j++;
+		}
+	else svg.replace(0 + "::" + svgElement, svgAttribute);
+	}
+	oldID = id;	 
+	}
+	}
+	f.writeline(createSVG2(j));
+	f.writeline("</svg>");	
+	f.close();
+}
+
+function createSVG2(j) {
+		var svg_string = "";
+		for (var k = 0; k < j ; k++){
+		var elem = svg.get(k).getkeys();
+		var attr = svg.get(k).get(elem);
+		if (k == 0) {
+			switch (elem){
+			case "path" :
+				svg_string = "<path d=\"" + attr + "\" ";
+				break;
+			case "rect" :
+				svg_string = "<rect x=\"" + attr[0] + "\" y=\"" + attr[1] + "\" width=\"" + attr[2] + "\" height=\"" + attr[3] + "\" ";
+				break;
+			case "ellipse" :
+				svg_string = "<ellipse cx=\"" + attr[0] + "\" cy=\"" + attr[1] + "\" rx=\"" + attr[2] + "\" ry=\"" + attr[3] + "\" ";
+				break;
+			case "text" :
+				svg_string = "<text x=\"" + attr[0] + "\" y=\"" + attr[1] + "\" ";
+				break;				
+			case "music" :
+				svg_string = "<text x=\"" + attr[0] + "\" y=\"" + attr[1] + "\" ";
+				break;				
+			//<image x="0." y="0." width="22.0" height="198.0" xlink:href="file:///Users/Shared/Max 7/Packages/MaxScore/media/Images/brace.png" preserveAspectRatio="none" transform="matrix(0.2762,0.0000,0.0000,0.1674,23.7575,49.7250)"/>
+			case "img" :
+				post(attr, imageTable[attr], "\n");
+				svg_string = "<image x=\"" + 0. + "\" y=\"" + 0. + "\" width=\"" + imageTable[attr][1] + "\" height=\"" + imageTable[attr][2] + "\" xlink:href=\"file://" + imageTable[attr][0] + "\" ";
+				break;				
+			}
+		}
+		else {
+			if (elem == "matrix") svg_string +=  "transform=\"" + elem + "(" + attr + ")\" ";
+			else svg_string += elem + "=\"" + attr + "\" ";
+			}
+		}
+		if (svg.get(0).getkeys() == "music") svg_string += ">" + String.fromCharCode("0x" + svg.get(0).get(svg.get(0).getkeys())[2]) + "</text>";
+		else if (svg.get(0).getkeys() == "text") svg_string += ">" + htmlEntities(svg.get(0).get(svg.get(0).getkeys())[2]) + "</text>";
+		else svg_string += "/>";
+		post("svg", svg_string, "\n");
+		return svg_string;
+}
+createSVG2.local = 1;
+
+
+function htmlEntities(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;"); //"
 }
 
 function ovalarc(startangle, endangle, cx, cy, r1, r2) {
@@ -837,19 +1039,48 @@ function ovalarc(startangle, endangle, cx, cy, r1, r2) {
  		return d;
 }
 
+
 function cursor()
 {
 	var msg = arrayfromargs(arguments);
 	//split message into attributes
-	switch (msg[0]){
+	var id = msg[0];
+	switch (msg[1]){
 	case "countdown":
 		
 		break;
 	case "start":
-		
+		var color = cursorAttr.get(id + "::@color");
+		cursors.clear();
+		var range = [];
+		for (var j = cursorAttr.get(id + "::@begin")[0]; j <= cursorAttr.get(id + "::@end")[0]; j++) range.push(j);
+		for (var s = 0; s < groupcount; s++)
+		{
+		if (range.indexOf(s) != -1){
+        cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/fill", "rgb("+ Math.round(color[0] * 255) + "," + Math.round(color[1] * 255) + "," + Math.round(color[2] * 255) + ")");
+        cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/fill-opacity", Math.round(color[3] * 255));
+ 		cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/transition", "transform " + cursorAttr.get(id + "::@trajectory::0")[2]/1000. + "s linear");
+		cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/transform/translate", [cursorAttr.get(id + "::@trajectory::0")[1] - cursorAttr.get(id + "::@trajectory::0")[0], 0]);
+		outlet(0, "dictionary", cursors.name);
+		}
+		}
 		break;
 	case "stop":
-		
+		var color = cursorAttr.get(id + "::@countdowncolor");
+		cursors.clear();
+		var range = [];
+		for (var j = cursorAttr.get(id + "::@begin")[0]; j <= cursorAttr.get(id + "::@end")[0]; j++) range.push(j);
+		for (var s = 0; s < groupcount; s++)
+		{
+		if (range.indexOf(s) != -1){
+        cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/draw/rect", cursorAttr.get(id + "::@trajectory::0")[0], cursorAttr.get(id + "::@extent")[0], 2., cursorAttr.get(id + "::@extent")[1] - cursorAttr.get(id + "::@extent")[0]);
+   		cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/transition", "transform 0s linear");
+     	cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/fill", "rgb("+ Math.round(color[0] * 255) + "," + Math.round(color[1] * 255) + "," + Math.round(color[2] * 255) + ")");
+        cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/fill-opacity", Math.round(color[3] * 255));
+		cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/transform/translate", [0, 0]);
+		outlet(0, "dictionary", cursors.name);	
+		}
+		}	
 		break;
 	case "pause":
 		
@@ -861,41 +1092,107 @@ function cursor()
 		
 		break;
 	case "show":
-		
+		cursors.clear();
+		var range = [];
+		for (var j = cursorAttr.get(id + "::@begin")[0]; j <= cursorAttr.get(id + "::@end")[0]; j++) range.push(j);
+		for (var s = 0; s < groupcount; s++)
+		{
+		if (range.indexOf(s) != -1){
+        cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/fill-opacity", msg[2]);
+		outlet(0, "dictionary", cursors.name);	
+		}
+		}			
 		break;
 	default :
-	var id = msg[0];
 	var occurence = [];
 	for (var i = 1; i < msg.length; i++){
 		if (msg[i].toString().indexOf("@") != -1) occurence.push(i); 
 		}
 	//send defaults once:
-	
+	cursorAttr.replace(id + "::@begin", [0, 0]);	
+	cursorAttr.replace(id + "::@end", [0, 0]);	
+	cursorAttr.replace(id + "::@passes", 1);	
+	cursorAttr.replace(id + "::@timestretch", 1);	
+	cursorAttr.replace(id + "::@color", [0.25, 1, 0.25, 1]);	
+	cursorAttr.replace(id + "::@countdowncolor", [1, 0, 0, 1]);	
+	cursorAttr.replace(id + "::@shape", "line");	
+	cursorAttr.replace(id + "::@notevalue", 1.);	
 	for (var i = 0; i < occurence.length; i++){
 		var attribute =  msg.slice(occurence[i], occurence[i+1]);
-		switch (attribute) {
-		case "@begin" :
-			break;
-		case "@end" :
-			break;
-		case "@passes" :
-			break;
-		case "@timestretch" :
-			break;
-		case "@color" :
-			break;
-		case "@countdowncolor" :
-			break;		
-		case "@shape" :
-			break;
-		case "@notevalue" :
-			break;
-			
+		post("attribute", id + "::" + attribute[0], attribute.slice(1, attribute.length), "\n");
+		cursorAttr.replace(id + "::" + attribute[0], attribute.slice(1, attribute.length));
 		}
-		cursors.replace(id + "::" + attribute[0], attribute.slice(1, attribute.length));
-		post(id + "::" + attribute[0], attribute.slice(1, attribute.length), "\n");
-		}
+		var stretch = cursorAttr.get(id + "::@timestretch");
+		var startStaff = cursorAttr.get(id + "::@begin")[1];
+		var endStaff = cursorAttr.get(id + "::@end")[1];
+//		for (var i = cursorAttr.get(id + "::@begin")[1]; i <= cursorAttr.get(id + "::@end")[1]; i++) {
+			for (var j = cursorAttr.get(id + "::@begin")[0]; j <= cursorAttr.get(id + "::@end")[0]; j++){
+			outlet(1, "getMeasureInfo", j);
+			staffBoundingFlag = 1;
+			outlet(1, "getStaffBoundingInfo", j, 0);
+			staffBoundingFlag = 0;
+			//x y width height marginX
+			//[20,147,360,24,83]
+			//calculate distance to travel 
+			post("tempo/timesig", tempo, timesig, stretch, parseFloat(tempo),  parseFloat(timesig[0]), parseFloat(timesig[1]), "\n");
+			post("travel from", staffBoundingInfo[4], "to", staffBoundingInfo[0] + staffBoundingInfo[2], "in", cursorAttr.get(id + "::@timestretch") * (60000 / parseFloat(tempo) * (4 * parseFloat(timesig[0]) / parseFloat(timesig[1]))), "msec \n");		
+			var from = staffBoundingInfo[4];
+			var to = staffBoundingInfo[0] + staffBoundingInfo[2];
+			var travel = stretch * (60000 / parseFloat(tempo) * (4 * parseFloat(timesig[0]) / parseFloat(timesig[1])));
+			cursorAttr.replace(id + "::@trajectory::" + j, from, to, travel);
+			}			
+//			}
+			//calculate y position and height of cursor
+			//map staves to staffgroups
+			var color = cursorAttr.get(id + "::@countdowncolor");
+			cursors.clear();			
+			for (var s = 0; s < groupcount; s++)
+			{
+			var extent = cursorExtent(sg[s], startStaff, endStaff);
+			if (extent != -1) {
+			cursorAttr.replace(id + "::@extent", extent[0], extent[1]);
+           	cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/fill", "rgb("+ Math.round(color[0] * 255) + "," + Math.round(color[1] * 255) + "," + Math.round(color[2] * 255) + ")");
+            cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/fill-opacity", Math.round(color[3] * 255));
+           	cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/draw/rect", cursorAttr.get(id + "::@trajectory::0")[0], extent[0], 2., extent[1] - extent[0]);
+            cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/stroke", "none");
+            cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/stroke-width", 0.4);
+            cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/style/stroke-opacity", 0.);
+            //cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/transform/matrix", [1., 0., 0., 1., 0., 0.]);
+			cursors.set("/svgdraw/" + (s + 1) + "/cursor-" + id + "/transform/translate", [0, 0]);
+			}		
+		}				
+		outlet(0, "dictionary", cursors.name);	
 	}
+}
+
+function cursorExtent(staffGroup, startStaff, endStaff)
+{
+	//find occurence of staff in staffgroup
+	var extent = [-1];
+	var idx = [];
+	for (var i = startStaff; i<= endStaff; i++) {
+	if (typeof staffGroup == "number") {
+	if (staffGroup == i) idx = [0];
+	}
+	else if (staffGroup.indexOf(i) != -1) idx.push(staffGroup.indexOf(i));
+	}
+	//calculate extent
+	if (idx.length == 1) 
+	{
+	var top = boundingBoxTop[idx[0]];
+	var bottom = boundingBoxTop[idx[0]] + boundingBox[idx[0]] - staffSpacing[idx[0]][1] - staffSpacing[idx[0]][0];
+	extent = [top, bottom];
+	}
+	else if (idx.length > 1)
+	{
+	var top = boundingBoxTop[idx[0]];
+	var destinationBoxes = 0;
+	for (j = 0; j < idx.length; j++) destinationBoxes += boundingBox[idx[j]];
+	var bottom = boundingBoxTop[idx[0]] + destinationBoxes - staffSpacing[idx[j-1]][1] - staffSpacing[idx[j-1]][0];
+	extent = [top, bottom];
+	}
+	//post("extent", extent, "\n");
+	return extent;
 }
 
 function getAllIndexes(arr, val) {
@@ -903,7 +1200,7 @@ function getAllIndexes(arr, val) {
 	var c = 0;
 	if (typeof arr == "number" && arr == val) indexes = [0];
     else {for(i = 0; i < arr.length; i++)
-        if (arr[i] === val)
+        if (arr[i] == val)
 			{
             indexes[c] = i;
 			c++;
@@ -948,23 +1245,3 @@ function isEmpty(obj) {
     return JSON.stringify(obj) === JSON.stringify({});
 }
 
-/*
-scoreLayout 2 0 2 0.5 400 430
-startRenderDump
-frgb 255 255 255
-clearGraphics
-barline 0. 0.5 20. 51. 171. 1.
-measurenumber1 20. 39. 0.5 Measure 0.
-writeat 20. 33.   <<
-tempoqtrequals 20. 21. 0.5 Measure 0.
-tr 22. 75.959999 0.5 Staff 0. 0.
-staffnumber1 0. 63. 0.5 Staff 0. 0.
-timesig4 43. 57. 0.5 Staff 0. 0.
-StaffLine 0. 0. 0. 0.5 20. 51. 380.849609 51. false
-noteheadblack 83.620689 66. 0.5 Note 0. 0. 0. 0.
-no_accidental 75.555557 66. 0.5 Note 0. 0. 0. 0.
-stem 83.620689 67. 0.5 Note 0. 0. 0. 0. STEM_UP
-noteheadblack 157.620697 63. 0.5 Note 0. 0. 0. 1.
-barline 1. 0.5 380.919525 243. 363. 1.
-endRenderDump
-*/

@@ -44,6 +44,7 @@ var timesig = [4, 4];
 var svg = new Dict();
 svg.name = "svg";
 var imageTable = {};
+var destination = "outlet";
 
 
 
@@ -768,7 +769,12 @@ function anything() {
         case "endRenderDump":
 			writeStem();
 			stems = {};
-            outlet(0, "dictionary", output.name);
+				if (destination == "file"){
+					writeSVG();
+					output.clear();
+					output.set("/svgdraw/1/svg/draw/img", "test.svg");
+				}
+            else outlet(0, "dictionary", output.name);
             break;
 		case "tempoqtrequals":
 			for (var s = 0; s < groupcount; s++)
@@ -851,6 +857,7 @@ function writePNG()
 	//create svg string 
 	var j = 1;
 	var oldID = 1;
+	svg.clear();	
 	var keys = output.getkeys();
 	for (var i = 0; i < keys.length; i++) {
 	var oscAddress = keys[i].split('/');
@@ -930,8 +937,9 @@ createSVG.local = 1;
 
 function writeSVG()
 {
-	f = new File("Macintosh HD:/Users/Shared/Max 8/Library/MaxScore/node.js/draw-to-client/v3-max/public/test.svg", "write");
+	f = new File("Macintosh HD:/Users/Shared/Max 8/Library/MaxScore/node.js/draw-to-client/v3-max/public/test.svg", "write", "TEXT");
 	f.open();
+	f.eof = 0;
 	f.writeline("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	f.writeline("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
 	f.writeline("<svg width=\"" + scoreLayout[4] + "px\" height=\"" + scoreLayout[5] + "px\" viewBox=\"0 0 " + scoreLayout[4] + " " + scoreLayout[5] + "\" style=\"background: ivory\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\">");
@@ -993,6 +1001,7 @@ function createSVG2(j) {
 				break;				
 			//<image x="0." y="0." width="22.0" height="198.0" xlink:href="file:///Users/Shared/Max 7/Packages/MaxScore/media/Images/brace.png" preserveAspectRatio="none" transform="matrix(0.2762,0.0000,0.0000,0.1674,23.7575,49.7250)"/>
 			case "img" :
+				//all images need to reside in public folder and fetched via http
 				post(attr, imageTable[attr], "\n");
 				svg_string = "<image x=\"" + 0. + "\" y=\"" + 0. + "\" width=\"" + imageTable[attr][1] + "\" height=\"" + imageTable[attr][2] + "\" xlink:href=\"file://" + imageTable[attr][0] + "\" ";
 				break;				
@@ -1006,7 +1015,7 @@ function createSVG2(j) {
 		if (svg.get(0).getkeys() == "music") svg_string += ">" + String.fromCharCode("0x" + svg.get(0).get(svg.get(0).getkeys())[2]) + "</text>";
 		else if (svg.get(0).getkeys() == "text") svg_string += ">" + htmlEntities(svg.get(0).get(svg.get(0).getkeys())[2]) + "</text>";
 		else svg_string += "/>";
-		post("svg", svg_string, "\n");
+		post("svg", svg_string, svg.get(0).get(svg.get(0).getkeys())[2], "\n");
 		return svg_string;
 }
 createSVG2.local = 1;

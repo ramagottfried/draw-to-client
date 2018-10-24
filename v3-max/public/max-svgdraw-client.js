@@ -31,6 +31,7 @@ var audioObj = [];
 
 var main = d3.select("#main");
 var drawing = d3.select("#drawing");
+var forms = d3.select("#forms");
 
 const _click = ( (document.ontouchstart!==null) ? 'onclick' : 'ontouchstart' );
 
@@ -54,6 +55,14 @@ function log(msg) {
 
 }
 
+
+function inputReponse(ele) {
+    if(event.key === 'Enter') {
+        console.log( ele.value );
+        port.sendObj({ "/msg" : ele.value });
+
+    }
+}
 
 function getTransformString(transform)
 {
@@ -149,7 +158,7 @@ function processCmdObj(obj)
     var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
     var cmdtype = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
 
-    if( cmd == "draw" || cmd == "pdf" || cmd == "sample")
+    if( cmd == "draw" || cmd == "pdf" || cmd == "sample" || cmd == "form" )
     {
       if( cmdtype != "none")
       {
@@ -366,6 +375,9 @@ function processCmdObj(obj)
               .html( objValue[2] )
               .attr("class", "basestyle" );
         }
+        else {
+          console.log("requires three args [x, y, text]")
+        }
       break;
 
       case "draw/img":
@@ -466,6 +478,63 @@ function processCmdObj(obj)
         }
       break;
 
+      case "form/input":
+
+        if( argc > 0 ) // list of text inputs fields
+        {
+          if( typeof objectStack[id] != "undefined" )
+            objectStack[id].remove();
+
+          var new_form = forms.append("input")
+              .attr("type", "text" )
+              .attr("id", id )
+              //.attr("oninput", "console.log('yooo')")
+              .attr("name", objValue+"_text" )
+              .attr("onkeydown", "inputReponse(this)" );
+
+          objectStack[id] = new_form;
+
+
+        }
+
+      break;
+      case "form/text":
+
+        if( argc > 0 ) // list of text inputs fields
+        {
+          if( typeof objectStack[id] != "undefined" )
+            objectStack[id].remove();
+
+          var new_form = forms.append("form")
+            .attr("id", id );
+//            .attr("action", "/form-post")
+            //.attr("method", "post");
+
+            /*
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="user_name" />
+            */
+
+          if( argc == 1 )
+          {
+            new_form.append("label")
+                .attr("for", objValue )
+                .html( objValue );
+
+            new_form.append("input")
+                .attr("type", "text" )
+                .attr("id", objValue )
+                .attr("onsubmit", "console.log('yooo')")
+                .attr("name", objValue+"_text" );
+          }
+
+
+          objectStack[id] = new_form;
+
+
+        }
+
+      break;
 
       default:
         console.log("received unknown command: "+cmd+ "\n" );

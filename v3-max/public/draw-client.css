@@ -23,6 +23,12 @@
   /*border: solid red 1px;*/
 }
 
+#forms {
+  position: absolute;
+  float: left;
+  z-index: 100;
+}
+
 .log {
   pointer-events: none;
   -webkit-touch-callout: none;
@@ -49,6 +55,7 @@ html, body {
   width: 100%;
 
 }
+
 
 @font-face {
     font-family: Bravura;

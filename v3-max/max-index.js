@@ -10,10 +10,13 @@ const websocket_port = 5001;
 // load libaries
 const express = require('express');
 const http = require('http');
+const bodyParser = require('body-parser');
+
 //const osc = require('osc');
 const WebSocket = require('ws');
 const url = require('url');
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const Max = require('max-api');
 Max.post("started up");
@@ -162,6 +165,12 @@ app.use('/scripts', express.static(__dirname + '/node_modules/'));
 app.get('/', (req, res) => {
   console.log('express connection ' + req + ' ' + res );
 });
+
+app.post('/form-post', (request, response) => {
+  Max.outlet( request.body );
+  return response.send(request.body);
+});
+
 
 const server = http.createServer(app);
 

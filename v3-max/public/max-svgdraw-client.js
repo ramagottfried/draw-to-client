@@ -425,7 +425,7 @@ function processCmdObj(obj)
                 .attr("id", id)
                 .attr('x', 0)
                 .attr('y', 0)
-                .attr("xlink:href", objValue);
+                .attr("xlink:href", objValue+"?"+(new Date()).getTime());
 
              var image = new Image();
 
@@ -433,7 +433,7 @@ function processCmdObj(obj)
               objectStack[id].attr('width', this.naturalWidth)
                              .attr('height', this.naturalHeight);
              });
-             image.src = objValue;
+             image.src = objValue+"?"+(new Date()).getTime();
 
         }
       break;

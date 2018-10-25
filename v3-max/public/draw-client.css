@@ -1,9 +1,3 @@
-#drawing {
-  float: left;
-  position: absolute;
-  z-index: 10;
-}
-
 #touchdiv {
   position: absolute;
   left: 0;
@@ -15,12 +9,41 @@
 }
 
 #main {
+  position: absolute;
+  top: 0;
+  left: 0;
   margin: 0;
   padding: 0;
   height: 100vh;
   width: 100vw;
+  z-index: 0;
 
   /*border: solid red 1px;*/
+}
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 20;
+}
+
+#drawing {
+  float: left;
+  position: absolute;
+  overflow: visible;
+  z-index: 10;
+}
+
+#overlay-drawing {
+  float: left;
+  position: absolute;
+  overflow: visible;
+  z-index: 20;
+
 }
 
 #forms {

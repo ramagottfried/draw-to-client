@@ -31,6 +31,7 @@ var audioObj = [];
 
 var main = d3.select("#main");
 var drawing = d3.select("#drawing");
+var overlay = d3.select("#overlay-drawing");
 var forms = d3.select("#forms");
 
 const _click = ( (document.ontouchstart!==null) ? 'onclick' : 'ontouchstart' );
@@ -56,12 +57,14 @@ function log(msg) {
 }
 
 
-function inputReponse(ele) {
-    if(event.key === 'Enter') {
-        console.log( ele.value );
-        port.sendObj({ "/msg" : ele.value });
-
-    }
+function inputReponse(ele)
+{
+  if(event.key === 'Enter')
+  {
+    var obj = {};
+    obj[oscprefix+"/"+ele.id+"/input"] = ele.value;
+    port.sendObj( obj );
+  }
 }
 
 function getTransformString(transform)
@@ -119,7 +122,7 @@ function processCmdObj(obj)
 
       for( var key in objectStack)
       {
-        if( key == "main" )
+        if( key == "main" || key == "overlay" )
         {}
         else
         {
@@ -156,9 +159,23 @@ function processCmdObj(obj)
     }
 
     var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
-    var cmdtype = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
 
-    if( cmd == "draw" || cmd == "pdf" || cmd == "sample" || cmd == "form" )
+    var drawingTarget = drawing;
+    var cmdtype = "none";
+
+    if( cmd == "overlay" && id_cmd.length == 4 )
+    {
+      drawingTarget = overlay;
+      cmd = id_cmd[2];
+      cmdtype = id_cmd[3];
+    }
+    else if( id_cmd.length == 3 )
+    {
+      cmdtype = id_cmd[2];
+    }
+
+    console.log("cmds "+id_cmd);
+    if( cmd == "draw" || cmd == "pdf" || cmd == "sample" || cmd == "form" || cmd == "overlay" )
     {
       if( cmdtype != "none")
       {
@@ -171,12 +188,20 @@ function processCmdObj(obj)
 
         continue;
       }
+
     }
     console.log(id, cmd);
     console.log(argc);
 
     switch (cmd)
     {
+
+      case "overlay":
+
+
+      break;
+
+
       case "style" :
 /*
         const selector = '#'+id;
@@ -252,7 +277,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("path")
+          objectStack[id] = drawingTarget.append("path")
             .attr("id", id)
             .attr("d", objValue);
 
@@ -264,7 +289,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("ellipse")
+          objectStack[id] = drawingTarget.append("ellipse")
             .attr("id", id)
             .attr("cx", objValue[0])
             .attr("cy", objValue[1])
@@ -280,7 +305,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("rect")
+          objectStack[id] = drawingTarget.append("rect")
             .attr("id", id)
             .attr("x", objValue[0])
             .attr("y", objValue[1])
@@ -295,7 +320,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("circle")
+          objectStack[id] = drawingTarget.append("circle")
             .attr("id", id)
             .attr("cx", objValue[0])
             .attr("cy", objValue[1])
@@ -310,7 +335,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("line")
+          objectStack[id] = drawingTarget.append("line")
             .attr("id", id)
             .attr("x1", objValue[0])
             .attr("y1", objValue[1])
@@ -325,7 +350,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("polygon").attr("points", objValue);
+          objectStack[id] = drawingTarget.append("polygon").attr("points", objValue);
         }
       break;
       case "draw/polyline":
@@ -334,7 +359,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("polyline").attr("points", objValue);
+          objectStack[id] = drawingTarget.append("polyline").attr("points", objValue);
         }
       break;
 
@@ -344,7 +369,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("text")
+          objectStack[id] = drawingTarget.append("text")
               .attr("x", objValue )
               .attr("y", objValue[1] )
               .html( "&#x" + objValue[2] )
@@ -356,7 +381,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("text")
+          objectStack[id] = drawingTarget.append("text")
               .attr("x", objValue[0] )
               .attr("y", objValue[1] )
               .html( "&#x" + objValue[2] )
@@ -369,7 +394,7 @@ function processCmdObj(obj)
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
 
-          objectStack[id] = drawing.append("text")
+          objectStack[id] = drawingTarget.append("text")
               .attr("x", objValue[0] )
               .attr("y", objValue[1] )
               .html( objValue[2] )
@@ -396,7 +421,7 @@ function processCmdObj(obj)
 
              // add image to svg now so that drawing order is correct,
              // then update the width and height after the images has loaded and we can query the image object
-             objectStack[id] = drawing.append("svg:image")
+             objectStack[id] = drawingTarget.append("svg:image")
                 .attr("id", id)
                 .attr('x', 0)
                 .attr('y', 0)
@@ -794,6 +819,7 @@ window.onload = function() {
 //  port.sendObj({ "/loaded" : "skinny" });
 
   objectStack['main'] = main;
+  objectStack['overlay'] = d3.select("#overlay");
 
   //for( var rule of css.cssRules )
 //    console.log(getCSSRuleStyle("#main"));

@@ -39,6 +39,680 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-46",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 81.0, 129.0, 32.0, 22.0 ],
+					"text" : "print"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-45",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 433.1666259765625, 188.33331298828125, 146.0, 22.0 ],
+					"presentation_linecount" : 2,
+					"text" : "staffgroups 0+1 2-3 3 1+3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-42",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 178.0, 300.0, 452.0, 20.0 ],
+					"text" : "I need to be able to query URL of server to properly serve images over the network.",
+					"textcolor" : [ 0.929411768913269, 0.341176480054855, 0.270588248968124, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-36",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 785.0, 157.66668701171875, 51.0, 22.0 ],
+					"presentation_linecount" : 2,
+					"text" : "test.png"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-37",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patcher" : 					{
+						"fileversion" : 1,
+						"appversion" : 						{
+							"major" : 8,
+							"minor" : 0,
+							"revision" : 2,
+							"architecture" : "x64",
+							"modernui" : 1
+						}
+,
+						"classnamespace" : "box",
+						"rect" : [ 266.0, 79.0, 453.0, 379.0 ],
+						"bglocked" : 0,
+						"openinpresentation" : 0,
+						"default_fontsize" : 12.0,
+						"default_fontface" : 0,
+						"default_fontname" : "Arial",
+						"gridonopen" : 1,
+						"gridsize" : [ 15.0, 15.0 ],
+						"gridsnaponopen" : 1,
+						"objectsnaponopen" : 1,
+						"statusbarvisible" : 2,
+						"toolbarvisible" : 1,
+						"lefttoolbarpinned" : 0,
+						"toptoolbarpinned" : 0,
+						"righttoolbarpinned" : 0,
+						"bottomtoolbarpinned" : 0,
+						"toolbars_unpinned_last_save" : 0,
+						"tallnewobj" : 0,
+						"boxanimatetime" : 200,
+						"enablehscroll" : 1,
+						"enablevscroll" : 1,
+						"devicewidth" : 0.0,
+						"description" : "",
+						"digest" : "",
+						"tags" : "",
+						"style" : "",
+						"subpatcher_template" : "",
+						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-38",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "dictionary" ],
+									"patching_rect" : [ 50.0, 126.0, 148.0, 22.0 ],
+									"text" : "dict.pack picster-element :"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-12",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 258.0, 288.0, 22.0 ],
+									"text" : "prepend addRenderedMessageToSelectedNotes 0 0"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-10",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 224.0, 57.0, 22.0 ],
+									"text" : "tosymbol"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-9",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 193.0, 140.0, 22.0 ],
+									"text" : "prepend rendered test[0]"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-7",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 158.0, 152.0, 22.0 ],
+									"text" : "dict.serialize @compress 1"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"data" : 									{
+										"text_2" : 										{
+											"commands" : 											{
+												"0" : [ "textcolor", 0.501961, 0.501961, 0.0, 1.0 ],
+												"1" : [ "font", "Arial", 30 ],
+												"2" : [ "move_to", 205.0, 346.0 ],
+												"3" : [ "write", "text" ]
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 205.0, 346.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"framerect_2" : 										{
+											"commands" : 											{
+												"0" : [ "pen_size", 2 ],
+												"1" : [ "color", 1.0, 0.980392, 0.160784, 0.784314 ],
+												"2" : [ "rectangle", 96.0, 162.5, 64.0, 45.0 ]
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 96.0, 162.5, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"paintrect_2" : 										{
+											"commands" : 											{
+												"0" : [ "color", 0.039216, 0.039216, 0.003922, 0.572549 ],
+												"1" : [ "rectangle", 89.0, 211.5, 34.0, 25.0 ],
+												"2" : "fill"
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 89.0, 211.5, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"frameoval_2" : 										{
+											"commands" : 											{
+												"0" : [ "pen_size", 2 ],
+												"1" : [ "color", 0.47451, 0.890196, 1.0, 0.815686 ],
+												"2" : [ "ellipse", 109.5, 100.0, 45.0, 42.0 ]
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 109.5, 100.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"paintoval_2" : 										{
+											"commands" : 											{
+												"0" : [ "color", 0.172549, 0.082353, 1.0, 0.301961 ],
+												"1" : [ "ellipse", 133.5, 83.5, 39.0, 39.0 ],
+												"2" : "fill"
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 133.5, 83.5, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"frameroundrect_2" : 										{
+											"commands" : 											{
+												"0" : [ "pen_size", 2 ],
+												"1" : [ "color", 0.811765, 0.360784, 0.462745, 0.662745 ],
+												"2" : [ "move_to", 114.0, 278.0 ],
+												"3" : [ "line_to", 114.0, 300.0 ],
+												"4" : [ "curve_to", 114.0, 310.0, 114.0, 310.0, 124.0, 310.0 ],
+												"5" : [ "line_to", 145.0, 310.0 ],
+												"6" : [ "curve_to", 155.0, 310.0, 155.0, 310.0, 155.0, 300.0 ],
+												"7" : [ "line_to", 155.0, 278.0 ],
+												"8" : [ "curve_to", 155.0, 268.0, 155.0, 268.0, 145.0, 268.0 ],
+												"9" : [ "line_to", 124.0, 268.0 ],
+												"10" : [ "curve_to", 114.0, 268.0, 114.0, 268.0, 114.0, 278.0 ]
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 134.5, 289.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"paintroundrect_2" : 										{
+											"commands" : 											{
+												"0" : [ "color", 0.635294, 0.498039, 0.368627, 0.360784 ],
+												"1" : [ "move_to", 228.0, 328.0 ],
+												"2" : [ "line_to", 228.0, 347.0 ],
+												"3" : [ "curve_to", 228.0, 357.0, 228.0, 357.0, 238.0, 357.0 ],
+												"4" : [ "line_to", 261.0, 357.0 ],
+												"5" : [ "curve_to", 271.0, 357.0, 271.0, 357.0, 271.0, 347.0 ],
+												"6" : [ "line_to", 271.0, 328.0 ],
+												"7" : [ "curve_to", 271.0, 318.0, 271.0, 318.0, 261.0, 318.0 ],
+												"8" : [ "line_to", 238.0, 318.0 ],
+												"9" : [ "curve_to", 228.0, 318.0, 228.0, 318.0, 228.0, 328.0 ],
+												"10" : "fill"
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 249.5, 337.5, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"framearc_2" : 										{
+											"commands" : 											{
+												"0" : [ "pen_size", 2 ],
+												"1" : [ "color", 0.164706, 0.431373, 0.047059, 0.603922 ],
+												"2" : [ "ovalarc", 79.5, 256.0, 17.5, 18.0, -1.57, 3.14 ]
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 79.5, 256.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"picture_2" : 										{
+											"commands" : 											{
+												"0" : [ "raster", "Macintosh HD:/Users/Shared/Max 7/Packages/MaxScore/patchers/Picster/icons/imageresize.png" ]
+											}
+,
+											"info" : 											{
+												"origin" : [ 197.0, 86.0 ],
+												"a" : [ 50.0, 0.0, 5.0, "auto", 0, 40.0 ],
+												"b" : [ 0.0, 45.0, 5.0, "auto", 0, 40.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.25, 0.0, 0.0, 1.125, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 20.0, 20.0, 5.0, "yes", 0 ]
+											}
+
+										}
+,
+										"paintarc_2" : 										{
+											"commands" : 											{
+												"0" : [ "color", 1.0, 0.0, 0.501961, 0.482353 ],
+												"1" : [ "ovalarc", 48.0, 324.0, 20.0, 9.0, 0.959444, 3.837778 ],
+												"2" : "fill"
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 48.0, 324.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"freehand_1" : 										{
+											"commands" : 											{
+												"0" : [ "pen_size", 2 ],
+												"1" : [ "color", 0.501961, 0.501961, 0.0, 1.0 ],
+												"2" : [ "move_to", 123, 220 ],
+												"3" : [ "line_to", 123.0, 220.0 ],
+												"4" : [ "line_to", 123.0, 219.0 ],
+												"5" : [ "line_to", 123.0, 218.0 ],
+												"6" : [ "line_to", 123.0, 216.0 ],
+												"7" : [ "line_to", 124.0, 216.0 ],
+												"8" : [ "line_to", 126.0, 216.0 ],
+												"9" : [ "line_to", 127.0, 216.0 ],
+												"10" : [ "line_to", 129.0, 216.0 ],
+												"11" : [ "line_to", 130.0, 216.0 ],
+												"12" : [ "line_to", 132.0, 216.0 ],
+												"13" : [ "line_to", 134.0, 216.0 ],
+												"14" : [ "line_to", 136.0, 216.0 ],
+												"15" : [ "line_to", 139.0, 216.0 ],
+												"16" : [ "line_to", 140.0, 218.0 ],
+												"17" : [ "line_to", 143.0, 220.0 ],
+												"18" : [ "line_to", 146.0, 222.0 ],
+												"19" : [ "line_to", 148.0, 224.0 ],
+												"20" : [ "line_to", 151.0, 226.0 ],
+												"21" : [ "line_to", 153.0, 227.0 ],
+												"22" : [ "line_to", 156.0, 227.0 ],
+												"23" : [ "line_to", 158.0, 227.0 ],
+												"24" : [ "line_to", 160.0, 225.0 ],
+												"25" : [ "line_to", 163.0, 221.0 ],
+												"26" : [ "line_to", 165.0, 216.0 ],
+												"27" : [ "line_to", 168.0, 210.0 ],
+												"28" : [ "line_to", 171.0, 205.0 ],
+												"29" : [ "line_to", 174.0, 202.0 ],
+												"30" : [ "line_to", 178.0, 200.0 ],
+												"31" : [ "line_to", 183.0, 198.0 ],
+												"32" : [ "line_to", 186.0, 198.0 ],
+												"33" : [ "line_to", 189.0, 198.0 ],
+												"34" : [ "line_to", 191.0, 198.0 ],
+												"35" : [ "line_to", 194.0, 198.0 ],
+												"36" : [ "line_to", 195.0, 198.0 ],
+												"37" : [ "line_to", 196.0, 197.0 ],
+												"38" : [ "line_to", 197.0, 196.0 ],
+												"39" : [ "line_to", 199.0, 194.0 ],
+												"40" : [ "line_to", 200.0, 193.0 ],
+												"41" : [ "line_to", 200.0, 193.0 ],
+												"42" : "stroke"
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 123.0, 220.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"linesegment_3" : 										{
+											"commands" : 											{
+												"0" : [ "pen_size", 2 ],
+												"1" : [ "color", 0.431373, 1.0, 0.317647, 0.482353 ],
+												"2" : [ "line", 122, 369, 235, 267 ]
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 178.5, 318.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"paintpoly_2" : 										{
+											"commands" : 											{
+												"0" : [ "color", 0.501961, 0.501961, 0.0, 0.572549 ],
+												"1" : [ "move_to", 221.0, 216.0 ],
+												"2" : [ "line_to", 283.0, 242.0 ],
+												"3" : [ "line_to", 264.0, 255.0 ],
+												"4" : [ "line_to", 203.0, 229.0 ],
+												"5" : [ "line_to", 221.0, 216.0 ],
+												"6" : "fill"
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 221.0, 216.0, 4.0, "yes", 0 ]
+											}
+
+										}
+,
+										"framepoly_2" : 										{
+											"commands" : 											{
+												"0" : [ "pen_size", 3 ],
+												"1" : [ "color", 0.0, 0.0, 0.501961, 0.45098 ],
+												"2" : [ "move_to", 216.0, 175.0 ],
+												"3" : [ "line_to", 259.0, 148.0 ],
+												"4" : [ "line_to", 260.0, 196.0 ],
+												"5" : [ "line_to", 216.0, 175.0 ],
+												"6" : "stroke"
+											}
+,
+											"info" : 											{
+												"origin" : [ 0.0, 0.0 ],
+												"a" : [ 1.0, 0.0, 0.0, "no", 0, 1.0 ],
+												"b" : [ 0.0, 1.0, 0.0, "no", 0, 1.0 ],
+												"hide" : 0,
+												"transform_mode" : 0,
+												"draw_axes" : 0,
+												"transform" : [ 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+											}
+,
+											"anchors" : 											{
+												"0" : [ 216.0, 175.0, 4.0, "yes", 0 ]
+											}
+
+										}
+
+									}
+,
+									"id" : "obj-2",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 4,
+									"outlettype" : [ "dictionary", "", "", "" ],
+									"patching_rect" : [ 50.0, 89.0, 89.0, 22.0 ],
+									"saved_object_attributes" : 									{
+										"embed" : 1,
+										"parameter_enable" : 0,
+										"parameter_mappable" : 0
+									}
+,
+									"text" : "dict @embed 1"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"comment" : "",
+									"id" : "obj-32",
+									"index" : 1,
+									"maxclass" : "inlet",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 40.0, 30.0, 30.0 ]
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"comment" : "",
+									"id" : "obj-36",
+									"index" : 1,
+									"maxclass" : "outlet",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 50.0, 296.0, 30.0, 30.0 ]
+								}
+
+							}
+ ],
+						"lines" : [ 							{
+								"patchline" : 								{
+									"destination" : [ "obj-12", 0 ],
+									"source" : [ "obj-10", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-36", 0 ],
+									"source" : [ "obj-12", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-38", 0 ],
+									"source" : [ "obj-2", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-2", 0 ],
+									"source" : [ "obj-32", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-7", 0 ],
+									"source" : [ "obj-38", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-9", 0 ],
+									"source" : [ "obj-7", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-10", 0 ],
+									"source" : [ "obj-9", 0 ]
+								}
+
+							}
+ ]
+					}
+,
+					"patching_rect" : [ 153.0, 67.5, 119.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"description" : "",
+						"digest" : "",
+						"globalpatchername" : "",
+						"tags" : ""
+					}
+,
+					"text" : "p addPicsterElement"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-33",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 194.0, 35.5, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 153.0, 35.5, 33.0, 22.0 ],
+					"text" : "read"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-30",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -92,9 +766,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 733.0, 157.66668701171875, 51.0, 22.0 ],
+					"patching_rect" : [ 733.0, 157.66668701171875, 50.0, 22.0 ],
 					"presentation_linecount" : 3,
-					"text" : "test.png"
+					"text" : "test.svg"
 				}
 
 			}
@@ -105,8 +779,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "dictionary" ],
-					"patching_rect" : [ 733.0, 192.66668701171875, 197.0, 22.0 ],
-					"text" : "dict.pack /svgdraw/1/bar/draw/img :"
+					"patching_rect" : [ 733.0, 192.66668701171875, 198.0, 22.0 ],
+					"text" : "dict.pack /svgdraw/1/svg/draw/img :"
 				}
 
 			}
@@ -356,7 +1030,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 81.0, 36.0, 24.0, 24.0 ]
+					"patching_rect" : [ 52.0, 38.5, 24.0, 24.0 ]
 				}
 
 			}
@@ -367,7 +1041,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 81.0, 65.0, 99.0, 22.0 ],
+					"patching_rect" : [ 52.0, 67.5, 99.0, 22.0 ],
 					"text" : "setTitleVisible $1"
 				}
 
@@ -387,12 +1061,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-43",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 117.0, 270.0, 141.0, 22.0 ],
-					"text" : "/connectedTo /svgdraw/2"
+					"patching_rect" : [ 117.0, 270.0, 141.0, 35.0 ],
+					"text" : "/svgdraw/1/touchdiv/mouse/xy 19 4"
 				}
 
 			}
@@ -735,7 +1410,7 @@
 					"numoutlets" : 2,
 					"offset" : [ 0.0, 0.0 ],
 					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 37.0, 323.0, 5000.0, 430.0 ],
+					"patching_rect" : [ 37.0, 323.0, 500.0, 430.0 ],
 					"prototypename" : "bcanvas",
 					"varname" : "bcanvas",
 					"viewvisibility" : 1
@@ -860,6 +1535,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-37", 0 ],
+					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-18", 0 ]
 				}
@@ -944,6 +1626,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-37", 0 ],
+					"source" : [ "obj-33", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-108", 1 ],
 					"midpoints" : [ 100.5, 141.833343505859375, 172.58331298828125, 141.833343505859375 ],
 					"order" : 1,
@@ -955,7 +1644,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-111", 0 ],
 					"midpoints" : [ 46.5, 147.0, 72.5, 147.0 ],
-					"order" : 0,
+					"order" : 1,
 					"source" : [ "obj-34", 0 ]
 				}
 
@@ -963,7 +1652,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-35", 1 ],
-					"midpoints" : [ 100.5, 141.5, 5027.5, 141.5 ],
+					"midpoints" : [ 100.5, 141.5, 527.5, 141.5 ],
 					"order" : 0,
 					"source" : [ "obj-34", 1 ]
 				}
@@ -972,7 +1661,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-35", 0 ],
-					"order" : 1,
+					"order" : 2,
+					"source" : [ "obj-34", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-46", 0 ],
+					"order" : 0,
 					"source" : [ "obj-34", 0 ]
 				}
 
@@ -982,6 +1679,20 @@
 					"destination" : [ "obj-34", 0 ],
 					"midpoints" : [ 46.5, 758.666667819023132, 12.5, 758.666667819023132, 12.5, 90.0, 46.5, 90.0 ],
 					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-22", 0 ],
+					"source" : [ "obj-36", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-34", 0 ],
+					"source" : [ "obj-37", 0 ]
 				}
 
 			}
@@ -1003,6 +1714,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-43", 1 ],
 					"source" : [ "obj-44", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-108", 2 ],
+					"source" : [ "obj-45", 0 ]
 				}
 
 			}

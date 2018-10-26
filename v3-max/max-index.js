@@ -46,11 +46,23 @@ class OSCstate
         const id_cmd = key.split("/").filter( function(e){ return e } );
         // the filter removes empty strings (which we get for the first '/' )
 
+        Max.post(id_cmd);
         const id = id_cmd[0];
 
         if( id == "clear")
         {
-          this.state[prefix] = {};
+          //console.log("clearing canvas");
+          for( var key in objectStack)
+          {
+            if( key == "main" || key == "overlay" )
+            {}
+            else
+            {
+              objectStack[key].remove();
+              delete objectStack[key];
+            }
+
+          }
           return;
         }
         else if( id_cmd.length < 2 )
@@ -60,29 +72,35 @@ class OSCstate
         }
 
         var cmd = id_cmd[1]; // position, remove, or if draw, look for drawType
-        var drawType = ( id_cmd.length == 3 ) ? id_cmd[2] : "none";
 
-        if( cmd == "remove" )
+        var cmdtype = "none";
+
+        if( cmd == "overlay" && id_cmd.length == 4 )
         {
-          for( var k in this.state[prefix] )
-          {
-            if( k.startsWith("/"+id) )
-              delete this.state[prefix][k];
-          }
-          //this.state[prefix].packets = this.state[prefix].packets.filter( function(m) { return !m.address.startsWith("/"+id) });
-          return;
+          cmd = id_cmd[2];
+          cmdtype = id_cmd[3];
         }
-        else if( cmd == "draw")
+        else if( id_cmd.length == 3 )
         {
-          if( drawType != "none")
+          cmdtype = id_cmd[2];
+        }
+
+        Max.post("cmds "+id_cmd);
+
+        if( cmd == "draw" || cmd == "pdf" || cmd == "sample" || cmd == "form" || cmd == "overlay" )
+        {
+          if( cmdtype != "none")
           {
-            cmd += "/" + drawType;
+            cmd += "/" + cmdtype;
           }
           else
           {
             console.log("must specifiy drawtype after /draw");
-            return;
+      //      _port.senderror("wrong address format, should be: /unique_id/drawing_command\n\t got: "+id_cmd+" size "+id_cmd.length+"\n");
+
+            continue;
           }
+
         }
 
         var found = false;
@@ -97,7 +115,7 @@ class OSCstate
         }
 
         if( found == false ) {
-    //      this.state[prefix][key] = obj[key];
+          this.state[prefix][key] = obj[key];
         }
 /*
         for( var state_m of this.state[prefix].packets ) {
@@ -336,4 +354,8 @@ var getIPAddresses = function () {
 server.listen(http_port, () => {
   Max.post('load webpage at', 'http://localhost:' + http_port);
   Max.post('or', 'http://'+getIPAddresses()+':'+http_port);
+  Max.outlet({
+    "/port/localhost" : 'http://localhost:' + http_port,
+    "/port/ip" : 'http://'+getIPAddresses()+':'+http_port
+  });
 });

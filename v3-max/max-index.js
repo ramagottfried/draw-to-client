@@ -46,7 +46,7 @@ class OSCstate
         const id_cmd = key.split("/").filter( function(e){ return e } );
         // the filter removes empty strings (which we get for the first '/' )
 
-        Max.post(id_cmd);
+      //  Max.post(id_cmd);
         const id = id_cmd[0];
 
         if( id == "clear")
@@ -107,7 +107,7 @@ class OSCstate
         for( var addr in this.state[prefix] ) {
             if( addr == key ) {
               if( typeof obj[key] != "undefined" )
-                this.state[prefix] = obj[key];
+                this.state[prefix][key] = obj[key];
 
               found = true;
               break;
@@ -115,6 +115,7 @@ class OSCstate
         }
 
         if( found == false ) {
+//          Max.post(this.state[prefix], key, obj[key]);
           this.state[prefix][key] = obj[key];
         }
 /*

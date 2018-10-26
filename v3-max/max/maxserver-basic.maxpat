@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 162.0, 79.0, 983.0, 787.0 ],
+		"rect" : [ 154.0, 162.0, 1144.0, 597.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,13 +39,61 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-17",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 820.5, 52.0, 252.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 99, 108, 101, 97, 114, 0, 0, 0, 0, 44, 105, 0, 0, 0, 0, 0, 1 ],
+					"saved_bundle_length" : 48,
+					"text" : "/svgdraw/1/clear : 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-15",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 694.3333740234375, 102.0, 337.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 98, 98, 47, 100, 114, 97, 119, 47, 114, 101, 99, 116, 0, 44, 105, 105, 105, 105, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 20, 0, 0, 0, 100, 0, 0, 0, 100 ],
+					"saved_bundle_length" : 68,
+					"text" : "/svgdraw/1/bb/draw/rect : [50, 20, 100, 100]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 494.0, 69.333335876464844, 265.0, 24.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 97, 97, 97, 47, 115, 116, 121, 108, 101, 47, 102, 105, 108, 108, 0, 0, 0, 44, 115, 0, 0, 98, 108, 117, 101, 0, 0, 0, 0 ],
+					"saved_bundle_length" : 60,
+					"text" : "/svgdraw/1/aaa/style/fill : \"blue\""
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"bubble" : 1,
 					"id" : "obj-7",
 					"linecount" : 3,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 333.0, 157.833328247070312, 319.0, 51.0 ],
+					"patching_rect" : [ 483.0, 162.833328247070312, 320.0, 51.0 ],
 					"text" : "when running the first time you will need to be connected ot the internet and run \"script npm install\" to download the node package dependencies."
 				}
 
@@ -55,15 +103,15 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-13",
-					"linecount" : 2,
+					"linecount" : 3,
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 29.0, 442.0, 323.0, 38.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 112, 111, 114, 116, 47, 108, 111, 99, 97, 108, 104, 111, 115, 116, 0, 44, 115, 0, 0, 104, 116, 116, 112, 58, 47, 47, 108, 111, 99, 97, 108, 104, 111, 115, 116, 58, 51, 48, 48, 50, 0, 0, 0, 0, 0, 0, 44, 47, 112, 111, 114, 116, 47, 105, 112, 0, 0, 0, 0, 44, 115, 0, 0, 104, 116, 116, 112, 58, 47, 47, 49, 55, 50, 46, 49, 56, 46, 55, 49, 46, 49, 53, 49, 58, 51, 48, 48, 50, 0, 0, 0 ],
+					"patching_rect" : [ 39.0, 277.5, 321.0, 51.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 47, 112, 111, 114, 116, 47, 108, 111, 99, 97, 108, 104, 111, 115, 116, 0, 44, 115, 0, 0, 104, 116, 116, 112, 58, 47, 47, 108, 111, 99, 97, 108, 104, 111, 115, 116, 58, 51, 48, 48, 50, 0, 0, 0, 0, 0, 0, 44, 47, 112, 111, 114, 116, 47, 105, 112, 0, 0, 0, 0, 44, 115, 0, 0, 104, 116, 116, 112, 58, 47, 47, 49, 57, 50, 46, 49, 54, 56, 46, 49, 55, 56, 46, 50, 48, 58, 51, 48, 48, 50, 0, 0 ],
 					"saved_bundle_length" : 112,
-					"text" : "/port/localhost : \"http://localhost:3002\",\n/port/ip : \"http://172.18.71.151:3002\""
+					"text" : "/port/localhost : \"http://localhost:3002\",\n/port/ip : \"http://192.168.178.20:3002\""
 				}
 
 			}
@@ -76,7 +124,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 130.333343505859375, 98.333335876464844, 258.0, 24.0 ],
+					"patching_rect" : [ 228.5, 69.333335876464844, 258.0, 24.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 97, 97, 97, 47, 115, 116, 121, 108, 101, 47, 102, 105, 108, 108, 0, 0, 0, 44, 115, 0, 0, 114, 101, 100, 0 ],
 					"saved_bundle_length" : 56,
 					"text" : "/svgdraw/1/aaa/style/fill : \"red\""
@@ -92,7 +140,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 87.666671752929688, 63.0, 532.0, 24.0 ],
+					"patching_rect" : [ 219.666671752929688, 42.0, 532.0, 24.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 97, 97, 97, 47, 100, 114, 97, 119, 47, 112, 97, 116, 104, 0, 0, 0, 0, 44, 115, 0, 0, 77, 49, 48, 48, 44, 49, 48, 48, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 45, 54, 48, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 44, 54, 48, 0, 0 ],
 					"saved_bundle_length" : 96,
 					"text" : "/svgdraw/1/aaa/draw/path : \"M100,100a30,30,0,0,0,0-60a30,30,0,0,0,0,60\""
@@ -106,7 +154,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 231.0, 172.333328247070312, 98.0, 22.0 ],
+					"patching_rect" : [ 381.0, 177.333328247070312, 98.0, 22.0 ],
 					"text" : "script npm install"
 				}
 
@@ -120,7 +168,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 51.333332061767578, 30.0, 525.0, 24.0 ],
+					"patching_rect" : [ 202.0, 14.0, 525.0, 24.0 ],
 					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 72, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 98, 98, 47, 100, 114, 97, 119, 47, 112, 97, 116, 104, 0, 44, 115, 0, 0, 77, 49, 48, 49, 44, 49, 49, 53, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 45, 54, 48, 97, 51, 48, 44, 51, 48, 44, 48, 44, 48, 44, 48, 44, 48, 44, 54, 48, 0, 0 ],
 					"saved_bundle_length" : 92,
 					"text" : "/svgdraw/1/bb/draw/path : \"M101,115a30,30,0,0,0,0-60a30,30,0,0,0,0,60\""
@@ -350,7 +398,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 294.5, 332.0, 42.0, 22.0 ],
+					"patching_rect" : [ 531.0, 337.0, 42.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -369,7 +417,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "FullPacket" ],
-					"patching_rect" : [ 231.0, 287.0, 142.0, 22.0 ],
+					"patching_rect" : [ 467.5, 292.0, 142.0, 22.0 ],
 					"text" : "o.select /terminated/error"
 				}
 
@@ -383,7 +431,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 231.0, 540.1666259765625, 543.0, 34.0 ]
+					"patching_rect" : [ 467.5, 515.1666259765625, 610.0, 34.0 ]
 				}
 
 			}
@@ -392,13 +440,13 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-47",
-					"linecount" : 6,
+					"linecount" : 12,
 					"maxclass" : "o.display",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 354.0, 333.0, 601.0, 102.0 ],
-					"text" : "/restarted/success : {\n\t/reason : \"file_change\",\n\t/id : \"u272935620\",\n\t/restartCount : 1,\n\t/time : 2018-10-26T15:48:26.394849Z\n}"
+					"patching_rect" : [ 590.5, 328.0, 373.0, 184.0 ],
+					"text" : "/start/success : {\n\t/id : \"u272996727\",\n\t/filename : \"max-index.js\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u272996727_ctrl.sock\"\n\t},\n\t/watch : 1,\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/time : 2018-10-26T19:35:09.754556Z\n}"
 				}
 
 			}
@@ -631,7 +679,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 231.0, 253.0, 35.0, 22.0 ],
+					"patching_rect" : [ 467.5, 260.0, 35.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -650,7 +698,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 52.0, 116.333328247070312, 37.0, 22.0 ],
+					"patching_rect" : [ 202.0, 121.333328247070312, 37.0, 22.0 ],
 					"text" : "o.dict"
 				}
 
@@ -662,7 +710,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 76.333328247070312, 172.333328247070312, 63.0, 22.0 ],
+					"patching_rect" : [ 288.5, 165.333328247070312, 63.0, 22.0 ],
 					"text" : "script stop"
 				}
 
@@ -674,7 +722,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 76.333328247070312, 140.333328247070312, 64.0, 22.0 ],
+					"patching_rect" : [ 288.5, 133.333328247070312, 64.0, 22.0 ],
 					"text" : "script start"
 				}
 
@@ -686,7 +734,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 52.0, 220.000015258789062, 198.0, 22.0 ],
+					"patching_rect" : [ 288.5, 231.000015258789062, 198.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"autostart" : 0,
 						"defer" : 0,
@@ -753,6 +801,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-15", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-2", 0 ]
 				}
@@ -776,6 +838,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
 					"source" : [ "obj-44", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-5", 0 ]
 				}
 
 			}

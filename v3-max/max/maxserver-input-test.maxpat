@@ -261,23 +261,6 @@
 			}
 , 			{
 				"box" : 				{
-					"fontface" : 0,
-					"fontsize" : 12.0,
-					"id" : "obj-2",
-					"linecount" : 2,
-					"maxclass" : "o.compose",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 52.0, 135.0, 352.0, 38.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 120, 120, 47, 102, 111, 114, 109, 47, 105, 110, 112, 117, 116, 0, 0, 0, 0, 44, 115, 0, 0, 116, 101, 115, 116, 0, 0, 0, 0, 0, 0, 0, 48, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 120, 120, 47, 116, 114, 97, 110, 115, 102, 111, 114, 109, 47, 116, 114, 97, 110, 115, 108, 97, 116, 101, 0, 0, 0, 44, 105, 105, 0, 0, 0, 0, 100, 0, 0, 0, 100 ],
-					"saved_bundle_length" : 112,
-					"text" : "/svgdraw/1/xx/form/input : \"test\",\n/svgdraw/1/xx/transform/translate : [100, 100]"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-14",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -306,13 +289,11 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-47",
-					"linecount" : 10,
 					"maxclass" : "o.display",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 527.0, 340.0, 601.0, 156.0 ],
-					"text" : "/start/success : {\n\t/watch : 1,\n\t/id : \"u119277915\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u119277915_ctrl.sock\"\n\t},\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/filename : \"max-index.js\",\n\t/time : 2018-10-25T12:40:17.869565Z\n}"
+					"patching_rect" : [ 527.0, 340.0, 601.0, 34.0 ]
 				}
 
 			}
@@ -709,13 +690,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-19", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-6", 0 ],
-					"source" : [ "obj-2", 0 ]
 				}
 
 			}

@@ -514,8 +514,9 @@ function processCmdObj(obj)
           var new_form = forms.append("input")
               .attr("type", "text" )
               .attr("id", id )
+              .attr("placeholder", objValue )
               //.attr("oninput", "console.log('yooo')")
-              .attr("name", objValue+"_text" )
+              //.attr("name", objValue+"_text" )
               .attr("onkeydown", "inputReponse(this)" );
 
           objectStack[id] = new_form;

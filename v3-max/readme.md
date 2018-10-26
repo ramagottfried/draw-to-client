@@ -81,13 +81,13 @@ The following list of methods need to follow the `OSC prefix` and `object id` (e
 
 #### Edit Methods
 
-The following methods require an additional command name following them to define the parameter to set.
+The following methods require an additional command name following them to define the parameter to set. For example, to set the fill color for a an object named `foo` on `/svgdraw/1` to be red, you would send the message: `/svgdraw/1/foo/style/fill : "red"`.
 
 * /style -- a CSS style commands. Some common SVG style commands are:
   * /fill : "color string", sets the fill color
   * /stroke-width : number
   * /stroke : "color string", sets the stroke color
-  
+
 * /transform -- CSS transform commands. Some common transform commands are:
   * /translate : [x, y], moves the object from its current location by the xy values
   * /rotate : degrees, rotates the object

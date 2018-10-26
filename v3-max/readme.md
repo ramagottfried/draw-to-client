@@ -13,7 +13,7 @@ Click on the [script start] message to start the Node process running.
 
 The `max-svgdraw-client.js` script is used on each client browser page to process the incoming commands from the server. On connection each client script sends a message to the server, providing an identifier OSC prefix that can be used to address messages to a specific client page.
 
-The identifier is set in the webpage, set by the `OSCprefix` attribute, which is parsed by `max-svgdraw-client.js` on load. For example, here is a line from `svgdraw-1.html`:
+The identifier is set in the webpage, set by the `OSCprefix` attribute, which is parsed by `max-svgdraw-client.js` on load. For example, here the line in `svgdraw-1.html` which sets the `OSCprefix`:
 
 ```
 <script src="max-svgdraw-client.js" id="OSC" OSCprefix="/svgdraw/1"></script>

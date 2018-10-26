@@ -78,7 +78,6 @@ The following list of methods need to follow the `OSC prefix` and `object id` (e
 
 * /form/input : "display text for input field"
 
-
 #### Edit Methods
 
 The following methods require an additional command name following them to define the parameter to set. For example, to set the fill color for a an object named `foo` on `/svgdraw/1` to be red, you would send the message: `/svgdraw/1/foo/style/fill : "red"`.
@@ -93,8 +92,12 @@ The following methods require an additional command name following them to defin
   * /rotate : degrees, rotates the object
   * /scale : [x, y], stretches the object in the xy axis as specified.
 
-* /attr
+* /attr -- sets an attribute of an HTML node. For example you could use this to set a custom mouse event handler, or other HTML or SVG attributes that can't be accessed via CSS.
 
 #### Delete Method
 
 * /remove -- removes the object with the preceding unique id.
+
+### Special Functions
+
+* `processCmdObj(obj)` -- The main parsing function in the `max-svgdraw-client.js` is called `processCmdObj` which processes a Javscript object containing one or more method messages. This function can be accessed also from event handlers set by the `/attr` method. For example: `/foo/attr/onclick : "processCmdObj({ '/foo/style/fill' : 'red' })"` (note: this is currently broken due to the new overlay layer)

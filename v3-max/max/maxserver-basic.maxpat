@@ -41,6 +41,24 @@
 				"box" : 				{
 					"fontface" : 0,
 					"fontsize" : 12.0,
+					"id" : "obj-9",
+					"linecount" : 2,
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 579.0, 249.0, 525.0, 38.0 ],
+					"presentation_linecount" : 2,
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 47, 115, 118, 103, 100, 114, 97, 119, 47, 49, 47, 98, 98, 47, 97, 116, 116, 114, 47, 111, 110, 99, 108, 105, 99, 107, 0, 0, 44, 115, 0, 0, 112, 114, 111, 99, 101, 115, 115, 67, 109, 100, 79, 98, 106, 40, 123, 32, 39, 47, 98, 98, 47, 115, 116, 121, 108, 101, 47, 102, 105, 108, 108, 39, 32, 58, 32, 39, 114, 101, 100, 39, 32, 125, 41, 0 ],
+					"saved_bundle_length" : 96,
+					"text" : "/svgdraw/1/bb/attr/onclick : \"processCmdObj({ '/bb/style/fill' : 'red' })\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 12.0,
 					"id" : "obj-17",
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
@@ -225,7 +243,7 @@
 									"maxclass" : "newobj",
 									"numinlets" : 1,
 									"numoutlets" : 1,
-									"outlettype" : [ "FullPacket" ],
+									"outlettype" : [ "" ],
 									"patcher" : 									{
 										"fileversion" : 1,
 										"appversion" : 										{
@@ -272,8 +290,8 @@
 													"linecount" : 3,
 													"maxclass" : "o.expr.codebox",
 													"numinlets" : 1,
-													"numoutlets" : 2,
-													"outlettype" : [ "FullPacket", "FullPacket" ],
+													"numoutlets" : 1,
+													"outlettype" : [ "" ],
 													"patching_rect" : [ 50.0, 100.0, 313.0, 59.0 ],
 													"text" : "if( bound(/start/success),\n  /public = /start/success./cwd +\"/public\"\n)"
 												}
@@ -440,13 +458,11 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-47",
-					"linecount" : 12,
 					"maxclass" : "o.display",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 590.5, 328.0, 373.0, 184.0 ],
-					"text" : "/start/success : {\n\t/id : \"u272996727\",\n\t/filename : \"max-index.js\",\n\t/socketDescription : {\n\t\t/control : \"/tmp/u272996727_ctrl.sock\"\n\t},\n\t/watch : 1,\n\t/cwd : \"/Volumes/r/Users/rama/Documents/dev-lib/node/hfmt/draw-to-client/v3-max\",\n\t/time : 2018-10-26T19:35:09.754556Z\n}"
+					"patching_rect" : [ 590.5, 328.0, 373.0, 34.0 ]
 				}
 
 			}
@@ -862,6 +878,13 @@
 				}
 
 			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-9", 0 ]
+				}
+
+			}
  ],
 		"dependency_cache" : [ 			{
 				"name" : "o.dict.mxo",
@@ -881,10 +904,6 @@
 			}
 , 			{
 				"name" : "o.select.mxo",
-				"type" : "iLaX"
-			}
-, 			{
-				"name" : "o.expr.codebox.mxo",
 				"type" : "iLaX"
 			}
 , 			{

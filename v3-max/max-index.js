@@ -23,7 +23,7 @@ Max.post("started up");
 
 // storage for current clientOSC bundles
 /*
-  OSCstate["/prefix"]["/address"] = args;
+  OSCstate["/OSCprefix"]["/id/cmdlist"] = args;
 */
 class OSCstate
 {
@@ -52,18 +52,26 @@ class OSCstate
         if( id == "clear")
         {
           //console.log("clearing canvas");
-          for( var key in objectStack)
+          if( typeof objectStack != "undefined" )
           {
-            if( key == "main" || key == "overlay" )
-            {}
-            else
+            for( var key in objectStack)
             {
-              objectStack[key].remove();
-              delete objectStack[key];
+              if( key == "main" || key == "overlay" )
+              {}
+              else if( typeof objectStack[key] != "undefined")
+              {
+                objectStack[key].remove();
+                delete objectStack[key];
+              }
+              else {
+                //?
+              }
             }
 
           }
+          
           return;
+
         }
         else if( id_cmd.length < 2 )
         {

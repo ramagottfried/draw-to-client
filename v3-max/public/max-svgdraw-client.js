@@ -342,10 +342,11 @@ function processCmdObj(obj)
             .attr("x2", objValue[2])
             .attr("y2", objValue[3]);
 
+
         }
       break;
       case "draw/polygon":
-        if( argc == 1 ) // points="220,10 300,210 170,250 123,234"
+        if( argc > 2 ) // points="220,10 300,210 170,250 123,234"
         {
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();
@@ -354,7 +355,7 @@ function processCmdObj(obj)
         }
       break;
       case "draw/polyline":
-        if( argc == 1 ) // points="220,10 300,210 170,250 123,234"
+        if( argc > 2 ) // points="220,10 300,210 170,250 123,234"
         {
           if( typeof objectStack[id] != "undefined" )
             objectStack[id].remove();

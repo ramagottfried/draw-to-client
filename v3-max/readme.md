@@ -64,7 +64,7 @@ The following list of methods need to follow the `OSC prefix` and `object id` (e
 
 * /draw/text : [ x, y, "text string" ]
 
-* /draw/music : [ x, y, "music text string" ], using the Bravura font. 
+* /draw/music : [ x, y, "music text string" ], using the Bravura font.
 
 * /draw/img : "path to image, relative to the /public folder"
 
@@ -79,12 +79,22 @@ The following list of methods need to follow the `OSC prefix` and `object id` (e
 * /form/input : "display text for input field"
 
 
-#### Alteration Methods
+#### Edit Methods
 
-* /style
+The following methods require an additional command name following them to define the parameter to set.
 
-* /transform
+* /style -- a CSS style commands. Some common SVG style commands are:
+  * /fill : "color string", sets the fill color
+  * /stroke-width : number
+  * /stroke : "color string", sets the stroke color
+  
+* /transform -- CSS transform commands. Some common transform commands are:
+  * /translate : [x, y], moves the object from its current location by the xy values
+  * /rotate : degrees, rotates the object
+  * /scale : [x, y], stretches the object in the xy axis as specified.
 
 * /attr
+
+#### Delete Method
 
 * /remove -- removes the object with the preceding unique id.

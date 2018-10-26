@@ -100,4 +100,4 @@ The following methods require an additional command name following them to defin
 
 ### Special Functions
 
-* `processCmdObj(obj)` -- The main parsing function in the `max-svgdraw-client.js` is called `processCmdObj` which processes a Javscript object containing one or more method messages. This function can be accessed also from event handlers set by the `/attr` method. For example: `/foo/attr/onclick : "processCmdObj({ '/foo/style/fill' : 'red' })"` (note: this is currently broken due to the new overlay layer)
+* `processCmdObj(obj)` -- The main parsing function in the `max-svgdraw-client.js` is called `processCmdObj` which processes a Javscript object containing one or more method messages. This function can be accessed also from event handlers set by the `/attr` method. For example: `/foo/attr/onclick : "processCmdObj({ '/foo/style/fill' : 'red' })"`
